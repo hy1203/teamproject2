@@ -1,6 +1,6 @@
 -- 스키마 생성
+DROP DATABASE IF EXISTS today_sky;
 CREATE DATABASE today_sky;
-
 -- today_sky 스키마 사용
 USE today_sky;
 
@@ -29,9 +29,7 @@ CREATE TABLE TODO (
 CREATE TABLE COMMENT (
     id INT PRIMARY KEY,
     content VARCHAR(255),
-    emotion VARCHAR(255),
-    image_id INT,
-    FOREIGN KEY (image_id) REFERENCES IMAGE(id)
+    emotion VARCHAR(255)
 );
 
 -- EMOTION 테이블 생성
@@ -41,8 +39,9 @@ CREATE TABLE EMOTION (
 
 -- IMAGE 테이블 생성
 CREATE TABLE IMAGE (
-    path VARCHAR(255)
+    path VARCHAR(255),
+	comment_id INT,
+	FOREIGN KEY (comment_id) REFERENCES COMMENT(id)
 );
 
--- 외래 키 설정
-ALTER TABLE IMAGE ADD FOREIGN KEY (comment_id) REFERENCES COMMENT(id);
+
