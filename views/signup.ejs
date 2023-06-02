@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- axios cdn -->
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <link rel="stylesheet" href="index.css" />
+        <title>그날의 하늘</title>
+    </head>
+    <body>
+        <div id="warp">
+            <br />
+            <a class="logo" href="/">그날의 하늘</a>
+            <br />
+            <div class="login_warp">
+                <form name="form_register" id="register_form">
+                    <div class="panel_inner">
+                        <div class="form_item_top">
+                            <label for="userid">ID</label>
+                            <input type="text" id="userid" name="userid" placeholder="아이디" required /><br />
+                        </div>
+                        <div class="form_item_bottom">
+                            <label for="pw">pw</label>
+                            <input type="password" id="pw" name="pw" placeholder="비밀번호" required /><br />
+                        </div>
+                        <br />
+                        <div class="form_item_top">
+                            <label for="username">👤</label>
+                            <input type="text" id="username" placeholder="이름" required /><br />
+                        </div>
+                        <div class="form_item_bottom">
+                            <label for="birthday">🗓️</label>
+                            <input type="datetime" id="birthday" placeholder="생년월일 8자리" required /><br />
+                        </div>
+                    </div>
+
+                    <br />
+                    <button class="btn" type="button" onclick="register()">제출</button>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            function register() {
+                const form = document.forms['form_register'];
+
+                console.log(form.checkValidity());
+                if (!form.checkValidity()) {
+                    return;
+                }
+                axios({
+                    method: 'POST',
+                    url: '/signup',
+                    data: {
+                        userid: form.userid.value,
+                        pw: form.pw.value,
+                        name: form.username.value,
+                        birthday: form.birthday.value,
+                    },
+                }).then((res) => {
+                    console.log(res);
+                    if (res.data.result === true) {
+                        alert('회원가입 완료');
+                        document.location.href = '/login';
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
