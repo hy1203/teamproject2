@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 
 export interface Controller {
-  [key: string]: (req: Request, res: Response) => void;
+  [key: string]: Control;
 }
+
+export type Control = (req: Request, res: Response) => void;
