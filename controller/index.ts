@@ -8,9 +8,10 @@ import todo from './todo';
 
 declare module 'express-session' {
     interface SessionData {
-        user: string;
+        user: number;
     }
 }
+
 //index page
 async function index(req: Request, res: Response) {
     res.render('index');

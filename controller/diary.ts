@@ -14,8 +14,8 @@ export default <Controller>{
 };
 
 async function redirectGets(req: Request, res: Response) {
-  const user = isLogin(req, res);
-  if (!user) return;
+  const user_id = isLogin(req, res);
+  if (!user_id) return;
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth() + 1;
@@ -23,43 +23,47 @@ async function redirectGets(req: Request, res: Response) {
 }
 
 async function gets(req: Request, res: Response) {
-  const { year, month } = req.params;
-  const [y, m] = [year, month].map(Number);
-  const user = isLogin(req, res);
-  if (!user) return;
-  if (!validateDate(y, m, 1) || isFuture(y, m, 1)) {
+  const [year, month] = ["year", "month"]
+    .map((key) => req.params[key])
+    .map(Number);
+  const user_id = isLogin(req, res);
+  if (!user_id) return;
+  if (!validateDate(year, month, 1) || isFuture(year, month, 1)) {
     res.redirect("/");
     return;
   }
   const result = await diary.findAll({
-    where: { user, year: y, month: m },
+    where: { user_id, year, month },
   });
   const diaries = result.map((r) => r?.toJSON<Diary>());
-  res.render("diary", { year: y, month: m, diaries });
+  // res.render("diary", { year, month, diaries });
+  res.send({ year, month, diaries });
 }
 
 async function get(req: Request, res: Response) {
-  const user = isLogin(req, res);
-  if (!user) return;
-  const { year, month, date } = req.params;
-  const [y, m, d] = [year, month, date].map(Number);
-  if (!validateDate(y, m, d) || isFuture(y, m, d)) {
+  const user_id = isLogin(req, res);
+  if (!user_id) return;
+  const [year, month, date] = ["year", "month", "date"]
+    .map((key) => req.params[key])
+    .map(Number);
+  if (!validateDate(year, month, date) || isFuture(year, month, date)) {
     res.redirect("/");
     return;
   }
   const result = await diary.findOne({
-    where: { user, year: y, month: m, date: d },
+    where: { user_id, year, month, date },
   });
   const diaries = result?.toJSON<Diary>();
-  res.render("diary", { year: y, month: m, date: d, diaries });
+  res.render("diary", { year, month, date, diaries });
 }
 
 async function post(req: Request, res: Response) {
-  const { year, month, date } = req.params;
-  const [y, m, d] = [year, month, date].map(Number);
+  const [year, month, date] = ["year", "month", "date"]
+    .map((key) => req.params[key])
+    .map(Number);
   const { content } = req.body;
-  const user = isLogin(req, res);
-  if (!user) return;
-  await diary.upsert({ user, y, m, d, content });
-  res.redirect(`/diary/${y}/${m}/${d}`);
+  const user_id = isLogin(req, res);
+  if (!user_id) return;
+  await diary.upsert({ user_id, year, month, date, content });
+  res.redirect(`/diary/${year}/${month}/${date}`);
 }

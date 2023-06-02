@@ -25,8 +25,8 @@ async function post(req: Request, res: Response) {
         username: req.body.username,
         password: req.body.password,
     });
-    const { username, password } = await result.toJSON<User>();
-    req.session.user = username; // 세션에 사용자 정보 저장
+    const { id, username, password } = await result.toJSON<User>();
+    req.session.user = id; // 세션에 사용자 정보 저장
     try {
         res.send({
             result: true,
