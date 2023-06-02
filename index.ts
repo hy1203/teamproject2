@@ -1,10 +1,14 @@
 import Express from 'express';
-import route from '@/routes';
-//session 설정
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
+import route from '@/routes';
+import db from '@/models';
+
 const app = Express();
 const PORT = 8000;
+
+db.sequelize.sync();
+
 app.use(cookieParser());
 app.use(
     session({
