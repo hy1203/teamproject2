@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import controller from '@/controller';
+import diary from './diary';
 
 const route = Router();
 //index route
@@ -10,7 +11,11 @@ route.get('/login', controller.loginPage);
 route.get('/signup', controller.signupPage);
 
 //post_login route
-route.post('/login', controller.login);
+route.post('/login', controller.post_login);
 //post_signup route
-route.post('/signup', controller.signup);
+route.post('/signup', controller.post_signup);
+
+//diary route
+route.use("/diary", diary);
+
 export default route;
