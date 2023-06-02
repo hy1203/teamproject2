@@ -31,17 +31,17 @@
   </thead>
   <tbody>
     <tr>
-      <td>/api/sky/`year`/`month`</td>
+      <td>/api/sky/<code>year</code>/<code>month</code></td>
       <td>GET</td>
-      <td>`year`, `month`</td>
-      <td>`year`년 `month` 월 일기</td>
+      <td><code>year</code>, <code>month</code></td>
+      <td><code>year</code>년 <code>month</code> 월 일기</td>
       <td>READS</td>
     </tr>
     <tr>
-      <td rowspan="4">/api/sky/`year`/`month`/`day`/cloud</td>
+      <td rowspan="4">/api/sky/<code>year</code>/<code>month</code>/<code>day</code>/cloud</td>
       <td>GET</td>
-      <td rowspan="6">`year`, `month`, `day`</td>
-      <td rowspan="4">`year`년 `month` 월 `day` 일 일기</td>
+      <td rowspan="6"><code>year</code>, <code>month</code>, <code>day</code></td>
+      <td rowspan="4"><code>year</code>년 <code>month</code> 월 <code>day</code> 일 일기</td>
       <td>READ</td>
     </tr>
     <tr>
@@ -57,9 +57,9 @@
       <td>DELETE</td>
     </tr>
     <tr>
-      <td rowspan="2">/api/sky/`year`/`month`/`day`/star</td>
+      <td rowspan="2">/api/sky/<code>year</code>/<code>month</code>/<code>day</code>/star</td>
       <td>GET</td>
-      <td rowspan="2">`year`년 `month` 월 `day` 일 할 일</td>
+      <td rowspan="2"><code>year</code>년 <code>month</code> 월 <code>day</code> 일 할 일</td>
       <td>READS</td>
     </tr>
     <tr>
@@ -67,10 +67,10 @@
       <td>CREATE</td>
     </tr>
     <tr>
-      <td rowspan="2">/api/sky/`year`/`month`/`day`/star/`star_id`</td>
+      <td rowspan="2">/api/sky/<code>year</code>/<code>month</code>/<code>day</code>/star/<code>star_id</code></td>
       <td>PUT</td>
-      <td rowspan="2">`year`, `month`, `day`, `star_id`</td>
-      <td rowspan="2">`year`년 `month` 월 `day` 일 할 일 `star_id`</td>
+      <td rowspan="2"><code>year</code>, <code>month</code>, <code>day</code>, <code>star_id</code></td>
+      <td rowspan="2"><code>year</code>년 <code>month</code> 월 <code>day</code> 일 할 일 <code>star_id</code></td>
       <td>UPDATE</td>
     </tr>
     <tr>
@@ -78,10 +78,10 @@
       <td>DELETE</td>
     </tr>
     <tr>
-      <td rowspan="4">/api/sky/`year`/`month`/`day`/star/`star_id`/cloud</td>
+      <td rowspan="4">/api/sky/<code>year</code>/<code>month</code>/<code>day</code>/star/<code>star_id</code>/cloud</td>
       <td>GET</td>
-      <td rowspan="4">`year`, `month`, `day`, `star_id`</td>
-      <td rowspan="4">`year`년 `month` 월 `day` 일 할 일 `star_id` 소감</td>
+      <td rowspan="4"><code>year</code>, <code>month</code>, <code>day</code>, <code>star_id</code></td>
+      <td rowspan="4"><code>year</code>년 <code>month</code> 월 <code>day</code> 일 할 일 <code>star_id</code> 소감</td>
       <td>READ</td>
     </tr>
     <tr>
@@ -134,6 +134,7 @@ erDiagram
         string image_path
     }
     IMAGE {
+        int comment_id
         string path
     }
     USER ||--o{ SKY : write
