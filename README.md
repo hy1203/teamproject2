@@ -108,41 +108,37 @@ erDiagram
         string username
         string password
     }
-    SKY {  
+    DIARY {  
         int id
-        date date
+        int year
+        int month
+        int date
         int user_id
         text content
     }
-    STAR {
+    TODO {
         int id
-        int sky_id
+        date date
         string content
-        int howMuch
     }
-    CLOUD {
+    COMMENT {
         int id
-        int sky_or_star_id
         int emotion_id
         string content
-        string emotion
-        string[] image_path
     }
-    EMOTION{
+    EMOTION {
         int id
         string feel
-        string image_path
     }
     IMAGE {
         int comment_id
         string path
     }
-    USER ||--o{ SKY : write
-    CLOUD |o--o{ IMAGE : append
-    SKY ||--|{ STAR : doIt
-    SKY ||--|| CLOUD : howAboutToday
-    STAR ||--|| CLOUD : howAbout
-    CLOUD }o--|| EMOTION : feel
+    USER ||--o{ DIARY : write
+    COMMENT |o--o{ IMAGE : append
+    DIARY ||--|{ TODO : doIt
+    DIARY ||--|| COMMENT : howAboutToday
+    TODO ||--|| COMMENT : howAbout
+    COMMENT }o--|| EMOTION : feel
     EMOTION ||--|| IMAGE : append
-
 ```
