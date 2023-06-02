@@ -1,15 +1,7 @@
 import { DataTypes, Sequelize } from 'sequelize';
 
-/*
- * CREATE TABLE TODO (
-    id INT PRIMARY KEY,
-    date DATE NOT NULL,
-    content VARCHAR(255) NOT NULL
-);
-*/
-
-export default function (sequelize: Sequelize, dataTypes: typeof DataTypes) {
-  return sequelize.define('TODO', {
+export default function todo(sequelize: Sequelize, dataTypes: typeof DataTypes) {
+  return sequelize.define('todo', {
     id: {
       type: dataTypes.INTEGER,
       primaryKey: true,
@@ -25,6 +17,7 @@ export default function (sequelize: Sequelize, dataTypes: typeof DataTypes) {
       allowNull: false,
     },
   }, {
+    tableName: 'todo',
     freezeTableName: true,
     timestamps: false,
   });

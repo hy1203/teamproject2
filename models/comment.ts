@@ -1,6 +1,6 @@
 import { DataTypes, Sequelize } from 'sequelize';
 
-export default function Comment(sequelize: Sequelize, dataTypes: typeof DataTypes) {
+export default function comment(sequelize: Sequelize, dataTypes: typeof DataTypes) {
   return sequelize.define(
     'comment',
     {
@@ -30,5 +30,3 @@ export default function Comment(sequelize: Sequelize, dataTypes: typeof DataType
     }
   );
 }
-
-
