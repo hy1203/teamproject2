@@ -22,6 +22,7 @@ CREATE TABLE DIARY (
 -- TODO 테이블 생성
 CREATE TABLE TODO (
     id INT PRIMARY KEY,
+    date DATE NOT NULL,
     content VARCHAR(255) NOT NULL
 );
 
