@@ -3,30 +3,30 @@ export interface User {
   username: string;
   password: string;
 }
-export interface DIARY {
+export interface Diary {
   id: number;
   title: string;
   content: string;
   date: string;
 }
 
-export interface TODO {
+export interface Todo {
   id: number;
   content: string;
 }
 
-interface EMOTION {
+export interface Emotion {
   id: number;
   feel: string;
 }
 
-export interface COMMENT {
+export interface Comment {
   id: number;
   content: string;
   emotion_id: number;
 }
 
-export interface IMAGE {
+export interface Image {
   path: string;
   comment_id: number;
 }

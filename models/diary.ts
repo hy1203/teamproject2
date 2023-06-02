@@ -1,15 +1,7 @@
 import { DataTypes, Sequelize } from 'sequelize';
 
-/**
- * CREATE TABLE DIARY (
-    id INT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
-    date DATE NOT NULL
-);
-*/
-export default function (sequelize: Sequelize, dataTypes: typeof DataTypes) {
-  return sequelize.define('DIARY', {
+export default function diary(sequelize: Sequelize, dataTypes: typeof DataTypes) {
+  return sequelize.define('diary', {
     id: {
       type: dataTypes.INTEGER,
       primaryKey: true,
@@ -28,7 +20,8 @@ export default function (sequelize: Sequelize, dataTypes: typeof DataTypes) {
       allowNull: false,
     },
   }, {
-    tableName: 'DIARY',
+    tableName: 'diary',
     timestamps: false,
+    freezeTableName: true,
   });
 }

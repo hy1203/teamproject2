@@ -1,15 +1,9 @@
 
 
 import { DataTypes, Sequelize } from 'sequelize';
-/*
- * CREATE TABLE EMOTION (
-    id INT PRIMARY KEY,
-    feel VARCHAR(255) NOT NULL
-);
-*/
 
-export default function (sequelize: Sequelize, dataTypes: typeof DataTypes) {
-  return sequelize.define('EMOTION', {
+export default function emotion(sequelize: Sequelize, dataTypes: typeof DataTypes) {
+  return sequelize.define('emotion', {
     id: {
       type: dataTypes.INTEGER,
       primaryKey: true,
@@ -21,6 +15,7 @@ export default function (sequelize: Sequelize, dataTypes: typeof DataTypes) {
       allowNull: false,
     },
   }, {
+    tableName: 'emotion',
     freezeTableName: true,
     timestamps: false,
   });
