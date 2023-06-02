@@ -2,6 +2,7 @@
     "main": "index.ts",
     "scripts": {
         "dev": "pm2 kill && pm2 start index.sh --watch && pm2 log",
+        "dev:win": "ts-node-dev -r tsconfig-paths/register --files index.ts --watch",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
