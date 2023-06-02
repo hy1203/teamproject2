@@ -1,9 +1,18 @@
 import Express from 'express';
-import route from '@/routes';
-
+import route from './routes';
+//session 설정
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
 const app = Express();
 const PORT = 8000;
-
+app.use(cookieParser());
+app.use(
+    session({
+        secret: 'secret',
+        resave: false,
+        saveUninitialized: true,
+    })
+);
 app.set('view engine', 'ejs');
 app.use(Express.static('views'));
 
