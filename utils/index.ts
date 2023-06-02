@@ -1,8 +1,8 @@
-import { validateDate, isFuture, dateToObject } from "./date";
+import { validateDate, isFuture, dateSeparate } from "./date";
 import isLogin from "./login";
 
 export {
-  dateToObject,
+  dateSeparate,
   validateDate,
   isFuture,
   isLogin,
