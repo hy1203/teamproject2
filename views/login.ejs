@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- axios cdn -->
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <link rel="stylesheet" href="index.css" />
+        <title>그날의 하늘</title>
+    </head>
+    <body>
+        <div id="warp">
+            <br />
+            <a class="logo" href="/">그날의 하늘</a>
+            <br />
+            <div class="login_warp">
+                <form name="form_login" id="login_form">
+                    <div class="panel_inner">
+                        <div class="form_item_top">
+                            <label for="userid">ID</label>
+                            <input type="text" id="userid" name="userid" placeholder="아이디" required /><br />
+                        </div>
+                        <div class="form_item_bottom">
+                            <label for="pw">pw</label>
+                            <input type="password" id="pw" name="pw" placeholder="비밀번호" required /><br />
+                        </div>
+                        <br />
+                        <div class="keep">
+                            <div class="keep_check">
+                                <input
+                                    class="keeplogin"
+                                    type="checkbox"
+                                    id="keep"
+                                    name="nvlong"
+                                    class="input_keep"
+                                    value="off"
+                                />
+                                <div for="keep" class="keep_text">로그인 상태 유지</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn" onclick="login()">로그인</button>
+                    <button class="btn" onclick="signup()">회원가입</button>
+                </form>
+                <form action="/profile" method="POST" name="form_info">
+                    <input type="hidden" id="profile_userid" name="userid" />
+                </form>
+            </div>
+        </div>
+
+        <script>
+            function signup() {
+                location.href = '/signup';
+            }
+            function login() {
+                const form = document.forms['form_login'];
+
+                if (!form.checkValidity()) {
+                    return;
+                }
+                axios({
+                    method: 'POST',
+                    url: '/signin',
+                    data: {
+                        userid: form.userid.value,
+                        pw: form.pw.value,
+                    },
+                }).then((res) => {
+                    if (res.data.result === true) {
+                        alert('로그인 성공');
+                        const form_info = document.forms['form_info'];
+                        form_info.profile_userid.value = res.data.data.userid;
+                        location.href = '/';
+                        form_info.submit();
+                    } else {
+                        alert('로그인 실패');
+                        form_login.reset();
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
