@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import db from '../models';
+import db from '@/models';
 // import {  } from "@/utils";
 import { Controller } from '@/types';
 import { User } from '@/types/models';
@@ -10,18 +10,20 @@ declare module 'express-session' {
         user: string;
     }
 }
-
+//메인페이지 GET
 async function index(req: Request, res: Response) {
     res.render('index');
 }
+//로그인 GET
 async function login(req: Request, res: Response) {
     res.render('login');
 }
+//회원가입 GET
 async function signup(req: Request, res: Response) {
     res.render('signup');
 }
+//회원가입 Post
 async function post_signup(req: Request, res: Response) {
-    // 회원가입
     if (!req.body.password) {
         // 패스워드 값이 없는 경우 오류 처리
         console.log('패스워드 값이 없습니다.');
@@ -45,6 +47,7 @@ async function post_signup(req: Request, res: Response) {
         res.send({ result: false });
     }
 }
+//로그인
 async function post_login(req: Request, res: Response) {
     try {
         const user = await models.user.findOne({

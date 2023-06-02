@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import process from 'process';
-import configs from '../config';
+import configs from '@/config';
 import User from './user';
 
 const env = process.env.NODE_ENV || 'development';
