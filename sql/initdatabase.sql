@@ -45,5 +45,3 @@ CREATE TABLE IMAGE (
 	comment_id INT NOT NULL,
 	FOREIGN KEY (comment_id) REFERENCES COMMENT(id)
 );
-
-
