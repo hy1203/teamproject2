@@ -24,10 +24,6 @@ async function signup(req: Request, res: Response) {
 }
 //회원가입 Post
 async function post_signup(req: Request, res: Response) {
-<<<<<<< Updated upstream
-=======
-    // 회원가입
->>>>>>> Stashed changes
     if (!req.body.password) {
         // 패스워드 값이 없는 경우 오류 처리
         console.log('패스워드 값이 없습니다.');
@@ -51,10 +47,7 @@ async function post_signup(req: Request, res: Response) {
         res.send({ result: false });
     }
 }
-<<<<<<< Updated upstream
 //로그인
-=======
->>>>>>> Stashed changes
 async function post_login(req: Request, res: Response) {
     try {
         const user = await models.user.findOne({
@@ -78,21 +71,10 @@ async function post_login(req: Request, res: Response) {
     }
 }
 
-<<<<<<< Updated upstream
 export default <Controller>{
-=======
-// routes 폴더로 기본 내보내기 설정
-const controller: Controller = {
->>>>>>> Stashed changes
     index,
     login,
     signup,
     post_signup,
     post_login,
-<<<<<<< Updated upstream
 }; // 기본 내보내기 설정
-=======
-};
-
-export default controller; // 기본 내보내기 설정
->>>>>>> Stashed changes

@@ -1,5 +1,5 @@
 import Express from 'express';
-import route from './routes';
+import route from '@/routes';
 //session 설정
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
