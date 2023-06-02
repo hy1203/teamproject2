@@ -71,13 +71,10 @@ async function post_login(req: Request, res: Response) {
     }
 }
 
-// routes 폴더로 기본 내보내기 설정
-const controller: Controller = {
+export default <Controller>{
     index,
     login,
     signup,
     post_signup,
     post_login,
-};
-
-export default controller; // 기본 내보내기 설정
+}; // 기본 내보내기 설정
