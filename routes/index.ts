@@ -9,4 +9,6 @@ route.get('/login', controller.login);
 //signup route
 route.get('/signup', controller.signup);
 
+//post_signup route
+route.post('/signup', controller.post_signup);
 export default route;
