@@ -18,12 +18,20 @@
                 <form name="form_login" id="login_form">
                     <div class="panel_inner">
                         <div class="form_item_top">
-                            <label for="userid">ID</label>
-                            <input type="text" id="userid" name="userid" placeholder="아이디" required /><br />
+                            <!-- 아이디 입력 -->
+                            <label for="username">ID</label>
+                            <input type="text" id="username" name="username" placeholder="아이디" required /><br />
                         </div>
                         <div class="form_item_bottom">
-                            <label for="pw">pw</label>
-                            <input type="password" id="pw" name="pw" placeholder="비밀번호" required /><br />
+                            <!-- 패스워드 입력 -->
+                            <label for="passwrod">pw</label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="비밀번호"
+                                required
+                            /><br />
                         </div>
                         <br />
                         <div class="keep">
@@ -62,18 +70,16 @@
                 }
                 axios({
                     method: 'POST',
-                    url: '/signin',
+                    url: '/login',
                     data: {
-                        userid: form.userid.value,
-                        pw: form.pw.value,
+                        username: form.username.value,
+                        password: form.password.value,
                     },
                 }).then((res) => {
                     if (res.data.result === true) {
                         alert('로그인 성공');
                         const form_info = document.forms['form_info'];
-                        form_info.profile_userid.value = res.data.data.userid;
                         location.href = '/';
-                        form_info.submit();
                     } else {
                         alert('로그인 실패');
                         form_login.reset();
