@@ -5,7 +5,7 @@ const route = Router();
 //index route
 route.get('/', controller.index);
 //login route
-route.get('/login', controller.login);
+route.get('/login', controller.loginPage);
 //signup route
 route.get('/signup', controller.signup);
 
