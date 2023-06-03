@@ -22,7 +22,6 @@ async function createPage(req: Request, res: Response) {
 
 // 투두 생성
 async function createTodo(req: Request, res: Response) {
-    console.log(req.body);
     await db.todo.create({
         date: new Date(),
         content: req.body.content,
