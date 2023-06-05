@@ -29,6 +29,7 @@ app.get("*", (req, res) => {
   res.status(404).render("404");
 });
 
-app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
-});
+export default (port: number) => {
+  app.listen(port);
+  return app;
+};
