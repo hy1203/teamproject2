@@ -4,11 +4,10 @@ import diary from "./diary";
 import todo from "./todo";
 
 
-import { TodoCalendarController } from "../controller/todocalendarController";
+import { TodoCalendarController } from "@/controller/todocalendarController";
 
 const todocalendarController = new TodoCalendarController();
 
-const router = express.Router();
 const route = Router();
 //index route
 route.get("/", controller.index);
