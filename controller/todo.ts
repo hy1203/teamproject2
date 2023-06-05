@@ -6,10 +6,10 @@ import { Todo } from "@/types/models";
 
 export default <Controller>{
   createPage,
-  createTodo,
-  getTodo,
-  updateTodo,
-  deleteTodo,
+  post,
+  get,
+  put,
+  destroy,
 };
 
 //페이지 생성
@@ -17,7 +17,7 @@ async function createPage(req: Request, res: Response) {
   res.render("todo");
 }
 //투두 생성
-async function createTodo(req: Request, res: Response) {
+async function post(req: Request, res: Response) {
   const user_id = isLogin(req, res);
   if (!user_id) return;
   const [year, month, date] = getDateFromUrl(req);
@@ -40,7 +40,7 @@ async function createTodo(req: Request, res: Response) {
   }
 }
 //투두조회
-async function getTodo(req: Request, res: Response) {
+async function get(req: Request, res: Response) {
   try {
     const [year, month, date] = getDateFromUrl(req);
     const user_id = isLogin(req, res);
@@ -62,7 +62,7 @@ async function getTodo(req: Request, res: Response) {
   }
 }
 //투두 수정
-async function updateTodo(req: Request, res: Response) {
+async function put(req: Request, res: Response) {
   try {
     const { year, month, date } = req.params;
     const user = isLogin(req, res);
@@ -92,7 +92,7 @@ async function updateTodo(req: Request, res: Response) {
   }
 }
 //투두 삭제
-async function deleteTodo(req: Request, res: Response) {
+async function destroy(req: Request, res: Response) {
   try {
     const { year, month, date } = req.params;
     const user = isLogin(req, res);
