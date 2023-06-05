@@ -6,8 +6,10 @@ import route from "@/routes";
 import db from "@/models";
 
 const env = process.env.NODE_ENV || "development";
+const express = require("express");
 const app = Express();
 const PORT = 8000;
+var path = require("path");
 
 env === "development" &&
   (async () => {
@@ -33,8 +35,17 @@ app.use(
     saveUninitialized: true,
   })
 );
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static("public"));
+
 app.set("view engine", "ejs");
 app.use(Express.static("views"));
+
+app.use("/public", express.static(__dirname + "/public"));
+app.use("/image", express.static(__dirname + "/image"));
+
+// 정적 파일 제공
+app.set("public", __dirname + "/public");
 
 app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
