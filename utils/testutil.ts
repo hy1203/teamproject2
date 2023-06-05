@@ -50,3 +50,9 @@ export async function getFromDB<T extends {}>(
   return (await model?.findOne(condition))?.toJSON<T>();
 }
 
+export async function getAllFromDB<T extends {}>(
+  model: ModelStatic<Model<T, Omit<T, any>>>,
+  condition: FindOptions<T>
+) {
+  return (await model?.findAll(condition)).map((m) => m?.toJSON<T>());
+}
