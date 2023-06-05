@@ -1,5 +1,12 @@
 import { Express } from "express";
 import request from "supertest";
+import {
+  Attributes,
+  FindOptions,
+  CreationAttributes,
+  ModelStatic,
+  Model,
+} from "sequelize";
 import { dateSeparate } from "@/utils";
 
 export function signup(id: string, pw: string, app: Express) {
@@ -35,3 +42,11 @@ export function today() {
   const date = new Date();
   return dateSeparate(date);
 }
+
+export async function getFromDB<T extends {}>(
+  model: ModelStatic<Model<T, Omit<T, any>>>,
+  condition: FindOptions<T>
+) {
+  return (await model?.findOne(condition))?.toJSON<T>();
+}
+
