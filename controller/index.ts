@@ -1,31 +1,27 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 // import {  } from "@/utils";
-import { Controller } from '@/types';
+import { Controller } from "@/types";
 
-import login from './login';
-import signup from './signup';
-import todo from './todo';
+import login from "./login";
+import signup from "./signup";
 
-declare module 'express-session' {
-    interface SessionData {
-        user: number;
-    }
+declare module "express-session" {
+  interface SessionData {
+    user: number;
+  }
 }
 
 //index page
 async function index(req: Request, res: Response) {
-    res.render('index');
+  res.render("index");
 }
 
 export default <Controller>{
-    index,
-    //login
-    loginPage: login.get,
-    login: login.post,
-    //signup
-    signupPage: signup.get,
-    signup: signup.post,
-    //todo
-    createPage: todo.createPage,
-    createTodo: todo.createTodo,
+  index,
+  //login
+  loginPage: login.get,
+  login: login.post,
+  //signup
+  signupPage: signup.get,
+  signup: signup.post,
 };
