@@ -98,3 +98,31 @@ test("update todo", async () => {
   expect(newTodo?.content).toBe(content);
   expect(newTodo?.id).toBe(dbTodo?.id);
 });
+
+test("delete todo", async () => {
+  const todoResult = await db.todo.findOne({
+    order: [["id", "DESC"]],
+  });
+  const dbTodo = todoResult?.toJSON<Todo>();
+  if (!dbTodo) return;
+  const { year, month, date, user_id } = dbTodo;
+  const userResult = await db.user.findOne({
+    where: {
+      id: user_id,
+    },
+  });
+  if (!userResult) return;
+  const { username, password } = userResult?.toJSON<User>();
+  const loginRes = await login(username, password, app);
+  const cookie = loginRes.header["set-cookie"];
+  const res = await request(app)
+    .delete(`/todo/${year}/${month}/${date}`)
+    .set("Cookie", cookie);
+  expect(res.status).toBe(200);
+  const deleted = await db.todo.findOne({
+    where: {
+      id: dbTodo.id,
+    },
+  });
+  expect(deleted).toBeNull();
+});
