@@ -42,22 +42,21 @@ async function createTodo(req: Request, res: Response) {
 //투두조회
 async function getTodo(req: Request, res: Response) {
   try {
-    const { year, month, date } = req.params;
-    const user = isLogin(req, res);
-    if (!user) return;
+    const [year, month, date] = getDateFromUrl(req);
+    const user_id = isLogin(req, res);
+    if (!user_id) return;
     const result = await db.todo.findAll({
       where: {
         year,
         month,
         date,
-        user_id: user,
+        user_id,
       },
     });
-    console.log(result);
-    // const todo = result.map((v) => {
-    //   return v.toJSON();
-    // });
-    // res.status(200).json(todo);
+    const todos = result.map((todo) => {
+      return todo.toJSON<Todo>();
+    });
+    res.status(200).json(todos);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
