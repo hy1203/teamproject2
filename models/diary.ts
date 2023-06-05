@@ -1,7 +1,11 @@
-import { DataTypes, Sequelize } from "sequelize";
+import { DataTypes, Sequelize, Model } from "sequelize";
+import { Diary } from "@/types/models";
 
-export default function diary(sequelize: Sequelize, dataTypes: typeof DataTypes) {
-  return sequelize.define(
+export default function diary(
+  sequelize: Sequelize,
+  dataTypes: typeof DataTypes
+) {
+  return sequelize.define<Model<Diary, Omit<Diary, "id">>, Diary>(
     "diary",
     {
       id: {

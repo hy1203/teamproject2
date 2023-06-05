@@ -1,7 +1,7 @@
-import { signup, login, genIdPw, genPort } from "@/utils/testutil";
-import {dateSeparate} from "@/utils/date";
+import { signup, getLoginSession, genIdPw, genPort } from "@/utils/testutil";
+import { today, getFromDB, createFromDB } from "@/utils";
 import db from "@/models";
-import { User, Diary } from "@/types/models";
+import { Diary } from "@/types/models";
 import setPort from "@/testapp";
 import request from "supertest";
 
@@ -10,9 +10,8 @@ const app = setPort(genPort());
 test("create diary", async () => {
   const [id, pw] = genIdPw();
   await signup(id, pw, app);
-  const loginRes = await login(id, pw, app);
-  const cookie = loginRes.header["set-cookie"];
-  const [year, month, date] = dateSeparate(new Date());
+  const cookie = await getLoginSession(id, pw, app);
+  const [year, month, date] = today();
   const [title, content] = genIdPw();
   const res = await request(app)
     .post(`/diary/${year}/${month}/${date}`)
@@ -22,15 +21,12 @@ test("create diary", async () => {
       content,
       emotion: "1",
     });
-  const result = res.body as Diary;
-  expect(result?.title).toBe(title);
-  const userResult = await db.user.findOne({
-    where: {
-      username: id,
-    },
+  const resDiary = res.body as Diary;
+  expect(resDiary?.title).toBe(title);
+  const user = await getFromDB(db.user, {
+    where: { username: id },
   });
-  const user = userResult?.toJSON<User>();
-  const diaryResult = await db.diary.findOne({
+  const dbDiary = await getFromDB(db.diary, {
     where: {
       user_id: user?.id,
       year,
@@ -38,36 +34,25 @@ test("create diary", async () => {
       date,
     },
   });
-  const diary = diaryResult?.toJSON<Diary>();
-  expect(diary?.title).toBe(title);
+  expect(dbDiary?.id).toBe(resDiary?.id);
 });
 
 test("get diary", async () => {
-  const [year, month, date] = dateSeparate(new Date());
-  const diaryResult = await db.diary.findOne({
-    where: {
-      year,
-      month,
-      date,
-    },
+  const [year, month, date] = today();
+  const diary = await getFromDB(db.diary, {
+    where: { year, month, date },
   });
-  const diary = diaryResult?.toJSON<Diary>();
   const user_id = diary?.user_id;
-  const userResult = await db.user.findOne({
-    where: {
-      id: user_id,
-    },
+  const user = await getFromDB(db.user, {
+    where: { id: user_id },
   });
-  const user = userResult?.toJSON<User>();
-  const [id, pw] = [user?.username, user?.password];
-  if (!id || !pw) throw new Error("id or pw is undefined");
-  const loginRes = await login(id, pw, app);
-  const cookie = loginRes.header["set-cookie"];
+  if (!user) return;
+  const [id, pw] = [user.username, user.password];
+  const cookie = await getLoginSession(id, pw, app);
   const res = await request(app)
     .get(`/diary/${year}/${month}/${date}`)
     .set("Cookie", cookie);
-  const result = res.body.diary as Diary;
+  const result = res.body as Diary;
   expect(result?.title).toBe(diary?.title);
   expect(result?.content).toBe(diary?.content);
 });
-

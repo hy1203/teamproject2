@@ -1,12 +1,17 @@
 import { Request, Response } from "express";
 import db from "@/models";
-import { validateDate, isFuture, isLogin } from "@/utils";
-import { Controller } from "@/types";
-import { Diary } from "@/types/models";
+import {
+  validateDate,
+  isFuture,
+  isLogin,
+  today,
+  getDateFromUrl,
+  getFromDB,
+  getAllFromDB,
+  createFromDB,
+} from "@/utils";
 
-const { diary } = db;
-
-export default <Controller>{
+export default {
   get,
   gets,
   redirectGets,
@@ -16,54 +21,44 @@ export default <Controller>{
 async function redirectGets(req: Request, res: Response) {
   const user_id = isLogin(req, res);
   if (!user_id) return;
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
+  const [year, month] = today();
   res.redirect(`/diary/${year}/${month}`);
 }
 
 async function gets(req: Request, res: Response) {
-  const [year, month] = ["year", "month"]
-    .map((key) => req.params[key])
-    .map(Number);
   const user_id = isLogin(req, res);
   if (!user_id) return;
+  const [year, month] = getDateFromUrl(req);
   if (!validateDate(year, month, 1) || isFuture(year, month, 1)) {
-    res.redirect("/");
+    res.redirect("/diary/");
     return;
   }
-  const result = await diary.findAll({
+  const diaries = await getAllFromDB(db.diary, {
     where: { user_id, year, month },
   });
-  const diaries = result.map((r) => r?.toJSON<Diary>());
-  res.send({ year, month, diaries });
+  res.json(diaries);
 }
 
 async function get(req: Request, res: Response) {
   const user_id = isLogin(req, res);
   if (!user_id) return;
-  const [year, month, date] = ["year", "month", "date"]
-    .map((key) => req.params[key])
-    .map(Number);
+  const [year, month, date] = getDateFromUrl(req);
   if (!validateDate(year, month, date) || isFuture(year, month, date)) {
-    res.redirect("/");
+    res.redirect("/diary/");
     return;
   }
-  const result = await diary.findOne({
+  const diary = await getFromDB(db.diary, {
     where: { user_id, year, month, date },
   });
-  const diaries = result?.toJSON<Diary>();
-  res.send({ diary: diaries });
+  res.json(diary);
 }
 
 async function post(req: Request, res: Response) {
-  const [year, month, date] = ["year", "month", "date"]
-    .map((key) => req.params[key])
-    .map(Number);
+  const [year, month, date] = getDateFromUrl(req);
   const { title, content } = req.body;
   const user_id = isLogin(req, res);
   if (!user_id) return;
-  const [queryResult, isCreated] = await diary.upsert({
+  const diary = await createFromDB(db.diary, {
     user_id,
     year,
     month,
@@ -71,10 +66,9 @@ async function post(req: Request, res: Response) {
     title,
     content,
   });
-  const result = queryResult?.toJSON<Diary>();
-  if (isCreated === null) {
-    res.status(500).send("error");
+  if (!diary) {
+    res.status(400).send("잘못된 요청입니다.");
     return;
   }
-  res.send({ ...result, isCreated });
+  res.json(diary);
 }
