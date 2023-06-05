@@ -1,8 +1,11 @@
-import { DataTypes, Sequelize } from 'sequelize';
+import { DataTypes, Sequelize } from "sequelize";
 
-export default function comment(sequelize: Sequelize, dataTypes: typeof DataTypes) {
+export default function comment(
+  sequelize: Sequelize,
+  dataTypes: typeof DataTypes
+) {
   return sequelize.define(
-    'comment',
+    "comment",
     {
       id: {
         type: dataTypes.INTEGER,
@@ -11,20 +14,28 @@ export default function comment(sequelize: Sequelize, dataTypes: typeof DataType
         allowNull: false,
       },
       content: {
-        type: dataTypes.STRING(255),
+        type: dataTypes.TEXT,
         allowNull: false,
+      },
+      todo_id: {
+        type: dataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "todo",
+          key: "id",
+        },
       },
       emotion_id: {
         type: dataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'emotion',
-          key: 'id',
-        }
+          model: "emotion",
+          key: "id",
+        },
       },
     },
     {
-      tableName: 'comment',
+      tableName: "comment",
       freezeTableName: true,
       timestamps: false,
     }
