@@ -2,7 +2,7 @@ import { Router } from "express";
 import controller from "@/controller";
 import diary from "./diary";
 import todo from "./todo";
-import calendar from "@/controller/todocalendarController";
+import calendar from "@/controller/calendar";
 
 const route = Router();
 //index route
