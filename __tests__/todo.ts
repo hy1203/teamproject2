@@ -1,60 +1,44 @@
-import { signup, login, genIdPw, genPort, today } from "@/utils/testutil";
+import request from "supertest";
+import { today, getFromDB, getAllFromDB, createFromDB } from "@/utils";
+import { signup, getLoginSession, genIdPw, genPort } from "@/utils/testutil";
 import db from "@/models";
 import { User, Todo } from "@/types/models";
 import setPort from "@/testapp";
-import request from "supertest";
+import { get } from "http";
 
 const app = setPort(genPort());
 
 test("create todo", async () => {
   const [id, pw] = genIdPw();
   await signup(id, pw, app);
-  const loginRes = await login(id, pw, app);
-  const cookie = loginRes.header["set-cookie"];
+  const cookie = await getLoginSession(id, pw, app);
   const content = genIdPw().toString();
   const [year, month, date] = today();
   const res = await request(app)
     .post(`/todo/${year}/${month}/${date}`)
     .set("Cookie", cookie)
-    .send({
-      content,
-      year,
-      month,
-      date,
-    });
-  const result = res.body as Todo;
-  expect(result?.content).toBe(content);
-  const userResult = await db.user.findOne({
-    where: {
-      username: id,
-    },
+    .send({ content, year, month, date });
+  const resTodo = res.body as Todo;
+  expect(resTodo?.content).toBe(content);
+  const user = await getFromDB(db.user, {
+    where: { username: id },
   });
-  const user = userResult?.toJSON<User>();
-  const todoResult = await db.todo.findOne({
-    where: {
-      user_id: user?.id,
-    },
+  const dbTodo = await getFromDB(db.todo, {
+    where: { user_id: user?.id },
   });
-  const todo = todoResult?.toJSON<Todo>();
-  expect(todo?.id).toBe(result?.id);
+  expect(dbTodo?.id).toBe(resTodo?.id);
 });
 
 test("get todo", async () => {
-  const todoResult = await db.todo.findOne({
-    order: [["id", "DESC"]],
-  });
-  const dbTodo = todoResult?.toJSON<Todo>();
+  const dbTodo = await getFromDB(db.todo, {});
   if (!dbTodo) return;
   const { year, month, date, user_id } = dbTodo;
-  const userResult = await db.user.findOne({
-    where: {
-      id: user_id,
-    },
+  const user = await getFromDB(db.user, {
+    where: { id: user_id },
   });
-  if (!userResult) return;
-  const { username, password } = userResult?.toJSON<User>();
-  const loginRes = await login(username, password, app);
-  const cookie = loginRes.header["set-cookie"];
+  if (!user) return;
+  const { username, password } = user;
+  const cookie = await getLoginSession(username, password, app);
   const res = await request(app)
     .get(`/todo/${year}/${month}/${date}`)
     .set("Cookie", cookie);
@@ -66,63 +50,44 @@ test("get todo", async () => {
 });
 
 test("update todo", async () => {
-  const todoResult = await db.todo.findOne({
-    order: [["id", "DESC"]],
-  });
-  const dbTodo = todoResult?.toJSON<Todo>();
+  const dbTodo = await getFromDB(db.todo, {});
   if (!dbTodo) return;
   const { year, month, date, user_id } = dbTodo;
-  const userResult = await db.user.findOne({
-    where: {
-      id: user_id,
-    },
+  const user = await getFromDB(db.user, {
+    where: { id: user_id },
   });
-  if (!userResult) return;
-  const { username, password } = userResult?.toJSON<User>();
-  const loginRes = await login(username, password, app);
-  const cookie = loginRes.header["set-cookie"];
+  if (!user) return;
+  const { username, password } = user;
+  const cookie = await getLoginSession(username, password, app);
   const content = genIdPw().toString();
   const res = await request(app)
     .put(`/todo/${year}/${month}/${date}`)
     .set("Cookie", cookie)
-    .send({
-      content,
-    });
+    .send({ content });
   expect(res.status).toBe(200);
-  const newTodoResult = await db.todo.findOne({
-    where: {
-      id: dbTodo.id,
-    },
+  const newTodo = await getFromDB(db.todo, {
+    where: { id: dbTodo.id },
   });
-  const newTodo = newTodoResult?.toJSON<Todo>();
   expect(newTodo?.content).toBe(content);
   expect(newTodo?.id).toBe(dbTodo?.id);
 });
 
 test("delete todo", async () => {
-  const todoResult = await db.todo.findOne({
-    order: [["id", "DESC"]],
-  });
-  const dbTodo = todoResult?.toJSON<Todo>();
+  const dbTodo = await getFromDB(db.todo, {});
   if (!dbTodo) return;
   const { year, month, date, user_id } = dbTodo;
-  const userResult = await db.user.findOne({
-    where: {
-      id: user_id,
-    },
+  const user = await getFromDB(db.user, {
+    where: { id: user_id },
   });
-  if (!userResult) return;
-  const { username, password } = userResult?.toJSON<User>();
-  const loginRes = await login(username, password, app);
-  const cookie = loginRes.header["set-cookie"];
+  if (!user) return;
+  const { username, password } = user;
+  const cookie = await getLoginSession(username, password, app);
   const res = await request(app)
     .delete(`/todo/${year}/${month}/${date}`)
     .set("Cookie", cookie);
   expect(res.status).toBe(200);
   const deleted = await db.todo.findOne({
-    where: {
-      id: dbTodo.id,
-    },
+    where: {id: dbTodo.id,},
   });
   expect(deleted).toBeNull();
 });
