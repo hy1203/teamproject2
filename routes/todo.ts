@@ -2,10 +2,10 @@ import { Router } from "express";
 import todo from "@/controller/todo";
 
 const route = Router();
-route.get("/:year/:month/:day", todo.createPage);
-route.post("/:year/:month/:day", todo.createTodo);
-route.get("/:year/:month/:day", todo.getTodo);
-route.put("/:year/:month/:day", todo.updateTodo);
-route.delete("/:year/:month/:day", todo.deleteTodo);
+route.get("/:year/:month/:date", todo.createPage);
+route.post("/:year/:month/:date", todo.createTodo);
+route.get("/:year/:month/:date", todo.getTodo);
+route.put("/:year/:month/:date", todo.updateTodo);
+route.delete("/:year/:month/:date", todo.deleteTodo);
 
 export default route;

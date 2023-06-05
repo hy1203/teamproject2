@@ -10,7 +10,7 @@ export interface Diary {
   user_id: number;
   year: number;
   month: number;
-  day: number;
+  date: number;
 }
 
 export interface Todo {
@@ -19,7 +19,7 @@ export interface Todo {
   content: string;
   year: number;
   month: number;
-  day: number;
+  date: number;
 }
 
 export interface Emotion {

@@ -23,7 +23,6 @@ test("create todo", async () => {
       date,
     });
   const result = res.body as Todo;
-  console.log(result);
   expect(result?.content).toBe(content);
   const userResult = await db.user.findOne({
     where: {
@@ -33,7 +32,7 @@ test("create todo", async () => {
   const user = userResult?.toJSON<User>();
   const todoResult = await db.todo.findOne({
     where: {
-      user_id: user?.id, 
+      user_id: user?.id,
     },
   });
   const todo = todoResult?.toJSON<Todo>();

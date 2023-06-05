@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import db from "@/models";
-import { isLogin } from "@/utils";
+import { isLogin, validateDate, getDateFromUrl } from "@/utils";
 import { Controller } from "@/types";
 import { Todo } from "@/types/models";
 
@@ -12,19 +12,29 @@ export default <Controller>{
   deleteTodo,
 };
 
-let ToDos: Todo[] = [];
 //페이지 생성
 async function createPage(req: Request, res: Response) {
   res.render("todo");
 }
 //투두 생성
 async function createTodo(req: Request, res: Response) {
+  const user_id = isLogin(req, res);
+  if (!user_id) return;
+  const [year, month, date] = getDateFromUrl(req);
+  if (!validateDate(year, month, date)) {
+    return res.status(400).json({ message: "날짜 형식이 잘못됨." });
+  }
+  const { content } = req.body;
   try {
-    await db.todo.create({
-      date: new Date(),
-      content: req.body.content,
+    const result = await db.todo.create({
+      user_id,
+      year,
+      month,
+      date,
+      content,
     });
-    res.send({ result: true });
+    const todo = result.toJSON<Todo>();
+    res.json(todo);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }

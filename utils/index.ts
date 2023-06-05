@@ -1,4 +1,4 @@
-import { validateDate, isFuture, dateSeparate } from "./date";
+import { validateDate, isFuture, dateSeparate, getDateFromUrl } from "./date";
 import isLogin from "./login";
 
 export {
@@ -6,4 +6,5 @@ export {
   validateDate,
   isFuture,
   isLogin,
+  getDateFromUrl,
 };
