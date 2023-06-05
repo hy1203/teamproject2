@@ -4,8 +4,6 @@ import { isLogin } from "@/utils";
 import { Controller } from "@/types";
 import { Todo } from "@/types/models";
 
-const { todo } = db;
-
 export default <Controller>{
   createPage,
   createTodo,
