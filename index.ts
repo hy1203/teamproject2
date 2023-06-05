@@ -3,11 +3,27 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import route from '@/routes';
 import db from '@/models';
+import process from "process";
 
+const env = process.env.NODE_ENV || "development";
 const app = Express();
 const PORT = 8000;
 
-db.sequelize.sync();
+env === "development" &&
+  (async () => {
+    // if db exists, drop it and create new one.
+    let schemas = await db.sequelize.showAllSchemas({});
+    console.log("schemas", schemas);
+    ["comment", "todo", "diary", "user", "emotion"].forEach(async (table) => {
+      await db.sequelize.dropSchema(table, {});
+    });
+    console.log("drop schema");
+    schemas = await db.sequelize.showAllSchemas({});
+    console.log("schemas", schemas);
+    await db.sequelize.sync();
+    schemas = await db.sequelize.showAllSchemas({});
+    console.log("schemas", schemas);
+  })();
 
 app.use(cookieParser());
 app.use(
