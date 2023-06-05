@@ -103,46 +103,39 @@
 
 ```mermaid
 erDiagram
-    USER {
-        int id
-        string username
-        string password
-    }
-    SKY {  
-        int id
-        date date
-        int user_id
-        text content
-    }
-    STAR {
-        int id
-        int sky_id
-        string content
-        int howMuch
-    }
-    CLOUD {
-        int id
-        int sky_or_star_id
-        int emotion_id
-        string content
-        string emotion
-        string[] image_path
-    }
-    EMOTION{
-        int id
-        string feel
-        string image_path
-    }
-    IMAGE {
-        int comment_id
-        string path
-    }
-    USER ||--o{ SKY : write
-    CLOUD |o--o{ IMAGE : append
-    SKY ||--|{ STAR : doIt
-    SKY ||--|| CLOUD : howAboutToday
-    STAR ||--|| CLOUD : howAbout
-    CLOUD }o--|| EMOTION : feel
-    EMOTION ||--|| IMAGE : append
-
+  USER {
+    int id
+    string username
+    string password
+  }
+  DIARY {
+    int id
+    int year
+    int month
+    int date
+    int user_id
+    text content
+  }
+  TODO {
+    int id
+    int year
+    int month
+    int date
+    string content
+  }
+  COMMENT {
+    int id
+    int todo_id
+    int emotion_id
+    string content
+  }
+  EMOTION {
+    int id
+    string feel
+  }
+  USER ||--o{ DIARY : write
+  USER ||--o{ TODO : doIt
+  EMOTION ||--o{ DIARY : feel
+  EMOTION ||--o{ COMMENT : feel
+  TODO ||--|| COMMENT : howAbout
 ```
