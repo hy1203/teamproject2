@@ -159,9 +159,6 @@ async function updateTodoComment(req: Request, res: Response) {
       },
       {
         where: {
-          year,
-          month,
-          date,
           todo_id: todo?.id,
         },
       }
@@ -190,9 +187,6 @@ async function deleteTodoComment(req: Request, res: Response) {
 
     const comment = await db.comment.destroy({
       where: {
-        year,
-        month,
-        date,
         todo_id: todo?.id,
       },
     });
