@@ -2,7 +2,6 @@ import { Router } from "express";
 import controller from "@/controller";
 import diary from "./diary";
 import todo from "./todo";
-import calendar from "@/controller/calendar";
 
 const route = Router();
 //index route
@@ -24,6 +23,6 @@ route.use("/todo", todo);
 route.use("/diary", diary);
 
 // todocalendar route
-route.get("/todocalendar", calendar.get);
+route.get("/todocalendar", controller.todoCalendar);
 
 export default route;
