@@ -1,9 +1,9 @@
-import Express from 'express';
-import session from 'express-session';
-import cookieParser from 'cookie-parser';
-import route from '@/routes';
-import db from '@/models';
 import process from "process";
+import Express from "express";
+import session from "express-session";
+import cookieParser from "cookie-parser";
+import route from "@/routes";
+import db from "@/models";
 
 const env = process.env.NODE_ENV || "development";
 const app = Express();
@@ -27,24 +27,24 @@ env === "development" &&
 
 app.use(cookieParser());
 app.use(
-    session({
-        secret: 'secret',
-        resave: false,
-        saveUninitialized: true,
-    })
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: true,
+  })
 );
-app.set('view engine', 'ejs');
-app.use(Express.static('views'));
+app.set("view engine", "ejs");
+app.use(Express.static("views"));
 
 app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
 
-app.use('/', route);
+app.use("/", route);
 
-app.get('*', (req, res) => {
-    res.status(404).render('404');
+app.get("*", (req, res) => {
+  res.status(404).render("404");
 });
 
 app.listen(PORT, () => {
-    console.log(`http://localhost:${PORT}`);
+  console.log(`http://localhost:${PORT}`);
 });
