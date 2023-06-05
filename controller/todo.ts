@@ -10,8 +10,6 @@ export default {
   deleteTodo,
 };
 
-//날짜 확인해서 이상한날짜면 돌리고, 또 문제 없으면 post로 넘기기,
-
 type Todo = {
   id: number;
   date: string;
@@ -19,22 +17,23 @@ type Todo = {
 };
 
 let ToDos: Todo[] = [];
-
-// 페이지 생성
+//페이지 생성
 async function createPage(req: Request, res: Response) {
   res.render("todo");
 }
-
-// 투두 생성
+//투두 생성
 async function createTodo(req: Request, res: Response) {
-  await db.todo.create({
-    date: new Date(),
-    content: req.body.content,
-  });
-  res.send({ result: true });
+  try {
+    await db.todo.create({
+      date: new Date(),
+      content: req.body.content,
+    });
+    res.send({ result: true });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
 }
-
-//투두 조회
+//투두조회
 async function getTodo(req: Request, res: Response) {
   try {
     const { year, month, date } = req.params;
@@ -57,22 +56,18 @@ async function getTodo(req: Request, res: Response) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
-
-// 투두 수정
+//투두 수정
 async function updateTodo(req: Request, res: Response) {
   try {
     const { year, month, date } = req.params;
     const user = isLogin(req, res);
     if (!user) return;
 
-    // 수정
     const result = await db.todo.update(
       {
-        // content 필드를 수정
         content: req.body.content,
       },
       {
-        // year, month, date, user_id가 일치하는 투두를 수정
         where: {
           year,
           month,
@@ -91,7 +86,6 @@ async function updateTodo(req: Request, res: Response) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
-
 //투두 삭제
 async function deleteTodo(req: Request, res: Response) {
   try {
@@ -99,9 +93,8 @@ async function deleteTodo(req: Request, res: Response) {
     const user = isLogin(req, res);
     if (!user) return;
 
-    // 삭제
     const result = await db.todo.destroy({
-      // year, month, date, user_id가 일치하는 투두를 삭제
+      //year, month, date, user_id가 일치하는 todo를 삭제
       where: {
         year,
         month,
