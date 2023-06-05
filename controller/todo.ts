@@ -1,19 +1,17 @@
 import { Request, Response } from "express";
 import db from "@/models";
 import { isLogin } from "@/utils";
+import { Controller } from "@/types";
+import { Todo } from "@/types/models";
 
-export default {
+const { todo } = db;
+
+export default <Controller>{
   createPage,
   createTodo,
   getTodo,
   updateTodo,
   deleteTodo,
-};
-
-type Todo = {
-  id: number;
-  date: string;
-  content: string;
 };
 
 let ToDos: Todo[] = [];
@@ -47,11 +45,11 @@ async function getTodo(req: Request, res: Response) {
         user_id: user,
       },
     });
-
-    const todo = result.map((v) => {
-      return v.toJSON();
-    });
-    res.status(200).json(todo);
+    console.log(result);
+    // const todo = result.map((v) => {
+    //   return v.toJSON();
+    // });
+    // res.status(200).json(todo);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
