@@ -25,10 +25,4 @@ export default <Controller>{
   //signup
   signupPage: signup.get,
   signup: signup.post,
-  //   //todo
-  //   createPage: todo.createPage,
-  //   createTodo: todo.createTodo,
-  //   getTodo: todo.getTodo,
-  //   updateTodo: todo.updateTodo,
-  //   deleteTodo: todo.deleteTodo,
 };
