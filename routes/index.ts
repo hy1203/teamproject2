@@ -4,22 +4,22 @@ import diary from "./diary";
 import todo from "./todo";
 
 const route = Router();
-//index route
+// index route
 route.get("/", controller.index);
 
-//login route
+// login route
 route.get("/login", controller.loginPage);
 route.post("/login", controller.login);
 
-//signup route
+// signup route
 route.get("/signup", controller.signupPage);
 route.post("/signup", controller.signup);
 
-//todo route
+// todo route
 route.use("/todo", todo);
 
 
-//diary route
+// diary route
 route.use("/diary", diary);
 
 // todocalendar route
