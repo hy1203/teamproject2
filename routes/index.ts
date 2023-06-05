@@ -2,11 +2,7 @@ import { Router } from "express";
 import controller from "@/controller";
 import diary from "./diary";
 import todo from "./todo";
-
-
-import { TodoCalendarController } from "@/controller/todocalendarController";
-
-const todocalendarController = new TodoCalendarController();
+import calendar from "@/controller/todocalendarController";
 
 const route = Router();
 //index route
@@ -27,13 +23,7 @@ route.use("/todo", todo);
 //diary route
 route.use("/diary", diary);
 
-route.get(
-  "/todocalendar",
-  todocalendarController.getTodoCalendar.bind(todocalendarController)
-);
-
-route.get("/todocalendar", function (req, res) {
-  res.render("todocalendar");
-});
+// todocalendar route
+route.get("/todocalendar", calendar.get);
 
 export default route;
