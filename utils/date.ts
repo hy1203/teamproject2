@@ -35,3 +35,8 @@ export function getDateFromUrl(req: Request) {
   return ["year", "month", "date"]
     .map((key) => Number(req.params[key]))
 }
+
+export function today() {
+  const date = new Date();
+  return dateSeparate(date);
+}
