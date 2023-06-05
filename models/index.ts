@@ -18,48 +18,6 @@ const comment = Comment(sequelize, DataTypes);
 const emotion = Emotion(sequelize, DataTypes);
 const diary = Diary(sequelize, DataTypes);
 
-// association
-
-// USER ||--o{ DIARY
-user.hasMany(diary, {
-    foreignKey: 'diaries',
-    sourceKey: 'id',
-    onDelete: 'cascade',
-});
-diary.belongsTo(user);
-
-// USER ||--o{ TODO
-user.hasMany(todo, {
-    foreignKey: 'todos',
-    sourceKey: 'id',
-    onDelete: 'cascade',
-});
-todo.belongsTo(user);
-
-// DIARY }o--|| EMOTION
-emotion.hasMany(diary, {
-    foreignKey: 'emotion_id',
-    sourceKey: 'id',
-    onDelete: 'cascade',
-});
-diary.belongsTo(emotion);
-
-// TODO ||--|| COMMENT
-todo.hasOne(comment, {
-    foreignKey: 'todo_id',
-    sourceKey: 'id',
-    onDelete: 'cascade',
-});
-comment.belongsTo(todo);
-
-// COMMENT }o--|| EMOTION
-emotion.hasMany(comment, {
-    foreignKey: 'emotion_id',
-    sourceKey: 'id',
-    onDelete: 'cascade',
-});
-comment.belongsTo(emotion);
-
 interface DB {
     sequelize: Sequelize;
     Sequelize: typeof Sequelize;

@@ -1,7 +1,8 @@
 import { Router } from "express";
 import controller from "@/controller";
 import diary from "./diary";
-import express from "express";
+import todo from "./todo";
+
 
 import { TodoCalendarController } from "../controller/todocalendarController";
 
@@ -21,8 +22,8 @@ route.get("/signup", controller.signupPage);
 route.post("/signup", controller.signup);
 
 //todo route
-route.get("/todo", controller.createPage);
-route.post("/todo", controller.createTodo);
+route.use("/todo", todo);
+
 
 //diary route
 route.use("/diary", diary);

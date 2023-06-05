@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 import db from "@/models";
-import { validateDate, isFuture, isLogin } from '@/utils';
-import { Controller } from '@/types';
-import { Diary } from '@/types/models';
+import { validateDate, isFuture, isLogin } from "@/utils";
+import { Controller } from "@/types";
+import { Diary } from "@/types/models";
 
 const { diary } = db;
 
@@ -36,7 +36,6 @@ async function gets(req: Request, res: Response) {
     where: { user_id, year, month },
   });
   const diaries = result.map((r) => r?.toJSON<Diary>());
-  // res.render("diary", { year, month, diaries });
   res.send({ year, month, diaries });
 }
 
@@ -54,16 +53,28 @@ async function get(req: Request, res: Response) {
     where: { user_id, year, month, date },
   });
   const diaries = result?.toJSON<Diary>();
-  res.render("diary", { year, month, date, diaries });
+  res.send({ diary: diaries });
 }
 
 async function post(req: Request, res: Response) {
   const [year, month, date] = ["year", "month", "date"]
     .map((key) => req.params[key])
     .map(Number);
-  const { content } = req.body;
+  const { title, content } = req.body;
   const user_id = isLogin(req, res);
   if (!user_id) return;
-  await diary.upsert({ user_id, year, month, date, content });
-  res.redirect(`/diary/${year}/${month}/${date}`);
+  const [queryResult, isCreated] = await diary.upsert({
+    user_id,
+    year,
+    month,
+    date,
+    title,
+    content,
+  });
+  const result = queryResult?.toJSON<Diary>();
+  if (isCreated === null) {
+    res.status(500).send("error");
+    return;
+  }
+  res.send({ ...result, isCreated });
 }
