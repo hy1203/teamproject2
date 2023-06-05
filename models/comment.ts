@@ -1,10 +1,11 @@
-import { DataTypes, Sequelize } from "sequelize";
+import { DataTypes, Sequelize, Model } from "sequelize";
+import { Comment } from "@/types/models";
 
 export default function comment(
   sequelize: Sequelize,
   dataTypes: typeof DataTypes
 ) {
-  return sequelize.define(
+  return sequelize.define<Model<Comment, Omit<Comment, "id">>, Comment>(
     "comment",
     {
       id: {
