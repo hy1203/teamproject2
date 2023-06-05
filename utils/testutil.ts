@@ -1,5 +1,6 @@
 import { Express } from "express";
 import request from "supertest";
+import {dateSeparate} from "@/utils";
 
 export function signup(id: string, pw: string, app: Express) {
   return request(app).post("/signup").send({
@@ -21,4 +22,9 @@ export function genIdPw() {
 
 export function genPort() {
   return Math.floor(Math.random() * 10000) + 8000;
+}
+
+export function today() {
+  const date = new Date();
+  return dateSeparate(date);
 }

@@ -10,15 +10,16 @@ export interface Diary {
   user_id: number;
   year: number;
   month: number;
-  day: number;
+  date: number;
 }
 
 export interface Todo {
   id: number;
+  user_id: number;
   content: string;
   year: number;
   month: number;
-  day: number;
+  date: number;
 }
 
 export interface Emotion {
