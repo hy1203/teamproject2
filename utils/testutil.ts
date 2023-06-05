@@ -1,6 +1,6 @@
 import { Express } from "express";
 import request from "supertest";
-import {dateSeparate} from "@/utils";
+import { dateSeparate } from "@/utils";
 
 export function signup(id: string, pw: string, app: Express) {
   return request(app).post("/signup").send({
@@ -16,8 +16,15 @@ export function login(id: string, pw: string, app: Express) {
   });
 }
 
+export async function getLoginSession(id: string, pw: string, app: Express) {
+  return (await login(id, pw, app)).header["set-cookie"];
+}
+
 export function genIdPw() {
-  return [Math.random().toString(36).substring(2, 8), Math.random().toString(36).substring(2, 8)];
+  return [
+    Math.random().toString(36).substring(2, 8),
+    Math.random().toString(36).substring(2, 8),
+  ];
 }
 
 export function genPort() {
