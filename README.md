@@ -103,42 +103,39 @@
 
 ```mermaid
 erDiagram
-    USER {
-        int id
-        string username
-        string password
-    }
-    DIARY {  
-        int id
-        int year
-        int month
-        int date
-        int user_id
-        text content
-    }
-    TODO {
-        int id
-        date date
-        string content
-    }
-    COMMENT {
-        int id
-        int emotion_id
-        string content
-    }
-    EMOTION {
-        int id
-        string feel
-    }
-    IMAGE {
-        int comment_id
-        string path
-    }
-    USER ||--o{ DIARY : write
-    COMMENT |o--o{ IMAGE : append
-    DIARY ||--|{ TODO : doIt
-    DIARY ||--|| COMMENT : howAboutToday
-    TODO ||--|| COMMENT : howAbout
-    COMMENT }o--|| EMOTION : feel
-    EMOTION ||--|| IMAGE : append
+  USER {
+    int id
+    string username
+    string password
+  }
+  DIARY {
+    int id
+    int year
+    int month
+    int date
+    int user_id
+    text content
+  }
+  TODO {
+    int id
+    int year
+    int month
+    int date
+    string content
+  }
+  COMMENT {
+    int id
+    int todo_id
+    int emotion_id
+    string content
+  }
+  EMOTION {
+    int id
+    string feel
+  }
+  USER ||--o{ DIARY : write
+  USER ||--o{ TODO : doIt
+  EMOTION ||--o{ DIARY : feel
+  EMOTION ||--o{ COMMENT : feel
+  TODO ||--|| COMMENT : howAbout
 ```
