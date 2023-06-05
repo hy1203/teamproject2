@@ -38,3 +38,29 @@ test("create todo", async () => {
   const todo = todoResult?.toJSON<Todo>();
   expect(todo?.id).toBe(result?.id);
 });
+
+test("get todo", async () => {
+  const todoResult = await db.todo.findOne({
+    order: [["id", "DESC"]],
+  });
+  const dbTodo = todoResult?.toJSON<Todo>();
+  if (!dbTodo) return;
+  const { year, month, date, user_id } = dbTodo;
+  const userResult = await db.user.findOne({
+    where: {
+      id: user_id,
+    },
+  });
+  if (!userResult) return;
+  const { username, password } = userResult?.toJSON<User>();
+  const loginRes = await login(username, password, app);
+  const cookie = loginRes.header["set-cookie"];
+  const res = await request(app)
+    .get(`/todo/${year}/${month}/${date}`)
+    .set("Cookie", cookie);
+  const todos = res.body as Todo[];
+  expect(todos.length).toBeGreaterThan(0);
+  const resTodo = todos.find((todo) => todo.id === dbTodo.id);
+  expect(resTodo?.id).toBe(dbTodo?.id);
+  expect(resTodo?.content).toBe(dbTodo?.content);
+});
