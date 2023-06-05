@@ -8,12 +8,28 @@ export default function todo(sequelize: Sequelize, dataTypes: typeof DataTypes) 
       autoIncrement: true,
       allowNull: false,
     },
-    date: {
-      type: dataTypes.DATE,
+    content: {
+      type: dataTypes.TEXT,
       allowNull: false,
     },
-    content: {
-      type: dataTypes.STRING(255),
+    year: {
+      type: dataTypes.INTEGER,
+      allowNull: false,
+    },
+    month: {
+      type: dataTypes.INTEGER,
+      allowNull: false,
+    },
+    date: {
+      type: dataTypes.INTEGER,
+      allowNull: false,
+    },
+    user_id: {
+      type: dataTypes.INTEGER,
+      references: {
+        model: 'user',
+        key: 'id',
+      },
       allowNull: false,
     },
   }, {
