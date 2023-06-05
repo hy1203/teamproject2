@@ -26,7 +26,7 @@ CREATE TABLE TODO (
     id INT AUTO_INCREMENT PRIMARY KEY,
     date DATE NOT NULL,
     content VARCHAR(255) NOT NULL,
-    user_id INT,
+    user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES USER(id)
 );
 
