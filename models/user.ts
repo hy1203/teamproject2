@@ -1,7 +1,7 @@
 import { DataTypes, Sequelize } from 'sequelize';
 
 export default function User(sequelize: Sequelize, dataTypes: typeof DataTypes) {
-    const User = sequelize.define(
+    return sequelize.define(
         'user',
         {
             id: {
@@ -25,6 +25,5 @@ export default function User(sequelize: Sequelize, dataTypes: typeof DataTypes) 
             timestamps: false,
         }
     );
-
-    return User;
 }
+
