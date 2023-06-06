@@ -14,16 +14,44 @@ import {
 export default {
   get,
   gets,
-  redirectGets,
   post,
+  redirectMonthly,
+  monthly,
+  daily,
 };
 
-async function redirectGets(req: Request, res: Response) {
+// page
+
+function redirectMonthly(req: Request, res: Response) {
   const user_id = isLogin(req, res);
   if (!user_id) return;
   const [year, month] = today();
   res.redirect(`/diary/${year}/${month}`);
 }
+
+function monthly(req: Request, res: Response) {
+  const user_id = isLogin(req, res);
+  if (!user_id) return;
+  const [year, month] = getDateFromUrl(req);
+  if (!validateDate(year, month, 1) || isFuture(year, month, 1)) {
+    res.redirect("/diary/");
+    return;
+  }
+  res.render("diaries", { year, month });
+}
+
+function daily(req: Request, res: Response) {
+  const user_id = isLogin(req, res);
+  if (!user_id) return;
+  const [year, month, date] = getDateFromUrl(req);
+  if (!validateDate(year, month, date) || isFuture(year, month, date)) {
+    res.redirect("/diary/");
+    return;
+  }
+  res.render("diary", { year, month, date });
+}
+
+// api
 
 async function gets(req: Request, res: Response) {
   const user_id = isLogin(req, res);
