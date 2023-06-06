@@ -6,6 +6,8 @@ import { Comment } from "@/types/models";
 import setPort from "@/testapp";
 
 const app = setPort(genPort());
+const url = (year: number, month: number, date: number, todo_id: number) =>
+  `/api/todo/${year}/${month}/${date}/${todo_id}`;
 
 test("create comment", async () => {
   // 코멘트를 생성할 임의의 투두 불러오기
@@ -23,7 +25,7 @@ test("create comment", async () => {
   const content = genIdPw().toString();
   // API로 코멘트 생성
   const res = await request(app)
-    .post(`/todo/${year}/${month}/${date}/${todo_id}`)
+    .post(url(year, month, date, todo_id))
     .set("Cookie", cookie)
     .send({ todo_id, content });
   // 생성된 코멘트를 받아옴(DB에서 ID로 불러와 다시 비교해야 하기 때문에 필요)
@@ -56,7 +58,7 @@ test("get comment", async () => {
   const cookie = await getLoginSession(username, password, app);
   // API로 코멘트를 불러옴
   const res = await request(app)
-    .get(`/todo/${year}/${month}/${date}/${todo_id}`)
+    .get(url(year, month, date, todo_id))
     .set("Cookie", cookie);
   const resComment = res.body as Comment;
   // 응답받은 코멘트와 생성된 코멘트가 일치하는지 확인
