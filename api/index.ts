@@ -1,8 +1,8 @@
 import { Router } from 'express';
-
-import diary from '@/controller/diary';
+import diary from './diary';
 
 const route = Router();
-route.get("/", diary.redirectGets);
+
+route.use('/diary', diary);
 
 export default route;
