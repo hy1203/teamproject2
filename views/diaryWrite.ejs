@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>write diary</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="diary.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Hi+Melody&family=Lora&family=Noto+Sans+KR:wght@100;300;400;700;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="main">
+      <header>
+        <div class="top">
+          <div></div>
+          <div class="date">6월 5일</div>
+          <a href="/" class="close"></a>
+        </div>
+      </header>
+      <hr />
+      <form
+        name="feeling_form"
+        class="form_feeling"
+        enctype="multipart/form-data"
+      >
+        <fieldset>
+          <div class="feelings">오늘의 기분</div>
+          <br />
+          <div class="top">
+            <input type="radio" name="feeling" id="happy" />
+            <label for="happy"
+              ><img
+                src="/Sunday/1.png"
+                width="100px"
+                height="100px"
+                alt="happy"
+            /></label>
+            <input type="radio" name="feeling" id="good" />
+            <label for="good"
+              ><img src="/Sunday/2.png" width="100px" height="100px" alt="good"
+            /></label>
+            <input type="radio" name="feeling" id="soso" />
+            <label for="soso"
+              ><img src="/Sunday/3.png" width="100px" height="100px" alt="soso"
+            /></label>
+            <input type="radio" name="feeling" id="not_bad" />
+            <label for="not_bad"
+              ><img
+                src="/Sunday/4.png"
+                width="100px"
+                height="100px"
+                alt="notbad"
+            /></label>
+            <input type="radio" name="feeling" id="bad" />
+            <label for="bad"
+              ><img src="/Sunday/5.png" width="100px" height="100px" alt="bad"
+            /></label>
+          </div>
+        </fieldset>
+        <br />
+        <fieldset>
+          <div class="feelings">만난 사람</div>
+          <br />
+          <div class="top">
+            <input type="radio" name="meet" id="friend" value="친구" />
+            <label for="friend"
+              ><img
+                src="/Sunday/6.png"
+                width="130px"
+                height="130px"
+                alt="bad"
+              />
+              <p>친구</p>
+            </label>
+            <input type="radio" name="meet" id="couple" value="연인" />
+            <label for="couple"
+              ><img
+                src="/Sunday/7.png"
+                width="130px"
+                height="130px"
+                alt="bad"
+              />
+              <p>연인</p>
+            </label>
+            <input type="radio" name="meet" id="family" value="가족" />
+            <label for="family"
+              ><img
+                src="/Sunday/8.png"
+                width="130px"
+                height="130px"
+                alt="bad"
+              />
+              <p>가족</p></label
+            >
+            <input type="radio" name="meet" id="ac" value="지인" />
+            <label for="ac"
+              ><img
+                src="/Sunday/9.png"
+                width="130px"
+                height="130px"
+                alt="bad"
+              />
+              <p>지인</p></label
+            >
+            <input type="radio" name="meet" id="no" value="안만남" />
+            <label for="no"
+              ><img
+                src="/Sunday/10.png"
+                width="130px"
+                height="130px"
+                alt="bad"
+              />
+              <p>안만남</p></label
+            >
+          </div>
+        </fieldset>
+        <br />
+        <fieldset>
+          <div class="feelings">오늘의 사진</div>
+          <br />
+          <div class="img_upload">
+            <input type="file" name="uploadfile" id="upload" multiple />
+            <br />
+            <button type="button" onclick="fileUpload()" class="uploadBtn">
+              업로드
+            </button>
+          </div>
+          <br />
+          <img id="img" src="" width="200" />
+        </fieldset>
+        <br />
+        <fieldset>
+          <div class="feelings">오늘의 일기</div>
+          <br />
+          <div class="txt">
+            <textarea
+              id="txtArea"
+              name="diray_write"
+              class="txt_diary"
+            ></textarea>
+          </div>
+        </fieldset>
+        <br />
+        <div class="btn_box">
+          <button class="btn" type="button" onclick="send_diary">
+            작성 완료
+          </button>
+        </div>
+        <br />
+      </form>
+    </div>
+    <script>
+      // function send_diary() {
+      //   const form = document.forms["feeling_form"];
+      //   axios({
+      //     method: "POST",
+      //     url: "/diary",
+      //     data: {
+      //       meet: form.meet.value,
+      //       write: form.diary_write.value,
+      //     },
+      //   });
+      // }
+      function fileUpload() {
+        const formData = new FormData();
+        const file = document.getElementById("upload");
+        formData.append("upload", file.files[0]);
+
+        axios({
+          method: "POST",
+          url: "/diary_write/upload",
+          data: formData,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }).then(function (response) {
+          console.log(response.data);
+          console.log(response.data.path);
+          const img = document.querySelector("#img");
+          img.setAttribute("src", res.data.path);
+        });
+      }
+    </script>
+  </body>
+</html>
