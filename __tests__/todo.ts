@@ -88,7 +88,7 @@ test("delete todo", async () => {
     .set("Cookie", cookie);
   expect(res.status).toBe(200);
   const deleted = await db.todo.findOne({
-    where: {id: dbTodo.id,},
+    where: { id: dbTodo.id },
   });
   expect(deleted).toBeNull();
 });

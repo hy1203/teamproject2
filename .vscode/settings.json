@@ -5,6 +5,7 @@
   "prettier.bracketSameLine": false,
   "prettier.semi": true,
   "prettier.bracketSpacing": true,
+  "cSpell.words": ["todocalendar", "todos"],
   "editor.formatOnSave": true,
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
