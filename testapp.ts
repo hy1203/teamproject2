@@ -2,6 +2,7 @@ import Express from "express";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import route from "@/routes";
+import api from "@/api";
 import db from "@/models";
 
 const app = Express();
@@ -23,6 +24,7 @@ app.use(Express.static("views"));
 app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
 
+app.use("/api", api);
 app.use("/", route);
 
 app.get("*", (req, res) => {

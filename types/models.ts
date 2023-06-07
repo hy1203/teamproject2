@@ -3,6 +3,7 @@ export interface User {
   username: string;
   password: string;
 }
+
 export interface Diary {
   id: number;
   title: string;
@@ -20,6 +21,7 @@ export interface Todo {
   year: number;
   month: number;
   date: number;
+  checked?: boolean;
 }
 
 export interface Emotion {

@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import db from "@/models";
-import { isLogin, validateDate, getDateFromUrl } from "@/utils";
-import { Controller } from "@/types";
+import { isLogin } from "@/utils";
 
-export default <Controller>{
+export default {
   create,
   update,
   destroy,

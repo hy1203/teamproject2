@@ -23,5 +23,6 @@ route.use("/diary", diary);
 
 // todocalendar route
 route.get("/todocalendar", controller.todoCalendar);
+route.get("/todo-zh", (req, res) => res.render("todo-zh"))
 
 export default route;
