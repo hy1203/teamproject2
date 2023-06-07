@@ -1,69 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <!-- axios cdn -->
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <link rel="stylesheet" href="index.css" />
-        <title>그날의 하늘</title>
-    </head>
-    <body>
-        <div id="warp">
-            <br />
-            <a class="logo" href="/">그날의 하늘</a>
-            <br />
-            <div class="login_warp">
-                <form name="form_login" id="login_form">
-                    <div class="panel_inner">
-                        <div class="form_item_top">
-                            <!-- 아이디 입력 -->
-                            <label for="username">ID</label>
-                            <input type="text" id="username" name="username" placeholder="아이디" required /><br />
-                        </div>
-                        <div class="form_item_bottom">
-                            <!-- 패스워드 입력 -->
-                            <label for="passwrod">pw</label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                placeholder="비밀번호"
-                                required
-                            /><br />
-                        </div>
-                        <br />
-                        <div class="keep">
-                            <div class="keep_check">
-                                <input
-                                    class="keeplogin"
-                                    type="checkbox"
-                                    id="keep"
-                                    name="nvlong"
-                                    class="input_keep"
-                                    value="off"
-                                />
-                                <div for="keep" class="keep_text">로그인 상태 유지</div>
-                            </div>
-                        </div>
-                    </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <title>그날의 하늘</title>
+  </head>
 
-                    <button type="button" class="btn" onclick="login()">로그인</button>
-                    <button class="btn" onclick="signup()">회원가입</button>
-                </form>
-                <form action="/profile" method="POST" name="form_info">
-                    <input type="hidden" id="profile_userid" name="userid" />
-                </form>
+  <body>
+    <div id="warp">
+      <br />
+      <a class="logo" href="/">그날의 하늘</a>
+      <br />
+      <div class="login_warp">
+        <form name="login" id="login">
+          <div class="panel_inner">
+            <div class="form_item_top">
+              <!-- 아이디 입력 -->
+              <label for="username">ID</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="아이디"
+                required
+              /><br />
             </div>
-        </div>
-
-        <script>
-            function signup() {
-                location.href = '/signup';
-            }
-            function login() {
-                const form = document.forms['form_login'];
+            <div class="form_item_bottom">
+              <!-- 패스워드 입력 -->
+              <label for="passwrod">pw</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="비밀번호"
+                required
+              /><br />
+            </div>
+            <br />
+            <div class="keep">
+              <div class="keep_check">
+                <input type="checkbox" id="keep" name="keep" value="off" />
+                <div for="keep" class="keep_text">로그인 상태 유지</div>
+              </div>
+            </div>
+          </div>
+          <dialog id="wrong-input">
+            아이디 혹은 비밀번호가 잘못되었습니다.
+          </dialog>
+          <button type="button" class="btn" onclick="signin()">로그인</button>
+          <button class="btn" onclick="signup()">회원가입</button>
+        </form>
+        <form action="/profile" method="POST" name="form_info">
+          <input type="hidden" id="profile_userid" name="userid" />
+        </form>
+      </div>
+    </div>
 
                 if (!form.checkValidity()) {
                     return;
@@ -86,6 +79,6 @@
                     }
                 });
             }
-        </script>
-    </body>
+    </script>
+  </body>
 </html>

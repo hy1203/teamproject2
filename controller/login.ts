@@ -1,15 +1,15 @@
-import { Request, Response } from 'express';
-import db from '@/models';
-import { User } from '@/types/models';
+import { Request, Response } from "express";
+import config from "@/config/token";
+import db from "@/models";
 
 export default {
-    get,
-    post,
+  get,
+  post,
 };
 
 //로그인 GET
 async function get(req: Request, res: Response) {
-    res.render('login');
+  res.render("login");
 }
 
 //로그인 POST
