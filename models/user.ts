@@ -17,6 +17,7 @@ export default function User(
       username: {
         type: dataTypes.STRING(255),
         allowNull: false,
+        unique: true,
       },
       password: {
         type: dataTypes.STRING(255),
