@@ -1,13 +1,11 @@
 import { Router } from "express";
 import todo from "@/controller/todo";
-import comment from "@/controller/comment";
+import comment from "./comment";
 
 const route = Router();
 
 // comment
-route.post("/:year/:month/:day/:todo_id", comment.create);
-route.put("/:year/:month/:day/:todo_id", comment.update);
-route.delete("/:year/:month/:day/:todo_id", comment.destroy);
+route.use("/comment", comment);
 
 // todo
 route.post("/:year/:month/:date", todo.post);
