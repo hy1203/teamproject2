@@ -1,5 +1,5 @@
 import { Router } from "express";
-import todo from "@/controller/todoComment";
+import todo from "@/controller/comment";
 
 const route = Router();
 //투두 comment
