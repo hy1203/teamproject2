@@ -1,5 +1,7 @@
+import process from "process";
 import { Request, Response } from "express";
 import config from "@/config/token";
+import jwt from "jsonwebtoken";
 import db from "@/models";
 
 export default {
@@ -14,28 +16,29 @@ async function get(req: Request, res: Response) {
 
 //로그인 POST
 async function post(req: Request, res: Response) {
-    try {
-        const result = await db.user.findOne({
-            where: {
-                username: req.body.username,
-                password: req.body.password,
-            },
-        });
-        const user = result?.toJSON<User>().id;
-
-        if (user) {
-            // 검색된 사용자 정보가 존재할 경우
-            // console.log('로그인 성공');
-            req.session.user = user;
-            req.session.save(() => { });
-            res.send({ result: true });
-            // console.log(req.session);
-        } else {
-            console.log('로그인 실패');
-            res.send({ result: false });
-        }
-    } catch (err) {
-        console.log('로그인 오류', err);
-        res.send({ result: false });
-    }
+  try {
+    const { username, password } = req.body;
+    const result = await db.user.findOne({
+      where: { username, password },
+    });
+    const { id } = result?.toJSON()!;
+    if (!id) throw new Error("유저 정보 없음");
+    const authed = true;
+    const access = jwt.sign({ id, authed }, config.ACCESS_TOKEN!, {
+      expiresIn: "1h",
+    });
+    const refresh = jwt.sign({ id, authed }, config.REFRESH_TOKEN!, {
+      expiresIn: "30d",
+    });
+    const setRefresh = await db.user.update({ refresh }, { where: { id } });
+    if (!setRefresh) throw new Error("Refresh 토큰 저장 실패");
+    console.log(req.headers);
+    res
+      .cookie("access", access, { httpOnly: true })
+      .cookie("refresh", refresh, { httpOnly: true })
+      .send({ result: true });
+  } catch (err) {
+    console.log("로그인 오류", err);
+    res.send({ result: false });
+  }
 }
