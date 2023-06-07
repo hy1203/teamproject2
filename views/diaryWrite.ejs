@@ -33,7 +33,7 @@
           <div class="feelings">오늘의 기분</div>
           <br />
           <div class="top">
-            <input type="radio" name="feeling" id="happy" />
+            <input type="radio" name="feeling" id="happy" value="happy" />
             <label for="happy"
               ><img
                 src="/Sunday/1.png"
@@ -41,15 +41,15 @@
                 height="100px"
                 alt="happy"
             /></label>
-            <input type="radio" name="feeling" id="good" />
+            <input type="radio" name="feeling" id="good" value="good" />
             <label for="good"
               ><img src="/Sunday/2.png" width="100px" height="100px" alt="good"
             /></label>
-            <input type="radio" name="feeling" id="soso" />
+            <input type="radio" name="feeling" id="soso" value="soso" />
             <label for="soso"
               ><img src="/Sunday/3.png" width="100px" height="100px" alt="soso"
             /></label>
-            <input type="radio" name="feeling" id="not_bad" />
+            <input type="radio" name="feeling" id="not_bad" value="not bad" />
             <label for="not_bad"
               ><img
                 src="/Sunday/4.png"
@@ -57,7 +57,7 @@
                 height="100px"
                 alt="notbad"
             /></label>
-            <input type="radio" name="feeling" id="bad" />
+            <input type="radio" name="feeling" id="bad" value="bad" />
             <label for="bad"
               ><img src="/Sunday/5.png" width="100px" height="100px" alt="bad"
             /></label>
@@ -125,7 +125,12 @@
           <div class="feelings">오늘의 사진</div>
           <br />
           <div class="img_upload">
-            <input type="file" name="uploadfile" id="upload" multiple />
+            <input
+              type="file"
+              name="uploadfile"
+              id="upload"
+              onchange="readURL(this)"
+            />
             <br />
             <button type="button" onclick="fileUpload()" class="uploadBtn">
               업로드
@@ -162,11 +167,19 @@
       //     method: "POST",
       //     url: "/diary",
       //     data: {
+      //       feeling:form.feeling.value,
       //       meet: form.meet.value,
       //       write: form.diary_write.value,
-      //     },
-      //   });
+      //     }
+      //   }).then((res)=>{
+      //      console.log(res.data);
+      //      res.data;
+      //  }).then((data)=>{
+      //
+      // })
       // }
+
+      //이미지 파일 업로드 코드
       function fileUpload() {
         const formData = new FormData();
         const file = document.getElementById("upload");
@@ -179,12 +192,20 @@
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }).then(function (response) {
-          console.log(response.data);
-          console.log(response.data.path);
-          const img = document.querySelector("#img");
-          img.setAttribute("src", res.data.path);
         });
+      }
+
+      //이미지 파일 미리보기 코드
+      function readURL(input) {
+        if (input.files) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById("img").src = e.target.result;
+          };
+          reader.readAsDataURL(input.files[0]);
+        } else {
+          document.getElementById("img").src = "";
+        }
       }
     </script>
   </body>
