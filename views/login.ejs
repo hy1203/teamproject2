@@ -58,27 +58,39 @@
       </div>
     </div>
 
-                if (!form.checkValidity()) {
-                    return;
-                }
-                axios({
-                    method: 'POST',
-                    url: '/login',
-                    data: {
-                        username: form.username.value,
-                        password: form.password.value,
-                    },
-                }).then((res) => {
-                    if (res.data.result === true) {
-                        alert('로그인 성공');
-                        const form_info = document.forms['form_info'];
-                        location.href = '/';
-                    } else {
-                        alert('로그인 실패');
-                        form_login.reset();
-                    }
-                });
-            }
+    <script type="module">
+      import getTokenFromCookie from "token.js";
+      function signup() {
+          location.href = '/signup';
+      }
+      async function signin() {
+        /** @type {HTMLFormElement} */
+        const form = document.forms.login;
+        if (!form.checkValidity()) {
+            return;
+        }
+        const res = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: form.username.value,
+            password: form.password.value,
+          })
+        });
+        const { result } = await res.json();
+        if (result) {
+          const { access, refresh } = getTokenFromCookie();
+          sessionStorage.setItem('access', access);
+          sessionStorage.setItem('refresh', refresh);
+          location.href = '/';
+        } else {
+          // 비밀번호 잘못됨 띄우기
+          const dialog = document.getElementById('wrong-input');
+          dialog.show();
+        }
+      }
     </script>
   </body>
 </html>
