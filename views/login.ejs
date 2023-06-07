@@ -16,7 +16,7 @@
         <a class="logo" href="/">그날의 하늘</a>
         <br />
         <div class="login_warp">
-          <form name="form_register" id="register_form">
+          <form name="login_form" id="login_form">
             <div class="panel_inner">
               <div class="form_item_top">
                 <label for="username">ID</label>
@@ -64,7 +64,7 @@
       document.getElementById("signupButton").addEventListener("click", signup);
 
       async function login() {
-        const form = document.forms.login;
+        const form = document.forms.login_form;
         if (!form.checkValidity()) {
           return;
         }
