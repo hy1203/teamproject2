@@ -2,11 +2,11 @@ import request from "supertest";
 import { today, getFromDB, getAllFromDB, createFromDB } from "@/utils";
 import { signup, getLoginSession, genIdPw, genPort } from "@/utils/testutil";
 import db from "@/models";
-import { User, Todo } from "@/types/models";
+import { Todo } from "@/types/models";
 import setPort from "@/testapp";
-import { get } from "http";
 
 const app = setPort(genPort());
+const url = (...paths: number[]) => "/api/todo/" + paths.map(String).join("/");
 
 test("create todo", async () => {
   const [id, pw] = genIdPw();
@@ -15,9 +15,9 @@ test("create todo", async () => {
   const content = genIdPw().toString();
   const [year, month, date] = today();
   const res = await request(app)
-    .post(`/todo/${year}/${month}/${date}`)
+    .post(url(year, month, date))
     .set("Cookie", cookie)
-    .send({ content, year, month, date });
+    .send({ content });
   const resTodo = res.body as Todo;
   expect(resTodo?.content).toBe(content);
   const user = await getFromDB(db.user, {
@@ -40,7 +40,7 @@ test("get todo", async () => {
   const { username, password } = user;
   const cookie = await getLoginSession(username, password, app);
   const res = await request(app)
-    .get(`/todo/${year}/${month}/${date}`)
+    .get(url(year, month, date))
     .set("Cookie", cookie);
   const todos = res.body as Todo[];
   expect(todos.length).toBeGreaterThan(0);
@@ -52,7 +52,7 @@ test("get todo", async () => {
 test("update todo", async () => {
   const dbTodo = await getFromDB(db.todo, {});
   if (!dbTodo) return;
-  const { year, month, date, user_id } = dbTodo;
+  const { user_id, id: todo_id } = dbTodo;
   const user = await getFromDB(db.user, {
     where: { id: user_id },
   });
@@ -61,7 +61,7 @@ test("update todo", async () => {
   const cookie = await getLoginSession(username, password, app);
   const content = genIdPw().toString();
   const res = await request(app)
-    .put(`/todo/${year}/${month}/${date}`)
+    .put(url(todo_id))
     .set("Cookie", cookie)
     .send({ content });
   expect(res.status).toBe(200);
@@ -83,11 +83,11 @@ test("delete todo", async () => {
   const { username, password } = user;
   const cookie = await getLoginSession(username, password, app);
   const res = await request(app)
-    .delete(`/todo/${year}/${month}/${date}`)
+    .delete(url(year, month, date))
     .set("Cookie", cookie);
   expect(res.status).toBe(200);
   const deleted = await db.todo.findOne({
-    where: {id: dbTodo.id,},
+    where: { id: dbTodo.id },
   });
   expect(deleted).toBeNull();
 });

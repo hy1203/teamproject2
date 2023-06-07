@@ -2,13 +2,17 @@ import path from "path";
 import Express from "express";
 import session from "express-session";
 import cookieParser from "cookie-parser";
+import api from "@/api";
 import route from "@/routes";
 import db from "@/models";
 
 const app = Express();
 const PORT = 8000;
 
-db.sequelize.sync();
+db.sequelize
+  .sync
+  // { force: true }
+  ();
 
 app.use(cookieParser());
 app.use(
@@ -33,6 +37,7 @@ app.set("public", __dirname + "/public");
 app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
 
+app.use("/api", api);
 app.use("/", route);
 
 app.get("*", (req, res) => {

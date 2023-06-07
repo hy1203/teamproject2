@@ -6,6 +6,8 @@ import setPort from "@/testapp";
 import request from "supertest";
 
 const app = setPort(genPort());
+const url = (year: number, month: number, date: number) =>
+  `/api/diary/${year}/${month}/${date}`;
 
 test("create diary", async () => {
   const [id, pw] = genIdPw();
@@ -14,7 +16,7 @@ test("create diary", async () => {
   const [year, month, date] = today();
   const [title, content] = genIdPw();
   const res = await request(app)
-    .post(`/diary/${year}/${month}/${date}`)
+    .post(url(year, month, date))
     .set("Cookie", cookie)
     .send({
       title,
@@ -50,7 +52,7 @@ test("get diary", async () => {
   const [id, pw] = [user.username, user.password];
   const cookie = await getLoginSession(id, pw, app);
   const res = await request(app)
-    .get(`/diary/${year}/${month}/${date}`)
+    .get(url(year, month, date))
     .set("Cookie", cookie);
   const result = res.body as Diary;
   expect(result?.title).toBe(diary?.title);
