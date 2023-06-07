@@ -38,7 +38,6 @@ async function post(req: Request, res: Response) {
     return res.status(400).json({ message: "날짜 형식이 잘못됨." });
   }
   const { content } = req.body;
-  console.log(req.body);
   try {
     const result = await db.todo.create({
       user_id,
@@ -46,11 +45,9 @@ async function post(req: Request, res: Response) {
       month,
       date,
       content,
-      checked: false,
     });
     const todo = result.toJSON();
     res.json(todo);
-    console.log(todo);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
@@ -62,7 +59,6 @@ async function get(req: Request, res: Response) {
     const user_id = await isLogin(req, res);
     if (!user_id) return;
     const [year, month, date] = getDateFromUrl(req);
-    console.log(user_id, year, month, date);
     const result = await db.todo.findAll({
       where: {
         year,
@@ -72,7 +68,6 @@ async function get(req: Request, res: Response) {
       },
     });
     const todos = result.map((todo) => todo.toJSON());
-    console.log(todos[0]);
     res.status(200).json(todos);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
@@ -84,22 +79,13 @@ async function put(req: Request, res: Response) {
   try {
     const user_id = await isLogin(req, res);
     if (!user_id) return;
-    const { year, month, date, id } = req.params;
+    const { id } = req.params;
     const { content } = req.body;
     const result = await db.todo.update(
       { content },
-      {
-        where: {
-          year,
-          month,
-          date,
-          id,
-          user_id,
-        },
-      }
+      { where: { id, user_id } }
     );
-
-    if (result[0] === 0) {
+    if (!result) {
       return res.status(404).json({ message: "Todo가 존재하지 않음." });
     }
 
@@ -109,26 +95,18 @@ async function put(req: Request, res: Response) {
   }
 }
 
-//투두 선택
+// 투두 선택
 async function patch(req: Request, res: Response) {
   try {
     const user_id = await isLogin(req, res);
     if (!user_id) return;
-    const { year, month, date, id } = req.params;
+    const { id } = req.params;
     const { checked } = req.body;
     const result = await db.todo.update(
       { checked },
-      {
-        where: {
-          year,
-          month,
-          date,
-          id,
-          user_id,
-        },
-      }
+      { where: { id, user_id } }
     );
-    if (result[0] === 0) {
+    if (!result) {
       return res.status(404).json({ message: "Todo가 존재하지 않음." });
     }
     res.status(200).json({ message: "Todo 수정 완료." });
@@ -140,17 +118,11 @@ async function patch(req: Request, res: Response) {
 //투두 삭제
 async function destroy(req: Request, res: Response) {
   try {
-    const { year, month, date, id } = req.params;
+    const { id } = req.params;
     const user_id = await isLogin(req, res);
     if (!user_id) return;
     const result = await db.todo.destroy({
-      where: {
-        id,
-        year,
-        month,
-        date,
-        user_id,
-      },
+      where: { id, user_id },
     });
 
     if (result === 0) {
@@ -166,9 +138,9 @@ async function destroy(req: Request, res: Response) {
 //투두 전체 삭제
 async function destroyAll(req: Request, res: Response) {
   try {
-    const { year, month, date } = req.params;
     const user_id = await isLogin(req, res);
     if (!user_id) return;
+    const { year, month, date } = req.params;
     const result = await db.todo.destroy({
       //year, month, date, user_id가 일치하는 todo를 모두 삭제
       where: {
