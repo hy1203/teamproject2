@@ -4,81 +4,48 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="login.css" />
     <title>그날의 하늘</title>
   </head>
 
   <body>
-    <div id="warp">
-      <br />
+    <main>
       <a class="logo" href="/">그날의 하늘</a>
-      <br />
-      <div class="login_warp">
-        <form name="login" id="login">
-          <div class="panel_inner">
-            <div class="form_item_top">
-              <!-- 아이디 입력 -->
-              <label for="username">ID</label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                placeholder="아이디"
-                required
-              /><br />
-            </div>
-            <div class="form_item_bottom">
-              <!-- 패스워드 입력 -->
-              <label for="passwrod">pw</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="비밀번호"
-                required
-              /><br />
-            </div>
-            <br />
-            <div class="keep">
-              <div class="keep_check">
-                <input type="checkbox" id="keep" name="keep" value="off" />
-                <div for="keep" class="keep_text">로그인 상태 유지</div>
-              </div>
-            </div>
-          </div>
-          <dialog id="wrong-input">
-            아이디 혹은 비밀번호가 잘못되었습니다.
-          </dialog>
-          <button type="button" class="btn" onclick="signin()">로그인</button>
-          <button class="btn" onclick="signup()">회원가입</button>
-        </form>
-        <form action="/profile" method="POST" name="form_info">
-          <input type="hidden" id="profile_userid" name="userid" />
-        </form>
-      </div>
-    </div>
+      <form name="login" id="login">
+        <div class="form_item_top">
+          <!-- 아이디 입력 -->
+          <label for="username">ID</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="username"
+            placeholder="아이디"
+            required
+          /><br />
+        </div>
+        <div class="form_item_bottom">
+          <!-- 패스워드 입력 -->
+          <label for="passwrod">pw</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="password"
+            placeholder="비밀번호"
+            required
+          /><br />
+        </div>
+        <div class="keep">
+          <input type="checkbox" id="keep" name="keep" value="off" />
+          <label for="keep" class="keep_text">로그인 상태 유지</label>
+        </div>
+      </form>
+      <dialog id="wrong-input">아이디 혹은 비밀번호가 잘못되었습니다.</dialog>
+      <button class="btn login">로그인</button>
+      <button class="btn signup" onclick="signup()">회원가입</button>
+    </main>
 
-                if (!form.checkValidity()) {
-                    return;
-                }
-                axios({
-                    method: 'POST',
-                    url: '/login',
-                    data: {
-                        username: form.username.value,
-                        password: form.password.value,
-                    },
-                }).then((res) => {
-                    if (res.data.result === true) {
-                        alert('로그인 성공');
-                        const form_info = document.forms['form_info'];
-                        location.href = '/';
-                    } else {
-                        alert('로그인 실패');
-                        form_login.reset();
-                    }
-                });
-            }
-    </script>
+    <script src="login.js"></script>
   </body>
 </html>
