@@ -25,11 +25,11 @@ async function post(req: Request, res: Response) {
 
         if (user) {
             // 검색된 사용자 정보가 존재할 경우
-            console.log('로그인 성공');
+            // console.log('로그인 성공');
             req.session.user = user;
             req.session.save(() => { });
             res.send({ result: true });
-            console.log(req.session);
+            // console.log(req.session);
         } else {
             console.log('로그인 실패');
             res.send({ result: false });

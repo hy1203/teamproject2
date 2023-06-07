@@ -1,3 +1,5 @@
+import { Request } from 'express';
+
 export function validateDate(y: number, m: number, d: number) {
   if ([y, m, d].some((v) => isNaN(v))) return false; // NaN 체크
   try {
@@ -26,4 +28,15 @@ export function dateSeparate(date: Date) {
     date.getMonth() + 1,
     date.getDate(),
   ]
+}
+
+export function getDateFromUrl(req: Request) {
+  // url에서 날짜 정보를 가져옴
+  return ["year", "month", "date"]
+    .map((key) => Number(req.params[key]))
+}
+
+export function today() {
+  const date = new Date();
+  return dateSeparate(date);
 }
