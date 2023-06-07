@@ -29,7 +29,7 @@
             </div>
             <div class="form_item_bottom">
               <!-- 패스워드 입력 -->
-              <label for="passwrod">pw</label>
+              <label for="password">pw</label>
               <input
                 type="password"
                 id="password"
@@ -49,47 +49,51 @@
           <dialog id="wrong-input">
             아이디 혹은 비밀번호가 잘못되었습니다.
           </dialog>
-          <button type="button" class="btn" onclick="signin()">로그인</button>
-          <button class="btn" onclick="signup()">회원가입</button>
+          <button type="button" class="btn" id="loginButton">로그인</button>
+          <button class="btn" id="signupButton">회원가입</button>
         </form>
         <form action="/profile" method="POST" name="form_info">
           <input type="hidden" id="profile_userid" name="userid" />
         </form>
       </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="module">
-      import getTokenFromCookie from "token.js";
-      function signup() {
-          location.href = '/signup';
-      }
-      async function signin() {
-        /** @type {HTMLFormElement} */
+      document.getElementById("loginButton").addEventListener("click", login);
+      document.getElementById("signupButton").addEventListener("click", signup);
+
+      async function login() {
         const form = document.forms.login;
         if (!form.checkValidity()) {
-            return;
+          return;
         }
-        const res = await fetch('/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
+
+        try {
+          const response = await axios.post("/login", {
             username: form.username.value,
             password: form.password.value,
-          })
-        });
-        const { result } = await res.json();
-        if (result) {
-          const { access, refresh } = getTokenFromCookie();
-          sessionStorage.setItem('access', access);
-          sessionStorage.setItem('refresh', refresh);
-          location.href = '/';
-        } else {
-          // 비밀번호 잘못됨 띄우기
-          const dialog = document.getElementById('wrong-input');
-          dialog.show();
+          });
+
+          const { result, access, refresh } = response.data;
+          console.log("res data : ", response.data);
+          if (result) {
+            sessionStorage.setItem("access", access);
+            console.log("access : ", access);
+            sessionStorage.setItem("refresh", refresh);
+            console.log("refresh : ", refresh);
+            location.href = "/";
+          } else {
+            const dialog = document.getElementById("wrong-input");
+            dialog.show();
+          }
+        } catch (error) {
+          // 에러 처리
+          console.error(error);
         }
+      }
+
+      function signup() {
+        location.href = "/signup";
       }
     </script>
   </body>
