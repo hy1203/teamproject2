@@ -1,4 +1,3 @@
-import path from "path";
 import Express from "express";
 import session from "express-session";
 import cookieParser from "cookie-parser";
@@ -18,17 +17,8 @@ app.use(
     saveUninitialized: true,
   })
 );
-app.use(Express.static(path.join(__dirname, "public")));
-app.use(Express.static("public"));
-
 app.set("view engine", "ejs");
 app.use(Express.static("views"));
-
-app.use("/public", Express.static(__dirname + "/public"));
-app.use("/image", Express.static(__dirname + "/image"));
-
-// 정적 파일 제공
-app.set("public", __dirname + "/public");
 
 app.use(Express.urlencoded({ extended: true }));
 app.use(Express.json());
@@ -39,6 +29,7 @@ app.get("*", (req, res) => {
   res.status(404).render("404");
 });
 
-app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
-});
+export default (port: number) => {
+  app.listen(port);
+  return app;
+};

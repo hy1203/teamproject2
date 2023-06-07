@@ -1,7 +1,11 @@
-import { DataTypes, Sequelize } from "sequelize";
+import { DataTypes, Sequelize, Model } from "sequelize";
+import { Emotion } from "@/types/models";
 
-export default function emotion(sequelize: Sequelize, dataTypes: typeof DataTypes) {
-  return sequelize.define(
+export default function emotion(
+  sequelize: Sequelize,
+  dataTypes: typeof DataTypes
+) {
+  return sequelize.define<Model<Emotion, Omit<Emotion, "id">>, Emotion>(
     "emotion",
     {
       id: {

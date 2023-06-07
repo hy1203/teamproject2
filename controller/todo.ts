@@ -1,62 +1,71 @@
 import { Request, Response } from "express";
 import db from "@/models";
-import { isLogin } from "@/utils";
+import { isLogin, validateDate, getDateFromUrl } from "@/utils";
 import { Controller } from "@/types";
 import { Todo } from "@/types/models";
 
 export default <Controller>{
   createPage,
-  createTodo,
-  getTodo,
-  updateTodo,
-  deleteTodo,
+  post,
+  get,
+  put,
+  destroy,
   createTodoComment,
   updateTodoComment,
   deleteTodoComment,
 };
 
-let ToDos: Todo[] = [];
 //페이지 생성
 async function createPage(req: Request, res: Response) {
   res.render("todo");
 }
 //투두 생성
-async function createTodo(req: Request, res: Response) {
+async function post(req: Request, res: Response) {
+  const user_id = isLogin(req, res);
+  if (!user_id) return;
+  const [year, month, date] = getDateFromUrl(req);
+  if (!validateDate(year, month, date)) {
+    return res.status(400).json({ message: "날짜 형식이 잘못됨." });
+  }
+  const { content } = req.body;
   try {
-    await db.todo.create({
-      date: new Date(),
-      content: req.body.content,
+    const result = await db.todo.create({
+      user_id,
+      year,
+      month,
+      date,
+      content,
     });
-    res.send({ result: true });
+    const todo = result.toJSON<Todo>();
+    res.json(todo);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
 //투두조회
-async function getTodo(req: Request, res: Response) {
+async function get(req: Request, res: Response) {
   try {
-    const { year, month, date } = req.params;
-    const user = isLogin(req, res);
-    if (!user) return;
+    const [year, month, date] = getDateFromUrl(req);
+    const user_id = isLogin(req, res);
+    if (!user_id) return;
     const result = await db.todo.findAll({
       where: {
         year,
         month,
         date,
-        user_id: user,
+        user_id,
       },
     });
-    console.log(result);
-    // const todo = result.map((v) => {
-    //   return v.toJSON();
-    // });
-    // res.status(200).json(todo);
+    const todos = result.map((todo) => {
+      return todo.toJSON<Todo>();
+    });
+    res.status(200).json(todos);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
 //투두 수정
-async function updateTodo(req: Request, res: Response) {
+async function put(req: Request, res: Response) {
   try {
     const { year, month, date } = req.params;
     const user = isLogin(req, res);
@@ -86,7 +95,7 @@ async function updateTodo(req: Request, res: Response) {
   }
 }
 //투두 삭제
-async function deleteTodo(req: Request, res: Response) {
+async function destroy(req: Request, res: Response) {
   try {
     const { year, month, date } = req.params;
     const user = isLogin(req, res);
