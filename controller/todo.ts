@@ -135,10 +135,14 @@ async function createTodoComment(req: Request, res: Response) {
         user_id: user,
       },
     });
-    const todo = todoResult?.toJSON<Todo>();
+    const todo = todoResult?.toJSON();
+    if (!todo) {
+      return res.status(404).json({ message: "Todo가 존재하지 않음." });
+    }
     const comment = await db.comment.create({
       todo_id: todo?.id,
       content: req.body.content,
+      emotion_id: req.body.emotion_id,
     });
     res.status(200).json(comment);
   } catch (error) {
@@ -160,7 +164,7 @@ async function updateTodoComment(req: Request, res: Response) {
         user_id: user,
       },
     });
-    const todo = todoResult?.toJSON<Todo>();
+    const todo = todoResult?.toJSON();
 
     const comment = await db.comment.update(
       {
@@ -192,7 +196,7 @@ async function deleteTodoComment(req: Request, res: Response) {
         user_id: user,
       },
     });
-    const todo = todoResult?.toJSON<Todo>();
+    const todo = todoResult?.toJSON();
 
     const comment = await db.comment.destroy({
       where: {
