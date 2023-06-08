@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 
-export default class StartPage {
-  public get(req: Request, res: Response): void {
-    res.render("startpage");
-  }
+export default {
+  get,
+};
+
+async function get(req: Request, res: Response) {
+  res.render("startpage");
 }
