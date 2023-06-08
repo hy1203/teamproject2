@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 
 export default function isLogin(req: Request, res: Response) {
     const { user } = req.session;
