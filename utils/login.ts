@@ -8,45 +8,49 @@ export default async function isLogin(req: Request, res: Response) {
   let access = req.headers.authorization || req.cookies.access;
   let refresh = (req.headers.refresh || req.cookies.refresh) as string;
 
-  // access 토큰이 존재하는 경우
-  if (access) {
-    const verifiedAccess = jwt.verify(
-      access,
-      config.ACCESS_TOKEN
-    ) as JwtPayload;
+  try {
+    // access 토큰이 존재하는 경우
+    if (access) {
+      const verifiedAccess = jwt.verify(
+        access,
+        config.ACCESS_TOKEN
+      ) as JwtPayload;
 
-    // access 토큰이 유효하고 인증된 경우
-    if (verifiedAccess.authed) return verifiedAccess.id;
-
-    // access 토큰이 만료된 경우
-    const decodedAccess = jwt.decode(access) as JwtPayload;
-    if (decodedAccess.exp! * 1000 <= Date.now()) {
-      // refresh 토큰이 존재하는 경우
-      if (refresh) {
-        const verifiedRefresh = jwt.verify(
-          refresh,
-          config.REFRESH_TOKEN!
-        ) as JwtPayload;
-
-        // refresh 토큰이 유효하고 인증된 경우
-        if (verifiedRefresh.authed) {
-          const { id } = verifiedRefresh;
-          const user = await getFromDB(db.user, { where: { id } });
-          if (!user) throw new Error("유저 정보 없음");
-          if (user.refresh !== refresh) {
-            res.redirect("/login");
-            return;
-          }
-          const newAccess = jwt.sign({ user: id }, config.ACCESS_TOKEN!, {
-            expiresIn: "1h",
-          });
-          req.headers.authorization = `Bearer ${newAccess}`;
-          return id;
-        }
-      }
+      return verifiedAccess.id;
     }
+  } catch (err) {
+    console.log("Access 토큰 검증 오류", err);
   }
 
-  // access 토큰이 없거나 유효하지 않은 경우
+  // access 토큰이 없거나 유효하지 않은 경우에만 refresh 토큰 확인
+  if (!refresh) {
+    res.redirect("/login");
+    return;
+  }
+
+  try {
+    const verifiedRefresh = jwt.verify(
+      refresh,
+      config.REFRESH_TOKEN!
+    ) as JwtPayload;
+
+    const { id } = verifiedRefresh;
+    const user = await getFromDB(db.user, { where: { id } });
+    if (!user) throw new Error("유저 정보 없음");
+    if (user.refresh !== refresh) {
+      res.redirect("/login");
+      return;
+    }
+
+    const newAccess = jwt.sign({ user: id }, config.ACCESS_TOKEN!, {
+      expiresIn: "1h",
+    });
+    req.headers.authorization = `Bearer ${newAccess}`;
+    return id;
+  } catch (err) {
+    console.log("Refresh 토큰 검증 오류", err);
+  }
+
+  // 로그인 페이지로 리디렉션합니다.
   res.redirect("/login");
 }
