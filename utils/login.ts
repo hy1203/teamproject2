@@ -16,7 +16,13 @@ export default async function isLogin(req: Request, res: Response) {
       return id;
     }
   } catch (err) {
-    console.log("Access 토큰 검증 오류", err);
+    if (err instanceof jwt.TokenExpiredError) {
+      console.log("Access 토큰 만료");
+    } else {
+      console.log("Access 토큰 검증 오류", err);
+      res.redirect("/login");
+      return;
+    }
   }
 
   // access 토큰이 없거나 유효하지 않은 경우에만 refresh 토큰 확인
