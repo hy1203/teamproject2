@@ -42,6 +42,7 @@ export default async function isLogin(req: Request, res: Response) {
       expiresIn: "1h",
     });
     req.headers.authorization = `Bearer ${newAccess}`;
+    res.cookie("access", newAccess, { httpOnly: true });
     return id;
   } catch (err) {
     console.log("Refresh 토큰 검증 오류", err);
