@@ -18,9 +18,17 @@ export default {
   redirectMonthly,
   monthly,
   daily,
+  page,
 };
 
 // page
+
+async function page(req: Request, res: Response) {
+  const user_id = isLogin(req, res);
+  if (!user_id) return;
+  const [year, month, date] = today();
+  res.render("dairy", { year, month, date });
+}
 
 function redirectMonthly(req: Request, res: Response) {
   const user_id = isLogin(req, res);
