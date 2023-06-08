@@ -5,6 +5,7 @@ import { Controller } from "@/types";
 import login from "./login";
 import signup from "./signup";
 import calendar from "./calendar";
+import emotion from "./emotion";
 
 declare module "express-session" {
   interface SessionData {
@@ -27,4 +28,7 @@ export default <Controller>{
   signup: signup.post,
   // todo calendar
   todoCalendar: calendar.get,
+
+  redirectGets: emotion.redirectGets,
+  emotionIndex: emotion.emotionIndex,
 };
