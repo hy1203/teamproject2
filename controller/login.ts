@@ -30,10 +30,9 @@ async function post(req: Request, res: Response): Promise<void> {
       where: { username, password },
     });
     if (!user) throw new Error("유저 정보 없음");
-    const { id } = user.toJSON()!;
-    const authed = true;
+    const { id } = user.dataValues;
     // JWT 토큰 생성
-    const access = jwt.sign({ id, authed }, config.ACCESS_TOKEN!, {
+    const access = jwt.sign({ id }, config.ACCESS_TOKEN!, {
       expiresIn: "1h",
     });
     const refresh = jwt.sign({ id }, config.REFRESH_TOKEN!, {
