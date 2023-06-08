@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { ParsedQs } from "qs";
 import jwt, { JwtPayload, JsonWebTokenError } from "jsonwebtoken";
 import config from "@/config/token";
 import db from "@/models";
@@ -19,7 +18,7 @@ class AuthenticationError extends Error {
 }
 
 // 로그인 GET
-async function get(req: Request, res: Response): Promise<void> {
+async function get(req: Request, res: Response) {
   res.render("login");
 }
 
@@ -27,11 +26,11 @@ async function get(req: Request, res: Response): Promise<void> {
 async function post(req: Request, res: Response): Promise<void> {
   try {
     const { username, password } = req.body;
-    const result = await db.user.findOne({
+    const user = await db.user.findOne({
       where: { username, password },
     });
-    const { id } = result?.toJSON()!;
-    if (!id) throw new Error("유저 정보 없음");
+    if (!user) throw new Error("유저 정보 없음");
+    const { id } = user.toJSON()!;
     const authed = true;
     // JWT 토큰 생성
     const access = jwt.sign({ id, authed }, config.ACCESS_TOKEN!, {
@@ -41,7 +40,7 @@ async function post(req: Request, res: Response): Promise<void> {
       expiresIn: "7d",
     });
     // DB에 refresh 토큰 저장
-    await db.user.update({ refresh }, { where: { id } });
+    await (await user.update({ refresh })).save();
     // JWT 토큰을 쿠키에 저장하여 클라이언트에게 전달
     res
       .cookie("access", access, { httpOnly: true, secure: true })
@@ -70,7 +69,7 @@ async function processRequest(req: Request, res: Response, next: NextFunction) {
       ) as JwtPayload;
 
       // 필요한 추가 검증 로직을 수행하고 필요한 데이터를 가져옴
-      const { id, authed } = decoded;
+      const { authed } = decoded;
 
       if (authed) {
         // 사용자 인증된 상태에서만 접근 가능한 요청 처리 로직
