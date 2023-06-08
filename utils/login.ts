@@ -34,8 +34,8 @@ export default async function isLogin(req: Request, res: Response) {
     const user = await getFromDB(db.user, { where: { id } });
     if (!user) throw new Error("유저 정보 없음");
     if (user.refresh !== refresh) {
-      res.redirect("/login");
-      return;
+      // refresh 토큰이 일치하지 않는 경우
+      throw new Error("Refresh 토큰 불일치");
     }
 
     const newAccess = jwt.sign({ user: id }, config.ACCESS_TOKEN!, {
