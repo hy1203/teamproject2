@@ -22,13 +22,12 @@ app.use(
     saveUninitialized: true,
   })
 );
-app.use(Express.static(path.join(__dirname, "public")));
-app.use(Express.static("public"));
 
 app.set("view engine", "ejs");
 app.use(Express.static("views"));
 
 app.use("/public", Express.static(__dirname + "/public"));
+app.use("/image", Express.static(__dirname + "/upload"));
 app.use("/image", Express.static(__dirname + "/image"));
 
 // 정적 파일 제공
