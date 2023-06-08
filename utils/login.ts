@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import db from "@/models";
 import config from "@/config/token";
 import { getFromDB } from "./getDB";
