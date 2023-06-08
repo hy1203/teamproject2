@@ -9,6 +9,7 @@ import {
   getFromDB,
   getAllFromDB,
   createFromDB,
+  getImageNameIfHave,
 } from "@/utils";
 
 export default {
@@ -49,7 +50,16 @@ async function daily(req: Request, res: Response) {
     res.redirect("/diary");
     return;
   }
-  res.render("diary", { year, month, date });
+  const diary = await getFromDB(db.diary, {
+    where: { user_id, year, month, date },
+  });
+  if (!diary) {
+    res.redirect(`/diary/${year}/${month}/${date}/write`);
+    return;
+  }
+  const { content } = diary;
+  const image = getImageNameIfHave(year, month, date, user_id) || "";
+  res.render("diary", { year, month, date, content, image });
 }
 
 //다이어리 쓰기 GET
