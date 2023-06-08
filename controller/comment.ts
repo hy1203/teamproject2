@@ -11,7 +11,7 @@ export default {
 // comment생성
 async function create(req: Request, res: Response) {
   try {
-    const user_id = isLogin(req, res);
+    const user_id = await isLogin(req, res);
     if (!user_id) return;
     const todo_id = Number(req.params.todo_id);
     const commentResult = await db.todo.findOne({
@@ -40,13 +40,13 @@ async function create(req: Request, res: Response) {
 // comment수정
 async function update(req: Request, res: Response) {
   try {
-    const user = isLogin(req, res);
-    if (!user) return;
-    const todo_id = Number(req.params.todo_id);
+    const user_id = await isLogin(req, res);
+    if (!user_id) return;
+    const id = Number(req.params.todo_id);
     const todoResult = await db.todo.findOne({
       where: {
-        user_id: user,
-        id: todo_id,
+        user_id,
+        id,
       },
     });
     const todo = todoResult?.toJSON();
@@ -59,7 +59,7 @@ async function update(req: Request, res: Response) {
       },
       {
         where: {
-          todo_id,
+          todo_id: id,
         },
       }
     );
@@ -75,7 +75,7 @@ async function update(req: Request, res: Response) {
 // comment삭제
 async function destroy(req: Request, res: Response) {
   try {
-    const user = isLogin(req, res);
+    const user = await isLogin(req, res);
     if (!user) return;
     const todo_id = Number(req.params.todo_id);
 

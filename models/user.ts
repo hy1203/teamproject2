@@ -5,7 +5,7 @@ export default function User(
   sequelize: Sequelize,
   dataTypes: typeof DataTypes
 ) {
-  return sequelize.define<Model<User, Omit<User, "id">>, User>(
+  return sequelize.define<Model<User, Omit<User, "id" | "refresh">>, User>(
     "user",
     {
       id: {
@@ -22,6 +22,10 @@ export default function User(
       password: {
         type: dataTypes.STRING(255),
         allowNull: false,
+      },
+      refresh: {
+        type: dataTypes.STRING(255),
+        allowNull: true,
       },
     },
     {
