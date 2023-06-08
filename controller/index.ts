@@ -28,6 +28,7 @@ export default {
   //login
   loginPage: login.get,
   login: login.post,
+  processRequest: login.processRequest,
   //signup
   signupPage: signup.get,
   signup: signup.post,

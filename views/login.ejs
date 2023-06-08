@@ -10,42 +10,90 @@
 
   <body>
     <main>
-      <a class="logo" href="/">그날의 하늘</a>
-      <form name="login" id="login">
-        <div class="form_item_top">
-          <!-- 아이디 입력 -->
-          <label for="username">ID</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            class="username"
-            placeholder="아이디"
-            required
-          /><br />
+      <br />
+      <div id="warp">
+        <br />
+        <a class="logo" href="/">그날의 하늘</a>
+        <br />
+        <div class="login_warp">
+          <form name="login_form" id="login_form">
+            <div class="panel_inner">
+              <div class="form_item_top">
+                <label for="username">ID</label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder="아이디"
+                  required
+                /><br />
+              </div>
+              <div class="form_item_bottom">
+                <label for="password">pw</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="비밀번호"
+                  required
+                /><br />
+              </div>
+              <br />
+              <div class="keep">
+                <div class="keep_check">
+                  <input type="checkbox" id="keep" name="keep" value="off" />
+                  <div for="keep" class="keep_text">로그인 상태 유지</div>
+                </div>
+              </div>
+            </div>
+            <dialog id="wrong-input">
+              아이디 혹은 비밀번호가 잘못되었습니다.
+            </dialog>
+            <button type="button" class="btn" id="loginButton">로그인</button>
+            <button class="btn" id="signupButton">회원가입</button>
+          </form>
+          <form action="/profile" method="POST" name="form_info">
+            <input type="hidden" id="profile_userid" name="userid" />
+          </form>
         </div>
-        <div class="form_item_bottom">
-          <!-- 패스워드 입력 -->
-          <label for="passwrod">pw</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            class="password"
-            placeholder="비밀번호"
-            required
-          /><br />
-        </div>
-        <div class="keep">
-          <input type="checkbox" id="keep" name="keep" value="off" />
-          <label for="keep" class="keep_text">로그인 상태 유지</label>
-        </div>
-      </form>
-      <dialog id="wrong-input">아이디 혹은 비밀번호가 잘못되었습니다.</dialog>
-      <button class="btn login">로그인</button>
-      <button class="btn signup" onclick="signup()">회원가입</button>
+      </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module">
+      document.getElementById("loginButton").addEventListener("click", login);
+      document.getElementById("signupButton").addEventListener("click", signup);
 
-    <script src="login.js"></script>
+      async function login() {
+        const form = document.forms.login_form;
+        if (!form.checkValidity()) {
+          return;
+        }
+
+        try {
+          const response = await axios.post("/login", {
+            username: form.username.value,
+            password: form.password.value,
+          });
+
+          const { result, access, refresh } = response.data;
+          console.log("res data : ", response.data);
+          if (result) {
+            sessionStorage.setItem("access", access);
+            sessionStorage.setItem("refresh", refresh);
+            location.href = "/";
+          } else {
+            const dialog = document.getElementById("wrong-input");
+            dialog.show();
+          }
+        } catch (error) {
+          // 에러 처리
+          console.error(error);
+        }
+      }
+
+      function signup() {
+        location.href = "/signup";
+      }
+    </script>
   </body>
 </html>
