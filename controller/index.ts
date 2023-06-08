@@ -1,7 +1,4 @@
 import { Request, Response } from "express";
-// import {  } from "@/utils";
-import { Controller } from "@/types";
-
 import login from "./login";
 import signup from "./signup";
 import calendar from "./calendar";
