@@ -5,9 +5,7 @@ import config from "@/config/token";
 import { getFromDB } from "./getDB";
 
 export default async function isLogin(req: Request, res: Response) {
-  let access = req.headers.authorization || req.cookies.access;
-  let refresh = (req.headers.refresh || req.cookies.refresh) as string;
-
+  const access = req.headers.authorization || req.cookies.access;
   try {
     // access 토큰이 존재하는 경우
     if (access) {
@@ -26,6 +24,7 @@ export default async function isLogin(req: Request, res: Response) {
   }
 
   // access 토큰이 없거나 유효하지 않은 경우에만 refresh 토큰 확인
+  const refresh = (req.headers.refresh || req.cookies.refresh) as string;
   if (!refresh) {
     res.redirect("/login");
     return;
