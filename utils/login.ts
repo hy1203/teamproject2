@@ -11,12 +11,9 @@ export default async function isLogin(req: Request, res: Response) {
   try {
     // access 토큰이 존재하는 경우
     if (access) {
-      const verifiedAccess = jwt.verify(
-        access,
-        config.ACCESS_TOKEN
-      ) as JwtPayload;
+      const { id } = jwt.verify(access, config.ACCESS_TOKEN) as jwt.JwtPayload;
 
-      return verifiedAccess.id;
+      return id;
     }
   } catch (err) {
     console.log("Access 토큰 검증 오류", err);
