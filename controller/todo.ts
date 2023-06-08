@@ -17,7 +17,6 @@ export default {
 //페이지 생성
 async function createPage(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
-  console.log(user_id);
   if (!user_id) return;
   let [year, month, date] = getDateFromUrl(req);
   if (!validateDate(year, month, date)) {
