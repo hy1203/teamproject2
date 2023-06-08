@@ -7,7 +7,6 @@ export interface User {
 
 export interface Diary {
   id: number;
-  title: string;
   content: string;
   user_id: number;
   year: number;
@@ -41,4 +40,3 @@ export interface Image {
   path: string;
   comment_id: number;
 }
-

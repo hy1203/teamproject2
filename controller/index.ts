@@ -18,8 +18,6 @@ async function index(req: Request, res: Response) {
   res.render("index");
 }
 
-// const startPage = new StartPage();
-
 export default {
   index,
   //login

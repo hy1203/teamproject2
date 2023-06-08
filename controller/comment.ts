@@ -35,7 +35,7 @@ async function create(req: Request, res: Response) {
 // comment수정
 async function update(req: Request, res: Response) {
   try {
-    const user_id = isLogin(req, res);
+    const user_id = await isLogin(req, res);
     if (!user_id) return;
     const todo_id = Number(req.params.todo_id);
     const todo = await db.todo.findOne({ where: { user_id, id: todo_id } });
@@ -60,7 +60,7 @@ async function update(req: Request, res: Response) {
 // comment 삭제
 async function destroy(req: Request, res: Response) {
   try {
-    const user_id = isLogin(req, res);
+    const user_id = await isLogin(req, res);
     if (!user_id) return;
     const todo_id = Number(req.params.todo_id);
     const todo = await db.todo.findOne({ where: { user_id, id: todo_id } });
