@@ -180,6 +180,10 @@
           }
         })
         console.log(res);
+        window.location.href = window
+          .location
+          .pathname
+          .substring(0, window.location.pathname.lastIndexOf("/"));
       }
 
       //이미지 파일 업로드 코드
