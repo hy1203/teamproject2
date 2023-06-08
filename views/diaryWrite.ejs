@@ -161,23 +161,27 @@
       </form>
     </div>
     <script>
-      // function send_diary() {
-      //   const form = document.forms["feeling_form"];
-      //   axios({
-      //     method: "POST",
-      //     url: "/diary",
-      //     data: {
-      //       feeling:form.feeling.value,
-      //       meet: form.meet.value,
-      //       write: form.diary_write.value,
-      //     }
-      //   }).then((res)=>{
-      //      console.log(res.data);
-      //      res.data;
-      //  }).then((data)=>{
-      //
-      // })
-      // }
+      async function send_diary() {
+        const form = document.forms.feeling_form;
+        const apiUrl = getApiUrl();
+        // const { access, refresh } = getTokenFromCookie();
+        const res = await axios({
+          method: "POST",
+          url: apiUrl,
+          headers: {
+            "Content-Type": "application/json",
+            "Authorizaiton": `Bearer access`,
+            "X-Refresh-Token": "refresh",
+            "Set-cookie": document.cookie
+          },
+          data: {
+            feeling:form.feeling.value,
+            title: "asd",
+            content: form.diary_write.value,
+          }
+        })
+        console.log(res);
+      }
 
       //이미지 파일 업로드 코드
       async function fileUpload() {
@@ -197,7 +201,6 @@
         return url;
       }
 
-
       //이미지 파일 미리보기 코드
       function readURL(input) {
         if (input.files) {
@@ -209,6 +212,14 @@
         } else {
           document.getElementById("img").src = "";
         }
+      }
+
+      function getApiUrl() {
+        const paths = window.location.pathname.split("/")
+        paths.pop()
+        paths.unshift("api")
+        const apiUrl = "/" + paths.join("/");
+        return apiUrl;
       }
     </script>
   </body>
