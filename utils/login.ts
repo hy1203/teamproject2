@@ -8,11 +8,8 @@ export default async function isLogin(req: Request, res: Response) {
   const access = req.headers.authorization || req.cookies.access;
   try {
     // access 토큰이 존재하는 경우
-    if (access) {
-      const { id } = jwt.verify(access, config.ACCESS_TOKEN) as jwt.JwtPayload;
-
-      return id;
-    }
+    const { id } = jwt.verify(access, config.ACCESS_TOKEN) as jwt.JwtPayload;
+    return id;
   } catch (err) {
     if (err instanceof jwt.TokenExpiredError) {
       console.log("Access 토큰 만료");
