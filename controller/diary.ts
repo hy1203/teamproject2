@@ -19,7 +19,7 @@ export default {
   redirectMonthly,
   monthly,
   daily,
-  diaryWrite,
+  write,
 };
 
 // page
@@ -63,7 +63,7 @@ async function daily(req: Request, res: Response) {
 }
 
 //다이어리 쓰기 GET
-async function diaryWrite(req: Request, res: Response) {
+async function write(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
   if (!user_id) return;
   const [year, month, date] = getDateFromUrl(req);
