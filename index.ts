@@ -1,18 +1,11 @@
-import path from "path";
 import Express from "express";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import api from "@/api";
 import route from "@/routes";
-import db from "@/models";
 
 const app = Express();
 const PORT = 8000;
-
-db.sequelize
-  .sync
-  // { force: true }
-  ();
 
 app.use(cookieParser());
 app.use(

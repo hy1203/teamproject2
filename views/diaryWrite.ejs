@@ -34,90 +34,45 @@
           <br />
           <div class="top">
             <input type="radio" name="feeling" id="happy" value="happy" />
-            <label for="happy"
-              ><img
+            <label for="happy">
+              <img
                 src="/Sunday/1.png"
                 width="100px"
                 height="100px"
                 alt="happy"
-            /></label>
+              />
+            </label>
             <input type="radio" name="feeling" id="good" value="good" />
-            <label for="good"
-              ><img src="/Sunday/2.png" width="100px" height="100px" alt="good"
-            /></label>
+            <label for="good">
+              <img
+                src="/Sunday/2.png"
+                width="100px"
+                height="100px"
+                alt="good"
+              />
+            </label>
             <input type="radio" name="feeling" id="soso" value="soso" />
-            <label for="soso"
-              ><img src="/Sunday/3.png" width="100px" height="100px" alt="soso"
-            /></label>
+            <label for="soso">
+              <img
+                src="/Sunday/3.png"
+                width="100px"
+                height="100px"
+                alt="soso"
+              />
+            </label>
             <input type="radio" name="feeling" id="not_bad" value="not bad" />
-            <label for="not_bad"
-              ><img
+            <label for="not_bad">
+              <img
                 src="/Sunday/4.png"
                 width="100px"
                 height="100px"
                 alt="notbad"
-            /></label>
+              />
+            </label>
             <input type="radio" name="feeling" id="bad" value="bad" />
-            <label for="bad"
-              ><img src="/Sunday/5.png" width="100px" height="100px" alt="bad"
-            /></label>
-          </div>
-        </fieldset>
-        <br />
-        <fieldset>
-          <div class="feelings">만난 사람</div>
-          <br />
-          <div class="top">
-            <input type="radio" name="meet" id="friend" value="친구" />
-            <label for="friend"
-              ><img
-                src="/Sunday/6.png"
-                width="130px"
-                height="130px"
-                alt="bad"
-              />
-              <p>친구</p>
+            <label for="bad">
+              <img src="/Sunday/5.png" width="100px" height="100px" alt="bad" />
             </label>
-            <input type="radio" name="meet" id="couple" value="연인" />
-            <label for="couple"
-              ><img
-                src="/Sunday/7.png"
-                width="130px"
-                height="130px"
-                alt="bad"
-              />
-              <p>연인</p>
-            </label>
-            <input type="radio" name="meet" id="family" value="가족" />
-            <label for="family"
-              ><img
-                src="/Sunday/8.png"
-                width="130px"
-                height="130px"
-                alt="bad"
-              />
-              <p>가족</p></label
-            >
-            <input type="radio" name="meet" id="ac" value="지인" />
-            <label for="ac"
-              ><img
-                src="/Sunday/9.png"
-                width="130px"
-                height="130px"
-                alt="bad"
-              />
-              <p>지인</p></label
-            >
-            <input type="radio" name="meet" id="no" value="안만남" />
-            <label for="no"
-              ><img
-                src="/Sunday/10.png"
-                width="130px"
-                height="130px"
-                alt="bad"
-              />
-              <p>안만남</p></label
-            >
           </div>
         </fieldset>
         <br />
@@ -144,16 +99,13 @@
           <div class="feelings">오늘의 일기</div>
           <br />
           <div class="txt">
-            <textarea
-              id="txtArea"
-              name="diray_write"
-              class="txt_diary"
-            ></textarea>
+            <textarea id="diary_write" name="diary_write" class="txt_diary">
+            </textarea>
           </div>
         </fieldset>
         <br />
         <div class="btn_box">
-          <button class="btn" type="button" onclick="send_diary">
+          <button class="btn" type="button" onclick="send_diary()">
             작성 완료
           </button>
         </div>
@@ -164,16 +116,10 @@
       async function send_diary() {
         const form = document.forms.feeling_form;
         const apiUrl = getApiUrl();
-        // const { access, refresh } = getTokenFromCookie();
+        fileUpload();
         const res = await axios({
           method: "POST",
           url: apiUrl,
-          headers: {
-            "Content-Type": "application/json",
-            "Authorizaiton": `Bearer access`,
-            "X-Refresh-Token": "refresh",
-            "Set-cookie": document.cookie
-          },
           data: {
             feeling:form.feeling.value,
             content: form.diary_write.value,
@@ -202,8 +148,7 @@
             "Content-Type": "multipart/form-data",
           },
         });
-        const { path } = await res.json();
-        console.log(path);
+        console.log(res);
         return url;
       }
 

@@ -54,8 +54,8 @@ async function daily(req: Request, res: Response) {
 
 //다이어리 쓰기 GET
 async function diaryWrite(req: Request, res: Response) {
-  // const user_id = isLogin(req, res);
-  // if (!user_id) return;
+  const user_id = await isLogin(req, res);
+  if (!user_id) return;
   const [year, month, date] = getDateFromUrl(req);
   if (!validateDate(year, month, date) || isFuture(year, month, date)) {
     res.redirect("/diary");
@@ -95,7 +95,8 @@ async function get(req: Request, res: Response) {
 }
 
 async function post(req: Request, res: Response) {
-  const user_id = 1; // isLogin(req, res);
+  const user_id = await isLogin(req, res);
+  console.log("user_id", user_id);
   if (!user_id) return;
   const [year, month, date] = getDateFromUrl(req);
   const { title, content } = req.body;
@@ -117,5 +118,6 @@ async function post(req: Request, res: Response) {
     res.status(500).json({ error: "DB error" });
     return;
   }
-  res.json(diary);
+
+  res.json(req.headers);
 }

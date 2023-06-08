@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import diary from '@/controller/diary'
+import { Router } from "express";
+import diary from "@/controller/diary";
 
 const route = Router();
 route.get("/:year/:month/:date", diary.get);
