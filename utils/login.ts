@@ -15,14 +15,13 @@ export default async function isLogin(req: Request, res: Response) {
       access,
       config.ACCESS_TOKEN
     ) as jwt.JwtPayload;
+
+    // access 토큰이 유효하고 인증된 경우
+    if (verifiedAccess.authed) return verifiedAccess.id;
     const verifiedRefresh = jwt.verify(
       refresh,
       config.REFRESH_TOKEN!
     ) as jwt.JwtPayload;
-
-    // access 토큰이 유효하고 인증된 경우
-    if (verifiedAccess.authed) return verifiedAccess.id;
-
     // refresh 토큰이 만료되지 않았고 인증된 경우
     if (verifiedRefresh.authed) {
       const { id } = verifiedRefresh;
