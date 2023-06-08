@@ -18,6 +18,7 @@ export default {
   redirectMonthly,
   monthly,
   daily,
+  diaryWrite,
 };
 
 // page
@@ -45,10 +46,22 @@ function daily(req: Request, res: Response) {
   if (!user_id) return;
   const [year, month, date] = getDateFromUrl(req);
   if (!validateDate(year, month, date) || isFuture(year, month, date)) {
-    res.redirect("/diary/");
+    res.redirect("/diary");
     return;
   }
   res.render("diary", { year, month, date });
+}
+
+//다이어리 쓰기 GET
+async function diaryWrite(req: Request, res: Response) {
+  const user_id = isLogin(req, res);
+  if (!user_id) return;
+  const [year, month, date] = getDateFromUrl(req);
+  if (!validateDate(year, month, date) || isFuture(year, month, date)) {
+    res.redirect("/diary");
+    return;
+  }
+  res.render("diaryWrite", { year, month, date });
 }
 
 // api
