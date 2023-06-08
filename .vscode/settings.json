@@ -5,7 +5,6 @@
   "prettier.bracketSameLine": false,
   "prettier.semi": true,
   "prettier.bracketSpacing": true,
-  "cSpell.words": ["todocalendar", "todos"],
   "editor.formatOnSave": true,
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -26,5 +25,12 @@
     "editor.tabSize": 2,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "cSpell.words": ["authed", "signin", "todos", "userid"]
+  "cSpell.words": [
+    "authed",
+    "signin",
+    "todos",
+    "userid",
+    "todocalendar",
+    "todos"
+  ]
 }
