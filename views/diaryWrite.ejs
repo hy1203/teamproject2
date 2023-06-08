@@ -180,20 +180,23 @@
       // }
 
       //이미지 파일 업로드 코드
-      function fileUpload() {
+      async function fileUpload() {
         const formData = new FormData();
         const file = document.getElementById("upload");
         formData.append("upload", file.files[0]);
 
-        axios({
+        const res = await axios({
           method: "POST",
-          url: "/diary_write/upload",
+          url: "/upload",
           data: formData,
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
+        const { url } = await res.json();
+        return url;
       }
+
 
       //이미지 파일 미리보기 코드
       function readURL(input) {
