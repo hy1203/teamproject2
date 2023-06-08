@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>그날의 하늘</title>
+  </head>
+  <body>
+    <div class="">
+      <a class="" href="/">그날의 하늘</a>
+    </div>
+    <div class="">
+      <h3>Welcome</h3>
+      <button class="" onclick="login()">로그인</button>
+      <button class="" onclick="signup()">회원가입</button>
+    </div>
+
+    <script>
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = today.getMonth() + 1;
+      const date = today.getDate();
+      const anchor = document.createElement('a');
+      anchor.href = `/todo/${year}/${month}/${date}`;
+      anchor.textContent = '오늘의 할 일';
+      document.body.append(anchor)
+      function signup() {
+          location.href = '/signup';
+      }
+      function login() {
+          location.href = '/login';
+      }
+    </script>
+  </body>
+</html>
