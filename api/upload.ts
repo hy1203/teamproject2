@@ -1,23 +1,12 @@
-import path from "path";
 import { Router } from "express";
 import multer from "multer";
+import upload from "@/controller/upload";
 
-const uploadDetail = multer({
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, "views/uploads/");
-    },
-    filename(req, file, done) {
-      const ext = path.extname(file.originalname);
-      done(null, path.basename(file.originalname, ext) + Date.now() + ext);
-    },
-  }),
-});
+// multer.memoryStorage : 메모리에 임시 파일로 저장
+const memoryStorage = multer({ storage: multer.memoryStorage() });
 
 const route = Router();
 
-route.post("/", uploadDetail.single("upload"), (req, res) => {
-  res.json({ url: `/upload/${req?.file?.filename}` });
-});
+route.post("/:year/:month/:date", memoryStorage.single("upload"), upload.image);
 
 export default route;

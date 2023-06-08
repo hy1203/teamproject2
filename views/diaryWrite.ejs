@@ -187,17 +187,20 @@
       async function fileUpload() {
         const formData = new FormData();
         const file = document.getElementById("upload");
+        const uploadUrl = getUploadUrl();
+        console.log(uploadUrl);
         formData.append("upload", file.files[0]);
 
         const res = await axios({
           method: "POST",
-          url: "/upload",
+          url: uploadUrl,
           data: formData,
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
-        const { url } = await res.json();
+        const { path } = await res.json();
+        console.log(path);
         return url;
       }
 
@@ -219,6 +222,12 @@
         paths.pop()
         paths.unshift("api")
         const apiUrl = "/" + paths.join("/");
+        return apiUrl;
+      }
+
+      function getUploadUrl() {
+        const paths = window.location.pathname.split("/").slice(2, -1);
+        const apiUrl = "/" + ["api", "upload"].concat(paths).join("/");
         return apiUrl;
       }
     </script>
