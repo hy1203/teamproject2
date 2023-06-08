@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-
 import db from "@/models";
-import { User } from "@/types/models";
 
 export default {
   get,
@@ -21,11 +19,12 @@ async function post(req: Request, res: Response) {
     res.send({ result: false });
     return;
   }
+  const { username, password } = req.body;
   const result = await db.user.create({
-    username: req.body.username,
-    password: req.body.password,
+    username,
+    password,
   });
-  const { id, username, password } = await result.toJSON<User>();
+  const { id } = result.toJSON();
   req.session.user = id; // 세션에 사용자 정보 저장
   try {
     res.send({

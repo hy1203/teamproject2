@@ -2,17 +2,27 @@ export interface User {
   id: number;
   username: string;
   password: string;
+  refresh?: string;
 }
+
 export interface Diary {
   id: number;
   title: string;
   content: string;
-  date: string;
+  user_id: number;
+  year: number;
+  month: number;
+  date: number;
 }
 
 export interface Todo {
   id: number;
+  user_id: number;
   content: string;
+  year: number;
+  month: number;
+  date: number;
+  checked?: boolean;
 }
 
 export interface Emotion {
@@ -22,6 +32,7 @@ export interface Emotion {
 
 export interface Comment {
   id: number;
+  todo_id: number;
   content: string;
   emotion_id: number;
 }

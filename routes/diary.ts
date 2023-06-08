@@ -3,9 +3,8 @@ import { Router } from 'express';
 import diary from '@/controller/diary';
 
 const route = Router();
-route.get("/:year/:month/:day", diary.get);
-route.post("/:year/:month/:day", diary.post);
-route.get("/:year/:month", diary.gets);
-route.get("/", diary.redirectGets);
+route.get("/:year/:month/:date", diary.daily);
+route.get("/:year/:month", diary.monthly);
+route.get("*", diary.redirectMonthly);
 
 export default route;

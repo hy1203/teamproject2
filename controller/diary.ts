@@ -1,69 +1,102 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 import db from "@/models";
-import { validateDate, isFuture, isLogin } from '@/utils';
-import { Controller } from '@/types';
-import { Diary } from '@/types/models';
+import {
+  validateDate,
+  isFuture,
+  isLogin,
+  today,
+  getDateFromUrl,
+  getFromDB,
+  getAllFromDB,
+  createFromDB,
+} from "@/utils";
 
-const { diary } = db;
-
-export default <Controller>{
+export default {
   get,
   gets,
-  redirectGets,
   post,
+  redirectMonthly,
+  monthly,
+  daily,
 };
 
-async function redirectGets(req: Request, res: Response) {
-  const user_id = isLogin(req, res);
+// page
+
+async function redirectMonthly(req: Request, res: Response) {
+  const user_id = await isLogin(req, res);
   if (!user_id) return;
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
+  const [year, month] = today();
   res.redirect(`/diary/${year}/${month}`);
 }
 
-async function gets(req: Request, res: Response) {
-  const [year, month] = ["year", "month"]
-    .map((key) => req.params[key])
-    .map(Number);
-  const user_id = isLogin(req, res);
+async function monthly(req: Request, res: Response) {
+  const user_id = await isLogin(req, res);
   if (!user_id) return;
+  const [year, month] = getDateFromUrl(req);
   if (!validateDate(year, month, 1) || isFuture(year, month, 1)) {
-    res.redirect("/");
+    res.redirect("/diary/");
     return;
   }
-  const result = await diary.findAll({
+  res.render("diaries", { year, month });
+}
+
+async function daily(req: Request, res: Response) {
+  const user_id = await isLogin(req, res);
+  if (!user_id) return;
+  const [year, month, date] = getDateFromUrl(req);
+  if (!validateDate(year, month, date) || isFuture(year, month, date)) {
+    res.redirect("/diary/");
+    return;
+  }
+  res.render("diary", { year, month, date });
+}
+
+// api
+
+async function gets(req: Request, res: Response) {
+  const user_id = await isLogin(req, res);
+  if (!user_id) return;
+  const [year, month] = getDateFromUrl(req);
+  if (!validateDate(year, month, 1) || isFuture(year, month, 1)) {
+    res.redirect("/diary/");
+    return;
+  }
+  const diaries = await getAllFromDB(db.diary, {
     where: { user_id, year, month },
   });
-  const diaries = result.map((r) => r?.toJSON<Diary>());
-  // res.render("diary", { year, month, diaries });
-  res.send({ year, month, diaries });
+  res.json(diaries);
 }
 
 async function get(req: Request, res: Response) {
-  const user_id = isLogin(req, res);
+  const user_id = await isLogin(req, res);
   if (!user_id) return;
-  const [year, month, date] = ["year", "month", "date"]
-    .map((key) => req.params[key])
-    .map(Number);
+  const [year, month, date] = getDateFromUrl(req);
   if (!validateDate(year, month, date) || isFuture(year, month, date)) {
-    res.redirect("/");
+    res.redirect("/diary/");
     return;
   }
-  const result = await diary.findOne({
+  const diary = await getFromDB(db.diary, {
     where: { user_id, year, month, date },
   });
-  const diaries = result?.toJSON<Diary>();
-  res.render("diary", { year, month, date, diaries });
+  res.json(diary);
 }
 
 async function post(req: Request, res: Response) {
-  const [year, month, date] = ["year", "month", "date"]
-    .map((key) => req.params[key])
-    .map(Number);
-  const { content } = req.body;
-  const user_id = isLogin(req, res);
+  const user_id = await isLogin(req, res);
   if (!user_id) return;
-  await diary.upsert({ user_id, year, month, date, content });
-  res.redirect(`/diary/${year}/${month}/${date}`);
+  const [year, month, date] = getDateFromUrl(req);
+  const { title, content } = req.body;
+  const diary = await createFromDB(db.diary, {
+    user_id,
+    year,
+    month,
+    date,
+    title,
+    content,
+  });
+  if (!diary) {
+    res.status(400).send("잘못된 요청입니다.");
+    return;
+  }
+  res.json(diary);
 }
