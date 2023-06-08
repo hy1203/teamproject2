@@ -28,12 +28,9 @@ export default async function isLogin(req: Request, res: Response) {
   }
 
   try {
-    const verifiedRefresh = jwt.verify(
-      refresh,
-      config.REFRESH_TOKEN!
-    ) as JwtPayload;
-
-    const { id } = verifiedRefresh;
+    // refresh 토큰이 유효한 경우 유저 ID 반환
+    const { id } = jwt.verify(refresh, config.REFRESH_TOKEN!) as jwt.JwtPayload;
+    // DB에서 유저 refresh 가져오기
     const user = await getFromDB(db.user, { where: { id } });
     if (!user) throw new Error("유저 정보 없음");
     if (user.refresh !== refresh) {
