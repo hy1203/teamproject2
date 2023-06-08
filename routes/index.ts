@@ -10,7 +10,6 @@ route.get("/", controller.index);
 // login route
 route.get("/login", controller.loginPage);
 route.post("/login", controller.login);
-// route.get("/protected", controller.processRequest);
 // signup route
 route.get("/signup", controller.signupPage);
 route.post("/signup", controller.signup);
