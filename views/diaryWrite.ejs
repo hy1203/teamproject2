@@ -136,6 +136,9 @@
       async function fileUpload() {
         const formData = new FormData();
         const file = document.getElementById("upload");
+        if (!file.files[0]) {
+          return;
+        }
         const uploadUrl = getUploadUrl();
         console.log(uploadUrl);
         formData.append("upload", file.files[0]);
