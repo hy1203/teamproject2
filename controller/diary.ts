@@ -23,15 +23,15 @@ export default {
 
 // page
 
-function redirectMonthly(req: Request, res: Response) {
-  const user_id = isLogin(req, res);
+async function redirectMonthly(req: Request, res: Response) {
+  const user_id = await isLogin(req, res);
   if (!user_id) return;
   const [year, month] = today();
   res.redirect(`/diary/${year}/${month}`);
 }
 
-function monthly(req: Request, res: Response) {
-  const user_id = isLogin(req, res);
+async function monthly(req: Request, res: Response) {
+  const user_id = await isLogin(req, res);
   if (!user_id) return;
   const [year, month] = getDateFromUrl(req);
   if (!validateDate(year, month, 1) || isFuture(year, month, 1)) {
@@ -41,8 +41,8 @@ function monthly(req: Request, res: Response) {
   res.render("diaries", { year, month });
 }
 
-function daily(req: Request, res: Response) {
-  const user_id = isLogin(req, res);
+async function daily(req: Request, res: Response) {
+  const user_id = await isLogin(req, res);
   if (!user_id) return;
   const [year, month, date] = getDateFromUrl(req);
   if (!validateDate(year, month, date) || isFuture(year, month, date)) {
@@ -67,7 +67,7 @@ async function diaryWrite(req: Request, res: Response) {
 // api
 
 async function gets(req: Request, res: Response) {
-  const user_id = isLogin(req, res);
+  const user_id = await isLogin(req, res);
   if (!user_id) return;
   const [year, month] = getDateFromUrl(req);
   if (!validateDate(year, month, 1) || isFuture(year, month, 1)) {
@@ -81,7 +81,7 @@ async function gets(req: Request, res: Response) {
 }
 
 async function get(req: Request, res: Response) {
-  const user_id = isLogin(req, res);
+  const user_id = await isLogin(req, res);
   if (!user_id) return;
   const [year, month, date] = getDateFromUrl(req);
   if (!validateDate(year, month, date) || isFuture(year, month, date)) {

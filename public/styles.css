@@ -9,7 +9,7 @@
 }
 
 body {
-  background-color: rgb(136, 197, 221);
+  background-color: rgb(242, 246, 247);
   overflow: hidden;
 }
 
@@ -32,7 +32,11 @@ td {
   text-align: center;
   float: left;
   margin-top: 5%;
+  margin-left: 25%;
   font-family: "TTWanjudaedunsancheB";
+  background-color: #ffffff;
+  border-radius: 20px 20px 20px 20px;
+  padding: 1%;
 }
 
 .Calendar > thead > tr:first-child > td {
@@ -53,9 +57,10 @@ td {
   border-radius: 45px;
   transition-duration: 0.2s;
   line-height: 45px;
-  margin: 2.5px;
+  margin: 2.8px;
   display: block;
-  text-align: center;
+  text-align: left;
+  font-size: 4px;
 }
 
 .pastDay {
@@ -139,10 +144,18 @@ a {
 .main-css {
   max-width: 740px;
   margin: 4% auto;
-  background: #ffffff;
+  background-color: #a8cce7;
+  /* background: #ffffff; */
   height: 815px;
   width: 742px;
   overflow: hidden;
+}
+.main-css2 {
+  max-width: 740px;
+  margin: 4% auto;
+  background: #ffffff;
+  height: 1000px;
+  width: 742px;
 }
 
 .navbar1__menu {
@@ -156,8 +169,10 @@ a {
 .navbar1__menu li {
   padding: 8px 30px;
 }
+
 .bottom {
   background: #ffffff;
+  /* background-color: #99bcf1; */
   position: fixed;
   bottom: 0;
   left: 0;
@@ -165,13 +180,23 @@ a {
   max-width: 740px;
   width: 80%;
   margin: 0 auto;
+  height: 90px;
   font-family: "TTWanjudaedunsancheB";
+  font-size: larger;
 }
-.bottom-item {
+.bottom-item1 {
   float: left;
-  width: 23%;
+  width: 30%;
   height: 8%;
   text-align: center;
+  margin-left: 5%;
+}
+.bottom-item2 {
+  float: right;
+  width: 25%;
+  height: 8%;
+  text-align: center;
+  margin-right: 8%;
 }
 .top {
   background: #ffffff;
@@ -208,8 +233,8 @@ a {
   height: 290px;
   width: 500px;
   border: 2px solid;
-  margin-left: -17%;
-  margin-top: 6%;
+  margin-left: 17%;
+  margin-top: 2%;
 }
 .box {
   -ms-overflow-style: none; /* IE and Edge */
@@ -298,15 +323,36 @@ fieldset {
   margin-top: 0%;
 }
 .write-button {
-  background-color: #dada3b;
-  width: 25%;
-  font-size: 15px;
+  /* background-color: #dada3b; */
+  width: 65px;
   font-family: "TTWanjudaedunsancheB";
-  margin-top: 15%;
-  margin-left: 35%;
   border-radius: 30px 30px 30px 30px;
-  position: relative;
-  z-index: 2;
+  margin-left: 13%;
+  margin-top: -1%;
+}
+.show-month-day {
+  font-family: "TTWanjudaedunsancheB";
+  margin-left: -2%;
+}
+.modify-box {
+  height: 30px;
+  margin-top: -10%;
+}
+.modify1 {
+  margin-left: 60%;
+  margin-top: -20%;
+  width: 30px;
+  height: 30px;
+}
+.modify2 {
+  margin-left: 3%;
+  margin-top: -20%;
+  width: 30px;
+  height: 30px;
+}
+.daytext {
+  size: 5px;
+  background-color: #b0d331;
 }
 
 @media (min-width: 691px) and (max-width: 900px) {

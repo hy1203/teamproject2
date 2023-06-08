@@ -60,13 +60,17 @@
                 안녕하세요<br />안녕하세요<br />안녕하세요<br /></div> -->
             <div class="hi box">
                 <div><img src="../image/dailylogo3.png" class="diaryimg"></img></div>
-                <div><span id="calMonth">ㅎㅎ</span></div>
-                <div class="hiline">하이안녕하세요<br />안녕하세요<br />안녕하세요<br />
-                    안녕하세요<br />안녕하세요<br />안녕하세요<br />안녕하세요<br />
-                    안녕하세요<br />안녕하세요<br />안녕하세요<br />안녕하세요<br />
-                    안녕하세요<br />안녕하세요<br />안녕하세요<br /></div>
+                <div class="show-month-day"><span id="Monthshow">X월</span><span id="Dayshow">X일</span></div>
+                <div class="hiline">
+                    <div class="modify-box">
+                        <img class="modify1" src="../image/updateimg.png" onclick="updateClick()">
+                        <img class="modify2" src="../image/deleteimg.png" onclick="deleteClick()">
+                    </div>
+                    <div>comment</div>
+                    <div>img</div>
+                </div>
             </div>
-            <button class="write-button">글쓰기</button>
+            <!-- <button class="write-button">글쓰기</button> -->
 
             <div class="bottom">
                 <div class="bottom-item">달력보기</div>
@@ -79,17 +83,20 @@
 
 </body>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var calMonth = localStorage.getItem("calMonth");
-        var calMonthElement = document.getElementById("calMonth");
-        calMonthElement.innerText = calMonth;
-    });
+    function updateClick() {
+        console.log('수정하세요')
+    }
+    function deleteClick() {
+        console.log('삭제하세요')
+    }
+
     window.onload = function () { buildCalendar(); }    // 웹 페이지가 로드되면 buildCalendar 실행
     let newDIV = document.createElement("p");
 
     let nowMonth = new Date();  // 현재 달을 페이지를 로드한 날의 달로 초기화
     let today = new Date();     // 페이지를 로드한 날짜를 저장
     today.setHours(0, 0, 0, 0);    // 비교 편의를 위해 today의 시간을 초기화
+    const calMonth = document.getElementById("calMonth");
 
     // 달력 생성 : 해당 달에 맞춰 테이블을 만들고, 날짜를 채워 넣는다.
     function buildCalendar() {
@@ -100,6 +107,8 @@
         let tbody_Calendar = document.querySelector(".Calendar > tbody");
         document.getElementById("calYear").innerText = nowMonth.getFullYear();             // 연도 숫자 갱신
         document.getElementById("calMonth").innerText = leftPad(nowMonth.getMonth() + 1);  // 월 숫자 갱신
+
+
 
         while (tbody_Calendar.rows.length > 0) {                        // 이전 출력결과가 남아있는 경우 초기화
             tbody_Calendar.deleteRow(tbody_Calendar.rows.length - 1);
@@ -165,6 +174,8 @@
         localStorage.setItem("calYear", calYear.innerText);
         localStorage.setItem("calMonth", calMonth.innerText);
         localStorage.setItem("calDay", newDIV.innerText);
+        document.getElementById('Monthshow').innerText = `${calMonth.innerText}월`
+        document.getElementById('Dayshow').innerText = `${newDIV.innerText}일`
 
     }
 

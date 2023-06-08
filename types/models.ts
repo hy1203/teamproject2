@@ -2,6 +2,7 @@ export interface User {
   id: number;
   username: string;
   password: string;
+  refresh?: string;
 }
 
 export interface Diary {
