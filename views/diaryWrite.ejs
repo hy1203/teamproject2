@@ -18,8 +18,18 @@
     <div id="main">
       <header>
         <div class="top">
-          <div></div>
-          <div class="date">6월 5일</div>
+          <div>
+            <a href="/"
+              ><img
+                src="../Sunday/home.png"
+                width="40"
+                height="40"
+                class="home"
+                alt="home"
+            /></a>
+          </div>
+          <!-- 날짜는 누를때 마다 그 날짜로 변경되어야함 -->
+          <div class="date">6월 8일</div>
           <a href="/" class="close"></a>
         </div>
       </header>
@@ -29,6 +39,14 @@
         class="form_feeling"
         enctype="multipart/form-data"
       >
+        <!-- 제목 작성 -->
+        <fieldset>
+          <div class="feelings">오늘의 제목</div>
+          <br />
+          <input type="text" name="title" class="title" />
+        </fieldset>
+        <br />
+        <!-- 기분 선택 -->
         <fieldset>
           <div class="feelings">오늘의 기분</div>
           <br />
@@ -63,7 +81,7 @@
             /></label>
           </div>
         </fieldset>
-        <br />
+        <!-- <br />
         <fieldset>
           <div class="feelings">만난 사람</div>
           <br />
@@ -119,8 +137,9 @@
               <p>안만남</p></label
             >
           </div>
-        </fieldset>
+        </fieldset> -->
         <br />
+        <!-- 사진 올리는 부분 -->
         <fieldset>
           <div class="feelings">오늘의 사진</div>
           <br />
@@ -140,6 +159,7 @@
           <img id="img" src="" width="200" />
         </fieldset>
         <br />
+        <!-- 일기쓰는 부분 -->
         <fieldset>
           <div class="feelings">오늘의 일기</div>
           <br />
@@ -161,23 +181,21 @@
       </form>
     </div>
     <script>
-      // function send_diary() {
-      //   const form = document.forms["feeling_form"];
-      //   axios({
-      //     method: "POST",
-      //     url: "/diary",
-      //     data: {
-      //       feeling:form.feeling.value,
-      //       meet: form.meet.value,
-      //       write: form.diary_write.value,
-      //     }
-      //   }).then((res)=>{
-      //      console.log(res.data);
-      //      res.data;
-      //  }).then((data)=>{
-      //
-      // })
-      // }
+      function send_diary() {
+        const form = document.forms["feeling_form"];
+        axios({
+          method: "POST",
+          url: "/diary",
+          data: {
+            title: form.title.value,
+            feeling: form.feeling.value,
+            write: form.diary_write.value,
+          },
+        }).then((res) => {
+          console.log(res.data);
+          res.data;
+        });
+      }
 
       //이미지 파일 업로드 코드
       function fileUpload() {

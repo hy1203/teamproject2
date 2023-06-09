@@ -8,6 +8,9 @@ body {
   width: 740px;
   border-radius: 5px;
 }
+.home {
+  margin-left: 5px;
+}
 .top {
   align-items: center;
   display: flex;
@@ -39,7 +42,15 @@ input[type="radio"] + label {
   filter: grayscale(1);
   cursor: pointer;
 }
-
+.title {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 2px solid black;
+  width: 100%;
+  font-family: "KyoboHand";
+  font-size: 24px;
+}
 .form_feeling input[type="radio"]:checked + label {
   filter: grayscale(0);
   font-weight: bold;
