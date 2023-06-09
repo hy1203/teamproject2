@@ -18,6 +18,7 @@ export default {
   redirectMonthly,
   monthly,
   daily,
+  diaryWrite,
 };
 
 // page
@@ -45,10 +46,22 @@ async function daily(req: Request, res: Response) {
   if (!user_id) return;
   const [year, month, date] = getDateFromUrl(req);
   if (!validateDate(year, month, date) || isFuture(year, month, date)) {
-    res.redirect("/diary/");
+    res.redirect("/diary");
     return;
   }
   res.render("diary", { year, month, date });
+}
+
+//다이어리 쓰기 GET
+async function diaryWrite(req: Request, res: Response) {
+  const user_id = await isLogin(req, res);
+  if (!user_id) return;
+  const [year, month, date] = getDateFromUrl(req);
+  if (!validateDate(year, month, date) || isFuture(year, month, date)) {
+    res.redirect("/diary");
+    return;
+  }
+  res.render("diaryWrite", { year, month, date });
 }
 
 // api
@@ -83,9 +96,16 @@ async function get(req: Request, res: Response) {
 
 async function post(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
+  console.log("user_id", user_id);
   if (!user_id) return;
   const [year, month, date] = getDateFromUrl(req);
   const { title, content } = req.body;
+  console.log(req.body);
+  if (!validateDate(year, month, date) || isFuture(year, month, date)) {
+    res.status(400).json({ error: "Invalid date" });
+    return;
+  }
+
   const diary = await createFromDB(db.diary, {
     user_id,
     year,
@@ -95,8 +115,9 @@ async function post(req: Request, res: Response) {
     content,
   });
   if (!diary) {
-    res.status(400).send("잘못된 요청입니다.");
+    res.status(500).json({ error: "DB error" });
     return;
   }
-  res.json(diary);
+
+  res.json(req.headers);
 }
