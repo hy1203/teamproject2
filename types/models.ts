@@ -6,7 +6,6 @@ export interface User {
 }
 
 export interface Diary {
-  id: number;
   content: string;
   user_id: number;
   year: number;
