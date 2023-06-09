@@ -104,7 +104,9 @@ async function get(req: Request, res: Response) {
   const diary = await getFromDB(db.diary, {
     where: { user_id, year, month, date },
   });
-  res.json(diary);
+  const image = getImageNameIfHave(year, month, date, user_id) || "";
+
+  res.json({ ...diary, image });
 }
 
 async function post(req: Request, res: Response) {
