@@ -12,6 +12,7 @@ export interface Diary {
   year: number;
   month: number;
   date: number;
+  emotion_id?: number;
 }
 
 export interface Todo {

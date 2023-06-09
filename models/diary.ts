@@ -29,6 +29,14 @@ export default function diary(
         type: dataTypes.INTEGER,
         allowNull: false,
       },
+      emotion_id: {
+        type: dataTypes.INTEGER,
+        references: {
+          model: "emotion",
+          key: "id",
+        },
+        allowNull: true,
+      },
       user_id: {
         type: dataTypes.INTEGER,
         references: {
