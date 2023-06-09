@@ -1,7 +1,4 @@
 import { Request, Response } from "express";
-// import {  } from "@/utils";
-import { Controller } from "@/types";
-
 import login from "./login";
 import signup from "./signup";
 import calendar from "./calendar";
@@ -22,8 +19,6 @@ async function index(req: Request, res: Response) {
   res.render("index");
 }
 
-// const startPage = new StartPage();
-
 export default {
   index,
   //login
@@ -34,7 +29,7 @@ export default {
   signupPage: signup.get,
   signup: signup.post,
   // todo calendar
-  todoCalendar: calendar.get,
+  todoCalendar: calendar.page,
   // startpage
   StartPage: startpage.get,
   //dairy
