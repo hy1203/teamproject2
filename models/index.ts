@@ -17,6 +17,12 @@ const comment = Comment(sequelize, DataTypes);
 const emotion = Emotion(sequelize, DataTypes);
 const diary = Diary(sequelize, DataTypes);
 
+emotion.upsert({ id: 1, feel: "happy" });
+emotion.upsert({ id: 2, feel: "good" });
+emotion.upsert({ id: 3, feel: "soso" });
+emotion.upsert({ id: 4, feel: "not_bad" });
+emotion.upsert({ id: 5, feel: "bad" });
+
 export default {
   sequelize,
   Sequelize,
