@@ -49,16 +49,20 @@ async function daily(req: Request, res: Response) {
     res.redirect("/diary");
     return;
   }
-  const diary = await getFromDB(db.diary, {
+  const diary = await db.diary.findOne({
     where: { user_id, year, month, date },
   });
   if (!diary) {
     res.redirect(`/diary/${year}/${month}/${date}/write`);
     return;
   }
-  const { content } = diary;
+  const { content, emotion_id } = diary.dataValues;
+  const emotion = emotion_id
+    ? await getFromDB(db.emotion, { where: { id: emotion_id } })
+    : null;
+  const feel = emotion ? `/feel/${emotion.feel}.png` : "";
   const image = getImageNameIfHave(year, month, date, user_id) || "";
-  res.render("diary", { year, month, date, content, image });
+  res.render("diary", { year, month, date, content, image, feel });
 }
 
 //다이어리 쓰기 GET
