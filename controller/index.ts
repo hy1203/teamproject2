@@ -29,6 +29,6 @@ export default <Controller>{
   // todo calendar
   todoCalendar: calendar.get,
 
-  redirectGets: emotion.redirectGets,
+  get: emotion.get,
   emotionIndex: emotion.emotionIndex,
 };

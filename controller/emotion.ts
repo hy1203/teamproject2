@@ -3,15 +3,29 @@ import db from "@/models";
 import { validateDate, isFuture, isLogin } from "@/utils";
 import { Controller } from "@/types";
 import { Emotion } from "@/types/models";
+import route from "@/routes";
 
-const { emotion } = db;
+const { emotion, diary } = db;
 
 export default {
-  redirectGets,
+  get,
   emotionIndex,
 };
 
-async function redirectGets(req: Request, res: Response) {
+async function get(req: Request, res: Response) {
+  // const user_id = isLogin(req, res);
+  // if (!user_id) return;
+
+  // console.log(req.params);
+
+  // const calendar = await diary.findAll({
+  //   where: {
+  //     user_id,
+  //     month: Number(req.params.month),
+  //     year: Number(req.params.year),
+  //   },
+  // }); 결과물을 보기 위해서 주석처리
+
   const Happy = await emotion.findAll({
     attributes: ["id", "feel"],
     where: { feel: 1 },
