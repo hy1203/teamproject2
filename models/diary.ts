@@ -13,10 +13,6 @@ export default function diary(
         primaryKey: true,
         autoIncrement: true,
       },
-      title: {
-        type: dataTypes.STRING(255),
-        allowNull: false,
-      },
       content: {
         type: dataTypes.TEXT,
         allowNull: false,

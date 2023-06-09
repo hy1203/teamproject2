@@ -2,10 +2,11 @@ export interface User {
   id: number;
   username: string;
   password: string;
+  refresh?: string;
 }
+
 export interface Diary {
   id: number;
-  title: string;
   content: string;
   user_id: number;
   year: number;
@@ -20,6 +21,7 @@ export interface Todo {
   year: number;
   month: number;
   date: number;
+  checked?: boolean;
 }
 
 export interface Emotion {
@@ -38,4 +40,3 @@ export interface Image {
   path: string;
   comment_id: number;
 }
-

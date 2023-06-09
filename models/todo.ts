@@ -38,6 +38,11 @@ export default function todo(
         },
         allowNull: false,
       },
+      checked: {
+        type: dataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     },
     {
       tableName: "todo",

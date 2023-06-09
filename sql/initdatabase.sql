@@ -8,8 +8,11 @@ USE today_sky;
 CREATE TABLE USER (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    refresh VARCHAR(255) NOT NULL DEFAULT 'default_value'
+    
 );
+
 
 -- DIARY 테이블 생성
 CREATE TABLE DIARY (
