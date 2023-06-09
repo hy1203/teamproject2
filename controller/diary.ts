@@ -8,7 +8,6 @@ import {
   getDateFromUrl,
   getFromDB,
   getAllFromDB,
-  createFromDB,
   getImageNameIfHave,
 } from "@/utils";
 
@@ -115,7 +114,7 @@ async function post(req: Request, res: Response) {
   }
   const emotion_id = emotion ? Number(emotion) : undefined;
 
-  const diary = await createFromDB(db.diary, {
+  const [diary, isCreated] = await db.diary.upsert({
     user_id,
     year,
     month,
@@ -127,6 +126,6 @@ async function post(req: Request, res: Response) {
     res.status(500).json({ error: "DB error" });
     return;
   }
-
-  res.json(req.headers);
+  diary.save();
+  res.status(201).json({ isCreated, diary: diary.dataValues });
 }
