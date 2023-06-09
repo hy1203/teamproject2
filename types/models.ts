@@ -6,12 +6,12 @@ export interface User {
 }
 
 export interface Diary {
-  id: number;
   content: string;
   user_id: number;
   year: number;
   month: number;
   date: number;
+  emotion_id?: number;
 }
 
 export interface Todo {
