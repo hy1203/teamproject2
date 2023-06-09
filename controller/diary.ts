@@ -38,7 +38,7 @@ async function monthly(req: Request, res: Response) {
     res.redirect("/diary/");
     return;
   }
-  res.render("diaries", { year, month });
+  res.render("monthly", { year, month });
 }
 
 async function daily(req: Request, res: Response) {
