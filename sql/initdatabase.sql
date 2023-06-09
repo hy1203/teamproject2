@@ -10,7 +10,6 @@ CREATE TABLE USER (
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     refresh VARCHAR(255) NOT NULL DEFAULT 'default_value'
-    
 );
 
 

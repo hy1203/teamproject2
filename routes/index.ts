@@ -25,14 +25,20 @@ route.use("/diary", diary);
 route.get("/todocalendar", controller.todoCalendar);
 route.get("/todo-zh", (req, res) => res.render("todo-zh"));
 
-route.get("/timeline", function (req, res) {
-  res.render("timeline");
+route.get("/diarytimeline", function (req, res) {
+  res.render("diarytimeline");
+});
+route.get("/todotimeline", function (req, res) {
+  res.render("todotimeline");
 });
 route.get("/dairy", function (req, res) {
   res.render("dairy");
 });
 route.get("/startpage", function (req, res) {
   res.render("startpage");
+});
+route.get("/todocalendar", function (req, res) {
+  res.render("todocalendar");
 });
 
 export default route;
