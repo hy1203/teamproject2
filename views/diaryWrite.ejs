@@ -33,7 +33,7 @@
           <div class="feelings">오늘의 기분</div>
           <br />
           <div class="top">
-            <input type="radio" name="feeling" id="happy" value="happy" />
+            <input type="radio" name="feeling" id="happy" value="1" />
             <label for="happy">
               <img
                 src="/Sunday/1.png"
@@ -42,7 +42,7 @@
                 alt="happy"
               />
             </label>
-            <input type="radio" name="feeling" id="good" value="good" />
+            <input type="radio" name="feeling" id="good" value="2" />
             <label for="good">
               <img
                 src="/Sunday/2.png"
@@ -51,7 +51,7 @@
                 alt="good"
               />
             </label>
-            <input type="radio" name="feeling" id="soso" value="soso" />
+            <input type="radio" name="feeling" id="soso" value="3" />
             <label for="soso">
               <img
                 src="/Sunday/3.png"
@@ -60,7 +60,7 @@
                 alt="soso"
               />
             </label>
-            <input type="radio" name="feeling" id="not_bad" value="not bad" />
+            <input type="radio" name="feeling" id="not_bad" value="4" />
             <label for="not_bad">
               <img
                 src="/Sunday/4.png"
@@ -69,7 +69,7 @@
                 alt="notbad"
               />
             </label>
-            <input type="radio" name="feeling" id="bad" value="bad" />
+            <input type="radio" name="feeling" id="bad" value="5" />
             <label for="bad">
               <img src="/Sunday/5.png" width="100px" height="100px" alt="bad" />
             </label>
@@ -92,7 +92,7 @@
             </button>
           </div>
           <br />
-          <img id="img" src="" width="200" />
+          <img id="img" src="" width="200" name="img" />
         </fieldset>
         <br />
         <fieldset>
@@ -105,7 +105,7 @@
         </fieldset>
         <br />
         <div class="btn_box">
-          <button class="btn" type="button" onclick="send_diary()">
+          <button class="btn" type="button" onclick="sendDiary()">
             작성 완료
           </button>
         </div>
@@ -113,15 +113,14 @@
       </form>
     </div>
     <script>
-      async function send_diary() {
-        const form = document.forms.feeling_form;
+      async function sendDiary() {
         const apiUrl = getApiUrl();
         fileUpload();
         const res = await axios({
           method: "POST",
           url: apiUrl,
           data: {
-            feeling:form.feeling.value,
+            emotion: Number(form.feeling.value),
             content: form.diary_write.value,
           }
         })
@@ -151,7 +150,6 @@
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log(res);
         return url;
       }
 
