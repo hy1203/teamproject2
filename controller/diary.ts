@@ -106,23 +106,22 @@ async function get(req: Request, res: Response) {
 
 async function post(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
-  console.log("user_id", user_id);
   if (!user_id) return;
   const [year, month, date] = getDateFromUrl(req);
-  const { title, content } = req.body;
-  console.log(req.body);
+  const { emotion, content } = req.body;
   if (!validateDate(year, month, date) || isFuture(year, month, date)) {
     res.status(400).json({ error: "Invalid date" });
     return;
   }
+  const emotion_id = emotion ? Number(emotion) : undefined;
 
   const diary = await createFromDB(db.diary, {
     user_id,
     year,
     month,
     date,
-    title,
     content,
+    emotion_id,
   });
   if (!diary) {
     res.status(500).json({ error: "DB error" });
