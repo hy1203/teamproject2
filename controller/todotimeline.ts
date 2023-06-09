@@ -5,5 +5,5 @@ export default {
 };
 
 async function get(req: Request, res: Response) {
-  res.render("timeline");
+  res.render("todotimeline");
 }

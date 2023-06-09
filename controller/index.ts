@@ -5,7 +5,8 @@ import { Controller } from "@/types";
 import login from "./login";
 import signup from "./signup";
 import calendar from "./calendar";
-import timeline from "./timeline";
+import diarytimeline from "./diarytimeline";
+import todotimeline from "./todotimeline";
 import todocalendar from "./todocalendar";
 import startpage from "./startpage";
 import diary from "./diary";
@@ -38,8 +39,10 @@ export default {
   StartPage: startpage.get,
   //dairy
   diary: diary.get,
-  //timeline
-  timeline: timeline.get,
+  //diarytimeline
+  diarytimeline: diarytimeline.get,
+  //todotimeline
+  todotimeline: todotimeline.get,
   //todocalendar
   todocalendar: todocalendar.get,
 };
