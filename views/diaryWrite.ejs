@@ -114,13 +114,14 @@
     </div>
     <script>
       const form = document.forms.feeling_form;
-      fillDiaryIfExist()
-      async function fillDiaryIfExist(){
+      fillDiaryIfExist();
+      async function fillDiaryIfExist() {
         const apiUrl = getApiUrl();
         const res = await fetch(apiUrl);
         if(res.ok){
-          console.log(data);
           const data = await res.json();
+          if(!data.content) return;
+          console.log(data);
           form.feeling.value = data.emotion_id;
           form.diary_write.value = data.content;
           form.img.src = data.image;
