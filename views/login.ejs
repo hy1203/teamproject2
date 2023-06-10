@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="login.css" />
+    <link rel="stylesheet" href="/public/style/login.css" />
     <title>그날의 하늘</title>
   </head>
 
@@ -59,41 +59,6 @@
       </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script type="module">
-      document.getElementById("loginButton").addEventListener("click", login);
-      document.getElementById("signupButton").addEventListener("click", signup);
-
-      async function login() {
-        const form = document.forms.login_form;
-        if (!form.checkValidity()) {
-          return;
-        }
-
-        try {
-          const response = await axios.post("/login", {
-            username: form.username.value,
-            password: form.password.value,
-          });
-
-          const { result, access, refresh } = response.data;
-          console.log("res data : ", response.data);
-          if (result) {
-            sessionStorage.setItem("access", access);
-            sessionStorage.setItem("refresh", refresh);
-            location.href = "/";
-          } else {
-            const dialog = document.getElementById("wrong-input");
-            dialog.show();
-          }
-        } catch (error) {
-          // 에러 처리
-          console.error(error);
-        }
-      }
-
-      function signup() {
-        location.href = "/signup";
-      }
-    </script>
+    <script src="/public/js/login.js"></script>
   </body>
 </html>
