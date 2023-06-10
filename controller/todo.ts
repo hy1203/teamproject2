@@ -5,6 +5,7 @@ import { isLogin, validateDate, getDateFromUrl, today } from "@/utils";
 export default {
   daily,
   monthly,
+  redirectMonthly,
   post,
   get,
   put,
@@ -36,6 +37,12 @@ async function monthly(req: Request, res: Response) {
     return res.redirect("/todo");
   }
   res.render("todo/monthly", { year, month });
+}
+
+// 월별 투두로 리다이렉트
+async function redirectMonthly(req: Request, res: Response) {
+  const [year, month] = today();
+  res.redirect(`/todo/${year}/${month}`);
 }
 
 // api
