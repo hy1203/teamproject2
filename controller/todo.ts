@@ -4,6 +4,7 @@ import { isLogin, validateDate, getDateFromUrl, today } from "@/utils";
 
 export default {
   daily,
+  monthly,
   post,
   get,
   put,
@@ -14,7 +15,7 @@ export default {
 
 // page
 
-//페이지 생성
+// 일별 투두
 async function daily(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
   if (!user_id) return;
@@ -24,6 +25,17 @@ async function daily(req: Request, res: Response) {
     return res.redirect(`/todo/${year}/${month}/${date}`);
   }
   res.render("todo/daily", { year, month, date });
+}
+
+// 월별 투두
+async function monthly(req: Request, res: Response) {
+  const user_id = await isLogin(req, res);
+  if (!user_id) return;
+  let [year, month] = getDateFromUrl(req);
+  if (!validateDate(year, month, 1)) {
+    return res.redirect("/todo");
+  }
+  res.render("todo/monthly", { year, month });
 }
 
 // api
