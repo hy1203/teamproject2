@@ -18,18 +18,8 @@
     <div id="main">
       <header>
         <div class="top">
-          <div>
-            <a href="/"
-              ><img
-                src="/public/images/home.png"
-                width="40"
-                height="40"
-                class="home"
-                alt="home"
-            /></a>
-          </div>
-          <!-- 날짜는 누를때 마다 그 날짜로 변경되어야함 -->
-          <div class="date">6월 8일</div>
+          <div></div>
+          <div class="date">6월 5일</div>
           <a href="/" class="close"></a>
         </div>
       </header>
@@ -39,119 +29,53 @@
         class="form_feeling"
         enctype="multipart/form-data"
       >
-        <!-- 제목 작성 -->
-        <fieldset>
-          <div class="feelings">오늘의 제목</div>
-          <br />
-          <input type="text" name="title" class="title" />
-        </fieldset>
-        <br />
-        <!-- 기분 선택 -->
         <fieldset>
           <div class="feelings">오늘의 기분</div>
           <br />
           <div class="top">
-            <input type="radio" name="feeling" id="happy" value="happy" />
-            <label for="happy"
-              ><img
-                src="/public/images/1.png"
+            <input type="radio" name="feeling" id="happy" value="1" />
+            <label for="happy">
+              <img
+                src="/feel/happy.png"
                 width="100px"
                 height="100px"
                 alt="happy"
-            /></label>
-            <input type="radio" name="feeling" id="good" value="good" />
-            <label for="good"
-              ><img
-                src="/public/images/2.png"
+              />
+            </label>
+            <input type="radio" name="feeling" id="good" value="2" />
+            <label for="good">
+              <img
+                src="/feel/good.png"
                 width="100px"
                 height="100px"
                 alt="good"
-            /></label>
-            <input type="radio" name="feeling" id="soso" value="soso" />
-            <label for="soso"
-              ><img
-                src="/public/images/3.png"
+              />
+            </label>
+            <input type="radio" name="feeling" id="soso" value="3" />
+            <label for="soso">
+              <img
+                src="/feel/soso.png"
                 width="100px"
                 height="100px"
                 alt="soso"
-            /></label>
-            <input type="radio" name="feeling" id="not_bad" value="not bad" />
-            <label for="not_bad"
-              ><img
-                src="/public/images/4.png"
+              />
+            </label>
+            <input type="radio" name="feeling" id="not_bad" value="4" />
+            <label for="not_bad">
+              <img
+                src="/feel/not_bad.png"
                 width="100px"
                 height="100px"
                 alt="notbad"
-            /></label>
-            <input type="radio" name="feeling" id="bad" value="bad" />
-            <label for="bad"
-              ><img
-                src="/public/images/5.png"
-                width="100px"
-                height="100px"
-                alt="bad"
-            /></label>
+              />
+            </label>
+            <input type="radio" name="feeling" id="bad" value="5" />
+            <label for="bad">
+              <img src="/feel/bad.png" width="100px" height="100px" alt="bad" />
+            </label>
           </div>
         </fieldset>
-        <!-- <br />
-        <fieldset>
-          <div class="feelings">만난 사람</div>
-          <br />
-          <div class="top">
-            <input type="radio" name="meet" id="friend" value="친구" />
-            <label for="friend"
-              ><img
-                src="/Sunday/6.png"
-                width="130px"
-                height="130px"
-                alt="bad"
-              />
-              <p>친구</p>
-            </label>
-            <input type="radio" name="meet" id="couple" value="연인" />
-            <label for="couple"
-              ><img
-                src="/Sunday/7.png"
-                width="130px"
-                height="130px"
-                alt="bad"
-              />
-              <p>연인</p>
-            </label>
-            <input type="radio" name="meet" id="family" value="가족" />
-            <label for="family"
-              ><img
-                src="/Sunday/8.png"
-                width="130px"
-                height="130px"
-                alt="bad"
-              />
-              <p>가족</p></label
-            >
-            <input type="radio" name="meet" id="ac" value="지인" />
-            <label for="ac"
-              ><img
-                src="/Sunday/9.png"
-                width="130px"
-                height="130px"
-                alt="bad"
-              />
-              <p>지인</p></label
-            >
-            <input type="radio" name="meet" id="no" value="안만남" />
-            <label for="no"
-              ><img
-                src="/Sunday/10.png"
-                width="130px"
-                height="130px"
-                alt="bad"
-              />
-              <p>안만남</p></label
-            >
-          </div>
-        </fieldset> -->
         <br />
-        <!-- 사진 올리는 부분 -->
         <fieldset>
           <div class="feelings">오늘의 사진</div>
           <br />
@@ -168,24 +92,20 @@
             </button>
           </div>
           <br />
-          <img id="img" src="" width="200" />
+          <img id="img" src="" width="200" name="img" />
         </fieldset>
         <br />
-        <!-- 일기쓰는 부분 -->
         <fieldset>
           <div class="feelings">오늘의 일기</div>
           <br />
           <div class="txt">
-            <textarea
-              id="txtArea"
-              name="diray_write"
-              class="txt_diary"
-            ></textarea>
+            <textarea id="diary_write" name="diary_write" class="txt_diary">
+            </textarea>
           </div>
         </fieldset>
         <br />
         <div class="btn_box">
-          <button class="btn" type="button" onclick="send_diary">
+          <button class="btn" type="button" onclick="sendDiary()">
             작성 완료
           </button>
         </div>
@@ -193,36 +113,59 @@
       </form>
     </div>
     <script>
-      function send_diary() {
-        const form = document.forms["feeling_form"];
-        axios({
+      const form = document.forms.feeling_form;
+      fillDiaryIfExist();
+      async function fillDiaryIfExist() {
+        const apiUrl = getApiUrl();
+        const res = await fetch(apiUrl);
+        if(res.ok){
+          const data = await res.json();
+          if(!data.content) return;
+          console.log(data);
+          form.feeling.value = data.emotion_id;
+          form.diary_write.value = data.content;
+          form.img.src = data.image;
+        }
+      }
+
+      async function sendDiary() {
+        const apiUrl = getApiUrl();
+        fileUpload();
+        const res = await axios({
           method: "POST",
-          url: "/diary",
+          url: apiUrl,
           data: {
-            title: form.title.value,
-            feeling: form.feeling.value,
-            write: form.diary_write.value,
-          },
-        }).then((res) => {
-          console.log(res.data);
-          res.data;
-        });
+            emotion: Number(form.feeling.value),
+            content: form.diary_write.value,
+          }
+        })
+        console.log(res);
+        window.location.href = window
+          .location
+          .pathname
+          .substring(0, window.location.pathname.lastIndexOf("/"));
       }
 
       //이미지 파일 업로드 코드
-      function fileUpload() {
+      async function fileUpload() {
         const formData = new FormData();
         const file = document.getElementById("upload");
+        if (!file.files[0]) {
+          return;
+        }
+        const uploadUrl = getUploadUrl();
+        console.log(uploadUrl);
         formData.append("upload", file.files[0]);
 
-        axios({
+        const res = await axios({
           method: "POST",
-          url: "/diary_write/upload",
+          url: uploadUrl,
           data: formData,
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
+        return url;
       }
 
       //이미지 파일 미리보기 코드
@@ -236,6 +179,20 @@
         } else {
           document.getElementById("img").src = "";
         }
+      }
+
+      function getApiUrl() {
+        const paths = window.location.pathname.split("/")
+        paths.pop()
+        paths.unshift("api")
+        const apiUrl = "/" + paths.join("/");
+        return apiUrl;
+      }
+
+      function getUploadUrl() {
+        const paths = window.location.pathname.split("/").slice(2, -1);
+        const apiUrl = "/" + ["api", "upload"].concat(paths).join("/");
+        return apiUrl;
       }
     </script>
   </body>
