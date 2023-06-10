@@ -23,7 +23,7 @@ async function daily(req: Request, res: Response) {
     [year, month, date] = today();
     return res.redirect(`/todo/${year}/${month}/${date}`);
   }
-  res.render("todo", { year, month, date });
+  res.render("todo/daily", { year, month, date });
 }
 
 // api
