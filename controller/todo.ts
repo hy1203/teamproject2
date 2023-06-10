@@ -3,7 +3,7 @@ import db from "@/models";
 import { isLogin, validateDate, getDateFromUrl, today } from "@/utils";
 
 export default {
-  createPage,
+  daily,
   post,
   get,
   put,
@@ -15,7 +15,7 @@ export default {
 // page
 
 //페이지 생성
-async function createPage(req: Request, res: Response) {
+async function daily(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
   if (!user_id) return;
   let [year, month, date] = getDateFromUrl(req);
