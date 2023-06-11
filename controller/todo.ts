@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import db from "@/models";
+import { TodoResponse } from "@/types/models";
 import { isLogin, validateDate, getDateFromUrl, today } from "@/utils";
 
 export default {
@@ -8,6 +9,7 @@ export default {
   redirectMonthly,
   post,
   get,
+  gets,
   put,
   patch,
   destroy,
@@ -90,6 +92,36 @@ async function get(req: Request, res: Response) {
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
+}
+
+// 월별 투두 조회
+async function gets(req: Request, res: Response) {
+  const user_id = await isLogin(req, res);
+  if (!user_id) return res.redirect("/login");
+  let [year, month] = getDateFromUrl(req);
+  if (!validateDate(year, month, 1)) {
+    return res.redirect("/todo");
+  }
+  const todos = await db.todo.findAll({ where: { year, month, user_id } });
+  const todosByDate = await todos
+    .map((todo) => todo.dataValues)
+    .map(async ({ id, checked, content, date }) => {
+      const commentr = await db.comment.findOne({ where: { todo_id: id } });
+      const comment = commentr?.dataValues.content;
+      const emotion_id = commentr?.dataValues.emotion_id;
+      if (!emotion_id) return { date, id, content, checked, comment };
+      const emotion = await db.emotion.findOne({ where: { id: emotion_id } });
+      const feel = emotion?.dataValues.feel;
+      return { date, id, content, checked, comment, feel };
+    })
+    .reduce(async (pracc, todo) => {
+      const { date } = await todo;
+      const acc = await pracc;
+      if (!acc[date]) acc[date] = [];
+      acc[date].push(await todo);
+      return acc;
+    }, Promise.resolve({} as { [date: number]: TodoResponse[] }));
+  res.status(200).json(todosByDate);
 }
 
 //투두 수정
