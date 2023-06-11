@@ -19,7 +19,7 @@ export default {
 // 일별 투두
 async function daily(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
-  if (!user_id) return;
+  if (!user_id) return res.redirect("/login");
   let [year, month, date] = getDateFromUrl(req);
   if (!validateDate(year, month, date)) {
     [year, month, date] = today();
@@ -31,7 +31,7 @@ async function daily(req: Request, res: Response) {
 // 월별 투두
 async function monthly(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
-  if (!user_id) return;
+  if (!user_id) return res.redirect("/login");
   let [year, month] = getDateFromUrl(req);
   if (!validateDate(year, month, 1)) {
     return res.redirect("/todo");
@@ -50,7 +50,7 @@ async function redirectMonthly(req: Request, res: Response) {
 //투두 생성
 async function post(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
-  if (!user_id) return;
+  if (!user_id) return res.redirect("/login");
   const [year, month, date] = getDateFromUrl(req);
   if (!validateDate(year, month, date)) {
     return res.status(400).json({ message: "날짜 형식이 잘못됨." });
@@ -75,7 +75,7 @@ async function post(req: Request, res: Response) {
 async function get(req: Request, res: Response) {
   try {
     const user_id = await isLogin(req, res);
-    if (!user_id) return;
+    if (!user_id) return res.redirect("/login");
     const [year, month, date] = getDateFromUrl(req);
     const result = await db.todo.findAll({
       where: {
@@ -96,7 +96,7 @@ async function get(req: Request, res: Response) {
 async function put(req: Request, res: Response) {
   try {
     const user_id = await isLogin(req, res);
-    if (!user_id) return;
+    if (!user_id) return res.redirect("/login");
     const { id } = req.params;
     const { content } = req.body;
     const result = await db.todo.update(
@@ -117,7 +117,7 @@ async function put(req: Request, res: Response) {
 async function patch(req: Request, res: Response) {
   try {
     const user_id = await isLogin(req, res);
-    if (!user_id) return;
+    if (!user_id) return res.redirect("/login");
     const { id } = req.params;
     const { checked } = req.body;
     const result = await db.todo.update(
@@ -138,7 +138,7 @@ async function destroy(req: Request, res: Response) {
   try {
     const { id } = req.params;
     const user_id = await isLogin(req, res);
-    if (!user_id) return;
+    if (!user_id) return res.redirect("/login");
     const result = await db.todo.destroy({
       where: { id, user_id },
     });
@@ -157,7 +157,7 @@ async function destroy(req: Request, res: Response) {
 async function destroyAll(req: Request, res: Response) {
   try {
     const user_id = await isLogin(req, res);
-    if (!user_id) return;
+    if (!user_id) return res.redirect("/login");
     const { year, month, date } = req.params;
     const result = await db.todo.destroy({
       //year, month, date, user_id가 일치하는 todo를 모두 삭제
