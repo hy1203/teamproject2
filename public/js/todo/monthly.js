@@ -1,7 +1,7 @@
 "use strict";
 
-import fillCalendar from "./utils/calendar.js";
-import { getYMFromUrl } from "./utils/date.js";
+import fillCalendar from "../components/calendar.js";
+import { getYMFromUrl } from "../utils/date.js";
 
 const calendar = document.querySelector("#calendar");
 const [year, month] = getYMFromUrl();
