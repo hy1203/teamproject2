@@ -24,8 +24,7 @@ async function daily(req: Request, res: Response) {
   if (!user_id) return res.redirect("/login");
   let [year, month, date] = getDateFromUrl(req);
   if (!validateDate(year, month, date)) {
-    [year, month, date] = today();
-    return res.redirect(`/todo/${year}/${month}/${date}`);
+    return res.redirect(`/todo/${today().join("/")}`);
   }
   res.render("todo/daily", { year, month, date });
 }
