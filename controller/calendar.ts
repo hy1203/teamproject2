@@ -23,7 +23,7 @@ async function page(req: Request, res: Response) {
 
 async function gets(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
-  if (!user_id) return;
+  if (!user_id) return res.redirect("/login");
   const [year, month] = getDateFromUrl(req);
   if (!validateDate(year, month, 1) || isFuture(year, month, 1)) {
     res.redirect("/todocalendar/");

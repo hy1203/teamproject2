@@ -9,6 +9,7 @@ export default async function isLogin(req: Request, res: Response) {
   try {
     // access 토큰이 존재하는 경우
     const { id } = jwt.verify(access, config.ACCESS_TOKEN) as jwt.JwtPayload;
+    if (!id) throw new Error("유저 정보 없음");
     return id;
   } catch (err) {
     if (err instanceof jwt.TokenExpiredError) {
@@ -17,7 +18,6 @@ export default async function isLogin(req: Request, res: Response) {
     } else {
       // 그외의 경우 모두 로그인 페이지로 리디렉션
       console.log("Access 토큰 검증 오류", err);
-      res.redirect("/login");
       return;
     }
   }
@@ -25,7 +25,6 @@ export default async function isLogin(req: Request, res: Response) {
   // refresh 토큰 확인
   const refresh = (req.headers.refresh || req.cookies.refresh) as string;
   if (!refresh) {
-    res.redirect("/login");
     return;
   }
 
@@ -47,9 +46,8 @@ export default async function isLogin(req: Request, res: Response) {
     res.cookie("access", newAccess, { httpOnly: true });
     return id;
   } catch (err) {
+    // 이외의 경우 로그인 페이지로 리디렉션합니다.
     console.log("Refresh 토큰 검증 오류", err);
+    return;
   }
-
-  // 이외의 경우 로그인 페이지로 리디렉션합니다.
-  res.redirect("/login");
 }

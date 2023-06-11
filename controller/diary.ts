@@ -25,14 +25,14 @@ export default {
 
 async function redirectMonthly(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
-  if (!user_id) return;
+  if (!user_id) return res.redirect("/login");
   const [year, month] = today();
   res.redirect(`/diary/${year}/${month}`);
 }
 
 async function monthly(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
-  if (!user_id) return;
+  if (!user_id) return res.redirect("/login");
   const [year, month] = getDateFromUrl(req);
   if (!validateDate(year, month, 1) || isFuture(year, month, 1)) {
     res.redirect("/diary/");
@@ -43,7 +43,7 @@ async function monthly(req: Request, res: Response) {
 
 async function daily(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
-  if (!user_id) return;
+  if (!user_id) return res.redirect("/login");
   const [year, month, date] = getDateFromUrl(req);
   if (!validateDate(year, month, date) || isFuture(year, month, date)) {
     res.redirect("/diary");
@@ -68,7 +68,7 @@ async function daily(req: Request, res: Response) {
 //다이어리 쓰기 GET
 async function write(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
-  if (!user_id) return;
+  if (!user_id) return res.redirect("/login");
   const [year, month, date] = getDateFromUrl(req);
   if (!validateDate(year, month, date) || isFuture(year, month, date)) {
     res.redirect("/diary");
@@ -81,7 +81,7 @@ async function write(req: Request, res: Response) {
 
 async function gets(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
-  if (!user_id) return;
+  if (!user_id) return res.redirect("/login");
   const [year, month] = getDateFromUrl(req);
   if (!validateDate(year, month, 1) || isFuture(year, month, 1)) {
     res.redirect("/diary/");
@@ -95,7 +95,7 @@ async function gets(req: Request, res: Response) {
 
 async function get(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
-  if (!user_id) return;
+  if (!user_id) return res.redirect("/login");
   const [year, month, date] = getDateFromUrl(req);
   if (!validateDate(year, month, date) || isFuture(year, month, date)) {
     res.redirect("/diary/");
@@ -111,7 +111,7 @@ async function get(req: Request, res: Response) {
 
 async function post(req: Request, res: Response) {
   const user_id = await isLogin(req, res);
-  if (!user_id) return;
+  if (!user_id) return res.redirect("/login");
   const [year, month, date] = getDateFromUrl(req);
   const { emotion, content } = req.body;
   if (!validateDate(year, month, date) || isFuture(year, month, date)) {

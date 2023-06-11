@@ -40,3 +40,12 @@ export interface Image {
   path: string;
   comment_id: number;
 }
+
+export interface TodoResponse {
+  date: number;
+  id: number;
+  content: string;
+  checked?: boolean;
+  comment?: string;
+  feel?: string;
+}
