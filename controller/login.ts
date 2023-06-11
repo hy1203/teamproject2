@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload, JsonWebTokenError } from "jsonwebtoken";
 import config from "@/config/token";
 import db from "@/models";
+import isLogin from "@/utils/login";
 
 export default {
   get,
@@ -19,6 +20,8 @@ class AuthenticationError extends Error {
 
 // 로그인 GET
 async function get(req: Request, res: Response) {
+  const user_id = await isLogin(req, res);
+  if (user_id) return res.redirect("/");
   res.render("login");
 }
 

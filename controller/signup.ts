@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import db from "@/models";
+import isLogin from "@/utils/login";
 
 export default {
   get,
@@ -8,6 +9,8 @@ export default {
 
 //회원가입 GET
 async function get(req: Request, res: Response) {
+  const user_id = await isLogin(req, res);
+  if (user_id) return res.redirect("/");
   res.render("signup");
 }
 
