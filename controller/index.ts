@@ -29,7 +29,15 @@ export default {
   signupPage: signup.get,
   signup: signup.post,
   // todo calendar
-  todoCalendar: calendar.get,
+  todoCalendar: calendar.page,
+  // startpage
+  StartPage: startpage.get,
+  //dairy
+  diary: diary.get,
+  //timeline
+  timeline: timeline.get,
+  //todocalendar
+  todocalendar: todocalendar.get,
   get: emotion.get,
   emotionIndex: emotion.emotionIndex,
 };
