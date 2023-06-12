@@ -22,7 +22,7 @@ async function index(req: Request, res: Response) {
 
 export default {
   index,
-  //login
+  // login
   loginPage: login.get,
   login: login.post,
   processRequest: login.processRequest,
@@ -35,11 +35,11 @@ export default {
   todoCalendar: calendar.page,
   // startpage
   StartPage: startpage.get,
-  //dairy
+  // dairy
   diary: diary.get,
-  //timeline
+  // timeline
   timeline: timeline.get,
-  //todocalendar
+  // todocalendar
   todocalendar: todocalendar.get,
   // profile
   profile: profile.get,
