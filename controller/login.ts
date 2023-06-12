@@ -26,7 +26,9 @@ async function get(req: Request, res: Response) {
 }
 
 // 로그인 POST
-async function post(req: Request, res: Response): Promise<void> {
+async function post(req: Request, res: Response) {
+  const user_id = await isLogin(req, res);
+  if (user_id) return res.redirect("/");
   try {
     const { username, password } = req.body;
     const user = await db.user.findOne({
