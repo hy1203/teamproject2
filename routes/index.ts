@@ -11,6 +11,8 @@ route.get("/", controller.index);
 // login route
 route.get("/login", controller.loginPage);
 route.post("/login", controller.login);
+// logout route
+route.get("/logout", controller.logout);
 // signup route
 route.get("/signup", controller.signupPage);
 route.post("/signup", controller.signup);
