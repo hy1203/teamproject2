@@ -8,29 +8,23 @@
   </head>
 
   <body>
-    <div class="main">
-      <header>
-        <div class="top">
-          <div>
-            <a href="/"
-              ><img
-                src="/public/images/home.png"
-                width="40"
-                height="40"
-                class="home"
-                alt="home"
-            /></a>
-          </div>
-          <div class="list">
-            <%= year %>년 <%= month %>월 <%= date %>일 ToDo
-          </div>
-          <a href="/" class="close"></a>
-        </div>
+    <main>
+      <header class="top">
+        <a href="/">
+          <img
+            src="/public/images/home.png"
+            width="40"
+            height="40"
+            class="home"
+            alt="home"
+          />
+        </a>
+        <div class="title"><%= year %>년 <%= month %>월 <%= date %>일 ToDo</div>
+        <a href="/todo/<%= year %>/<%= month %>" class="close"></a>
       </header>
       <hr />
       <br />
       <form id="todoForm" name="todoForm">
-        <div></div>
         <img
           src="/public/images/questionnaire.png"
           width="30px"
@@ -44,18 +38,15 @@
           name="todo"
           required
         />
-        <button type="submit" id="add" class="btnsub">추가</button>
-        <button type="button" class="btncom" id="complete">완료</button>
+        <button type="submit" id="add">추가</button>
       </form>
       <section>
-        <div class="todolist">
-          <ul id="todoList"></ul>
-          <div class="btnclear">
-            <button type="button" id="clear">모두 삭제</button>
-          </div>
+        <ul id="todoList"></ul>
+        <div class="btnclear">
+          <button type="button" id="clear">모두 삭제</button>
         </div>
       </section>
-    </div>
+    </main>
 
     <script src="/public/js/todo/daily.js"></script>
   </body>
