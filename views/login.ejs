@@ -16,7 +16,7 @@
         <a class="logo" href="/">그날의 하늘</a>
         <br />
         <div class="login_warp">
-          <form name="login_form" id="login_form">
+          <form name="login_form" id="login_form" method="POST">
             <div class="panel_inner">
               <div class="form_item_top">
                 <label for="username">ID</label>
@@ -49,8 +49,8 @@
             <dialog id="wrong-input">
               아이디 혹은 비밀번호가 잘못되었습니다.
             </dialog>
-            <button type="button" class="btn" id="loginButton">로그인</button>
-            <button class="btn" id="signupButton">회원가입</button>
+            <button type="submit" for="login_form" class="btn">로그인</button>
+            <a class="btn" href="/signup">회원가입</a>
           </form>
           <form action="/profile" method="POST" name="form_info">
             <input type="hidden" id="profile_userid" name="userid" />
