@@ -110,19 +110,40 @@ async function updateTodo(id, newValue) {
   }
 }
 
-// 댓글달기
-function sendDiary() {
-  const commentTextarea = document.getElementById("diary_write");
-  const comment = commentTextarea.value;
+// HTML 코드에서 코멘트를 추가하는 함수
+async function sendComment() {
+  const apiUrl = getApiUrl();
+  const commentInput = document.querySelector("#diary_write");
+  const commentText = commentInput.value.trim();
 
-  // 댓글을 생성하여 commentList에 추가하는 부분을 구현하기
-  const commentList = document.querySelector(".commentList");
-  const newComment = document.createElement("div");
-  newComment.textContent = comment;
-  commentList.appendChild(newComment);
+  if (commentText === "") {
+    alert("코멘트를 입력해주세요.");
+    return;
+  }
 
-  // 댓글 작성 후 textarea 초기화
-  commentTextarea.value = "";
+  try {
+    const res = await axios({
+      method: "POST",
+      url: apiUrl,
+      data: {
+        content: commentText,
+      },
+    });
+    console.log(res);
+    // 페이지를 새로고침하거나 필요한 처리 로직을 작성하세요.
+  } catch (error) {
+    console.error("코멘트 추가 실패:", error);
+    // 에러 처리 로직을 작성하세요.
+  }
+}
+
+// API URL 생성 함수
+function getApiUrl() {
+  const paths = window.location.pathname.split("/");
+  paths.pop();
+  paths.unshift("api");
+  const apiUrl = paths.join("/");
+  return apiUrl;
 }
 
 // 투두리스트 li에 대한 속성
@@ -134,23 +155,61 @@ function appendTodo(id, checked, value) {
    *   <button class="delete">x</button>
    * </li>
    */
+  // const li = document.createElement("li");
+  // li.id = id;
+  // li.innerHTML = `
+  // <input type="checkbox" id="${id}check" ${checked ? "checked" : ""}>
+  // <label for="${id}check">${value}</label>
+  // <button class="edit">수정</button>
+  // <button class="delete">x</button>
+  // `;
+  // li.querySelector('input[type="checkbox"]').addEventListener(
+  //   "change",
+  //   toggleTodo
+  // );
+  // li.querySelector(".edit").addEventListener("click", editTodo);
+
+  // li.querySelector(".delete").addEventListener("click", removeTodo);
+  // todoList.appendChild(li);
+  // document.querySelector("section").style.display = "block";
+
   const li = document.createElement("li");
-  li.id = id;
+  li.id = `li${id}`;
   li.innerHTML = `
   <input type="checkbox" id="${id}check" ${checked ? "checked" : ""}>
   <label for="${id}check">${value}</label>
   <button class="edit">수정</button>
   <button class="delete">x</button>
+  <button type="button" class="comment">comment<img src="/public/images/comment.png" width="25px" height="25px"/></button>
+  <textarea type="text" class="toggle" rows="1" placeholder="comment 작성" oninput="calcTextareaHeight(this)"></textarea>
   `;
+  li.style.fontFamily = "ImcreSoojin";
   li.querySelector('input[type="checkbox"]').addEventListener(
     "change",
     toggleTodo
   );
-  li.querySelector(".edit").addEventListener("click", editTodo);
-
   li.querySelector(".delete").addEventListener("click", removeTodo);
+  li.querySelector(".comment").addEventListener("click", commentToggle);
   todoList.appendChild(li);
   document.querySelector("section").style.display = "block";
+}
+
+async function calcTextareaHeight(e) {
+  e.style.height = "auto";
+  e.style.height = `${e.scrollHeight}px`;
+}
+
+async function commentToggle(e) {
+  const todo = e.target.closest("li");
+  //console.log(todo);
+  //const id = Number(todo.id);
+
+  const cmt = document.querySelector(`#${todo.id} > textarea`);
+  if (cmt.style.display !== "none") {
+    cmt.style.display = "none";
+  } else {
+    cmt.style.display = "block";
+  }
 }
 
 async function toggleTodo(e) {
