@@ -5,8 +5,9 @@ import config from "@/config/token";
 import { getFromDB } from "./getDB";
 
 export default async function isLogin(req: Request, res: Response) {
-  const access = req.headers.authorization || req.cookies.access;
   try {
+    const access = req.headers.authorization || req.cookies.access;
+    if (!access) throw new Error("로그인 되어 있지 않음");
     // access 토큰이 존재하는 경우
     const { id } = jwt.verify(access, config.ACCESS_TOKEN) as jwt.JwtPayload;
     if (!id) throw new Error("유저 정보 없음");
