@@ -204,3 +204,4 @@ $RECYCLE.BIN/
 config/
 config/index.ts
 package-lock.json
+upload/

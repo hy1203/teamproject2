@@ -12,7 +12,7 @@ export default {
 async function create(req: Request, res: Response) {
   try {
     const user_id = await isLogin(req, res);
-    if (!user_id) return;
+    if (!user_id) return res.redirect("/login");
     const todo_id = Number(req.params.todo_id);
     // 유저ID와 투두ID로 조회: 실제 존재하는 투두인지, 해당 유저가 권한(소유)이 있는지
     const todo = await db.todo.findOne({
@@ -36,7 +36,7 @@ async function create(req: Request, res: Response) {
 async function update(req: Request, res: Response) {
   try {
     const user_id = await isLogin(req, res);
-    if (!user_id) return;
+    if (!user_id) return res.redirect("/login");
     const todo_id = Number(req.params.todo_id);
     const todo = await db.todo.findOne({ where: { user_id, id: todo_id } });
     if (!todo) {
@@ -61,7 +61,7 @@ async function update(req: Request, res: Response) {
 async function destroy(req: Request, res: Response) {
   try {
     const user_id = await isLogin(req, res);
-    if (!user_id) return;
+    if (!user_id) return res.redirect("/login");
     const todo_id = Number(req.params.todo_id);
     const todo = await db.todo.findOne({ where: { user_id, id: todo_id } });
     if (!todo) {
