@@ -1,5 +1,5 @@
-@import url("index.css");
-@import url("calendar.css");
+@import url("../index.css");
+@import url("../calendar.css");
 
 body {
   display: flex;
