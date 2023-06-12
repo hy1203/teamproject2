@@ -49,10 +49,10 @@ async function post(req: Request, res: Response) {
     res
       .cookie("access", access, { httpOnly: true, secure: true })
       .cookie("refresh", refresh, { httpOnly: true, secure: true })
-      .send({ result: true });
+      .redirect("/");
   } catch (err) {
     console.log("로그인 오류", err);
-    res.send({ result: false });
+    res.status(401).json({ message: "로그인 실패" });
   }
 }
 
