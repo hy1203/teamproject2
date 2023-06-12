@@ -37,4 +37,7 @@ route.get("/startpage", function (req, res) {
   res.render("startpage");
 });
 
+// profile route
+route.get("/profile", controller.profile);
+
 export default route;

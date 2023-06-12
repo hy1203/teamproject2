@@ -7,6 +7,7 @@ import todocalendar from "./todocalendar";
 import startpage from "./startpage";
 import diary from "./diary";
 import logout from "./logout";
+import profile from "./profile";
 
 declare module "express-session" {
   interface SessionData {
@@ -40,4 +41,6 @@ export default {
   timeline: timeline.get,
   //todocalendar
   todocalendar: todocalendar.get,
+  // profile
+  profile: profile.get,
 };
