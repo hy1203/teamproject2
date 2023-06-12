@@ -78,19 +78,41 @@ function appendTodo(id, checked, value) {
    * </li>
    */
   const li = document.createElement("li");
-  li.id = id;
+  li.id = `li${id}`;
   li.innerHTML = `
   <input type="checkbox" id="${id}check" ${checked ? "checked" : ""}>
   <label for="${id}check">${value}</label>
   <button class="delete">x</button>
+  <button type="button" class="comment">comment<img src="/public/images/comment.png" width="25px" height="25px"/></button>
+  <textarea type="text" class="toggle" rows="1" placeholder="comment 작성" oninput="calcTextareaHeight(this)"></textarea>
   `;
+  li.style.fontFamily = "ImcreSoojin";
   li.querySelector('input[type="checkbox"]').addEventListener(
     "change",
     toggleTodo
   );
   li.querySelector(".delete").addEventListener("click", removeTodo);
+  li.querySelector(".comment").addEventListener("click", commentToggle);
   todoList.appendChild(li);
   document.querySelector("section").style.display = "block";
+}
+
+async function calcTextareaHeight(e) {
+  e.style.height = "auto";
+  e.style.height = `${e.scrollHeight}px`;
+}
+
+async function commentToggle(e) {
+  const todo = e.target.closest("li");
+  //console.log(todo);
+  //const id = Number(todo.id);
+
+  const cmt = document.querySelector(`#${todo.id} > textarea`);
+  if (cmt.style.display !== "none") {
+    cmt.style.display = "none";
+  } else {
+    cmt.style.display = "block";
+  }
 }
 
 async function toggleTodo(e) {
