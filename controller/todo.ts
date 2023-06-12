@@ -88,7 +88,6 @@ async function get(req: Request, res: Response) {
           date,
           user_id,
         },
-        limit: 3,
         order: [["id", "DESC"]],
       });
       //캘린더 페이지가 아닌 todo 페이지에서는 모두 보여줌

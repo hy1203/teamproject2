@@ -2,9 +2,9 @@ const currentPath = window.location.pathname;
 var dairyradio = document.getElementById("dairy-radio");
 var todoradio = document.getElementById("todo-radio");
 
-if (currentPath === "/todocalendar") {
-  const todoradio = document.getElementById("todo-radio");
-  todoradio.checked = true;
+if (currentPath === "/main-diary") {
+  const dairyRadio = document.getElementById("dairy-radio");
+  dairyRadio.checked = true;
 }
 
 const radioButtons = document.querySelectorAll(
@@ -88,7 +88,7 @@ function buildCalendar() {
       // 지난날인 경우
       newDIV.className = "pastDay";
       newDIV.onclick = function () {
-        notDate(this);
+        choiceDate(this);
       };
     } else if (
       nowDay.getFullYear() == today.getFullYear() &&
@@ -104,7 +104,7 @@ function buildCalendar() {
       // 미래인 경우
       newDIV.className = "futureDay";
       newDIV.onclick = function () {
-        choiceDate(this);
+        notDate(this);
       };
     }
   }
@@ -119,15 +119,11 @@ function notDate(newDiv) {
       .classList.remove("choiceDay"); // 해당 날짜의 "choiceDay" class 제거
   }
   newDIV.classList.add("choiceDay"); // 선택된 날짜에 "choiceDay" class 추가
-
-  alert("지난 날의 ToDo는 작성 불가입니다!");
-
-  //location.href = "views/not";
+  alert("미래일기는 쓸 수 없어요!");
 }
 
 // 날짜 선택
 function choiceDate(newDIV) {
-  //console.log(newDIV);
   if (document.getElementsByClassName("choiceDay")[0]) {
     // 기존에 선택한 날짜가 있으면
     document
@@ -146,17 +142,19 @@ function choiceDate(newDIV) {
   document.getElementById("Dayshow").innerText = `${newDIV.innerText}일`;
   initTodo();
 }
+
 function updateClick() {
   console.log("수정하세요");
   const year = localStorage.getItem("calYear");
   const month = localStorage.getItem("calMonth");
   const day = localStorage.getItem("calDay");
 
-  window.location.href = `/todo/${year}/${month}/${day}`;
+  window.location.href = `/diary/${year}/${month}/${day}`;
 }
 function deleteClick() {
   console.log("삭제하세요");
 }
+
 // 이전달 버튼 클릭
 function prevCalendar() {
   nowMonth = new Date(
@@ -187,88 +185,42 @@ function leftPad(value) {
 
 // 투두리스트 화면에 출력
 
-const todoList = document.querySelector("ul.todoList");
-const apiIndivURL = (id) => `/api/todo/${id}`;
+const diaryList = document.querySelector("ul.diaryList");
+const apiIndivURL = (id) => `/api/diary/${id}`;
 
 async function initTodo() {
   const year = localStorage.getItem("calYear");
   const month = localStorage.getItem("calMonth");
   const day = localStorage.getItem("calDay");
-  const apiDateURL = `/api/todo/${year}/${month}/${day}?position=todocalendar`;
+  const apiDateURL = `/api/diary/${year}/${month}/${day}?position=todocalendar`;
   console.log("hi");
   // get, post, deleteAll
   // 서버에서 투두리스트를 가져와서 화면에 렌더링
-  const todos = await (await fetch(apiDateURL)).json();
-  console.log(todos);
-  removeAllItems();
-  todos.forEach(({ id, checked, content }) => appendTodo(id, checked, content));
+  const diarys = await (await fetch(apiDateURL)).json();
+  // console.log(diarys);
+  //removeAllItems();
+  //diarys.forEach(({ id, checked, content }) => appendTodo(id, content));
+  appendTodo(diarys);
 }
 
 function removeAllItems() {
   //todoList의 모든 자식요소를 제거
-  while (todoList.firstChild) {
-    todoList.removeChild(todoList.firstChild);
+  while (diaryList.firstChild) {
+    diaryList.removeChild(diaryList.firstChild);
   }
 }
 //추가
-function appendTodo(id, checked, value) {
-  const toLi = document.createElement("li");
-  toLi.id = id;
+function appendTodo(diarys) {
+  console.log(diarys.content);
+  const toLi = document.querySelector(".todoList");
+  // toLi.id = id;
   toLi.innerHTML = `
-  <input type="checkbox" id="${id}check" ${checked ? "checked" : ""}>
-  <label for="${id}check">${value}</label>
-  <button class="delete">x</button>
-  `;
-  // toLi
-  //   .querySelector('input[type="checkbox"]')
-  //   .addEventListener("change", toggleTodo);
-  toLi.querySelector(".delete").addEventListener("click", removeTodo);
-  console.log(toLi);
-  todoList.appendChild(toLi);
-}
-
-// //수정
-// async function toggleTodo(e) {
-//   const todo = e.target.closest("li");
-//   const id = Number(todo.id);
-//   const checked = e.target.checked;
-//   try {
-//     const res = await fetch(apiIndivURL(id), {
-//       method: "PATCH",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({ checked }),
-//     });
-//     if (!res.ok) throw new Error(res.status);
-//     console.log("투두리스트가 성공적으로 수정되었습니다.");
-//   } catch (error) {
-//     console.error("투두리스트 수정 중 오류가 발생했습니다.", error);
-//   }
-// }
-
-// 삭제
-async function removeTodo(e) {
-  // 투두 ID 추출
-  const todo = e.target.closest("li");
-  const id = Number(todo.id);
-  try {
-    // 서버에서 투두 삭제
-    const res = await deleteTodo(id);
-    if (!res.ok) throw new Error(res.status);
-    // 화면에서 투두 삭제
-    todoList.removeChild(todo);
-    console.log("투두리스트가 성공적으로 삭제되었습니다.");
-  } catch (error) {
-    console.error("투두리스트 삭제 중 오류가 발생했습니다.", error);
-  }
-}
-
-// 서버에서 투두삭제
-async function deleteTodo(id) {
-  try {
-    const res = await fetch(apiIndivURL(id), { method: "DELETE" });
-    if (!res.ok) throw new Error(res.status);
-    return res;
-  } catch {
-    console.error("투두리스트 삭제 중 오류가 발생했습니다.", error);
-  }
+   <li>${diarys.content}</li>
+   `;
+  // // toLi
+  // //   .querySelector('input[type="checkbox"]')
+  // //   .addEventListener("change", toggleTodo);
+  // // toLi.querySelector(".delete").addEventListener("click", removeTodo);
+  // console.log(toLi);
+  // diaryList.appendChild(toLi);
 }
