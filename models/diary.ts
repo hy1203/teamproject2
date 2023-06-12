@@ -10,7 +10,6 @@ export default function diary(
     {
       content: {
         type: dataTypes.TEXT,
-        primaryKey: true,
         allowNull: false,
       },
       year: {
