@@ -71,9 +71,9 @@ async function addTodo(e) {
 
 // 투두리스트 수정
 async function editTodo(e) {
-  const all = e.target.closest("li");
-  const id = Number(all.id);
-  const label = all.querySelector("label");
+  const todo = e.target.closest("li");
+  const id = Number(todo.id);
+  const label = todo.querySelector("label");
   const previousValue = label.textContent;
   const newValue = prompt("수정할 내용을 입력하세요", previousValue);
 
@@ -111,70 +111,44 @@ async function updateTodo(id, newValue) {
 }
 
 // HTML 코드에서 코멘트를 추가하는 함수
-async function sendComment() {
-  const apiUrl = getApiUrl();
-  const commentInput = document.querySelector("#diary_write");
-  const commentText = commentInput.value.trim();
+async function sendComment(todoId) {
+  const commentInput = document.querySelector(".toggle");
+  const commentText = commentInput.value;
 
   if (commentText === "") {
-    alert("코멘트를 입력해주세요.");
+    alert("댓글 내용을 입력해주세요.");
     return;
   }
 
   try {
-    const res = await axios({
+    const res = await fetch(`/api/todo/comment/comment/${todoId}`, {
       method: "POST",
-      url: apiUrl,
-      data: {
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
         content: commentText,
-      },
+        todo_id: todoId,
+        emotion_id: 1,
+      }),
     });
     console.log(res);
-    // 페이지를 새로고침하거나 필요한 처리 로직을 작성하세요.
+
+    // 댓글을 표시하는 엘리먼트 찾기
+    const commentContainer = commentInput.closest(".comment-container");
+    // 댓글 내용을 담는 엘리먼트 생성
+    const commentTextElement = document.createElement("div");
+    commentTextElement.textContent = commentText;
+    // commentContainer.appendChild(commentTextElement);
+
+    // 댓글 작성 후, 댓글 필드 초기화
+    commentInput.value = "";
   } catch (error) {
-    console.error("코멘트 추가 실패:", error);
-    // 에러 처리 로직을 작성하세요.
+    console.error("댓글 작성 실패:", error);
   }
 }
-
-// API URL 생성 함수
-function getApiUrl() {
-  const paths = window.location.pathname.split("/");
-  paths.pop();
-  paths.unshift("api");
-  const apiUrl = paths.join("/");
-  return apiUrl;
-}
-
 // 투두리스트 li에 대한 속성
 function appendTodo(id, checked, value) {
-  /**
-   * <li id="${id}">
-   *   <input type="checkbox" id="${id}check">
-   *   <label for="${id}check">${value}</label>
-   *   <button class="delete">x</button>
-   * </li>
-   */
-  // const li = document.createElement("li");
-  // li.id = id;
-  // li.innerHTML = `
-  // <input type="checkbox" id="${id}check" ${checked ? "checked" : ""}>
-  // <label for="${id}check">${value}</label>
-  // <button class="edit">수정</button>
-  // <button class="delete">x</button>
-  // `;
-  // li.querySelector('input[type="checkbox"]').addEventListener(
-  //   "change",
-  //   toggleTodo
-  // );
-  // li.querySelector(".edit").addEventListener("click", editTodo);
-
-  // li.querySelector(".delete").addEventListener("click", removeTodo);
-  // todoList.appendChild(li);
-  // document.querySelector("section").style.display = "block";
-
   const li = document.createElement("li");
-  li.id = `li${id}`;
+  li.id = id;
   li.innerHTML = `
   <input type="checkbox" id="${id}check" ${checked ? "checked" : ""}>
   <label for="${id}check">${value}</label>
@@ -182,14 +156,19 @@ function appendTodo(id, checked, value) {
   <button class="delete">x</button>
   <button type="button" class="comment">comment<img src="/public/images/comment.png" width="25px" height="25px"/></button>
   <textarea type="text" class="toggle" rows="1" placeholder="comment 작성" oninput="calcTextareaHeight(this)"></textarea>
+  <button type="button" class="comment_submit" onclick="sendComment(${
+    li.id
+  })">제출</button>
+
   `;
   li.style.fontFamily = "ImcreSoojin";
   li.querySelector('input[type="checkbox"]').addEventListener(
     "change",
     toggleTodo
   );
+
+  li.querySelector(".edit").addEventListener("click", editTodo);
   li.querySelector(".delete").addEventListener("click", removeTodo);
-  li.querySelector(".comment").addEventListener("click", commentToggle);
   todoList.appendChild(li);
   document.querySelector("section").style.display = "block";
 }
@@ -199,16 +178,16 @@ async function calcTextareaHeight(e) {
   e.style.height = `${e.scrollHeight}px`;
 }
 
+//지금 작동이 안됌 내일 수정해야함.
 async function commentToggle(e) {
   const todo = e.target.closest("li");
-  //console.log(todo);
-  //const id = Number(todo.id);
+  const cmt = todo.querySelector(".toggle");
 
-  const cmt = document.querySelector(`#${todo.id} > textarea`);
-  if (cmt.style.display !== "none") {
-    cmt.style.display = "none";
-  } else {
+  if (window.getComputedStyle(cmt).display === "none") {
+    console.log(window.getComputedStyle(cmt).display);
     cmt.style.display = "block";
+  } else {
+    cmt.style.display = "none";
   }
 }
 
