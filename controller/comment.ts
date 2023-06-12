@@ -3,13 +3,13 @@ import db from "@/models";
 import { isLogin } from "@/utils";
 
 export default {
-  create,
-  update,
+  post,
+  put,
   destroy,
 };
 
 // comment생성
-async function create(req: Request, res: Response) {
+async function post(req: Request, res: Response) {
   try {
     const user_id = await isLogin(req, res);
     if (!user_id) return res.redirect("/login");
@@ -33,7 +33,7 @@ async function create(req: Request, res: Response) {
 }
 
 // comment수정
-async function update(req: Request, res: Response) {
+async function put(req: Request, res: Response) {
   try {
     const user_id = await isLogin(req, res);
     if (!user_id) return res.redirect("/login");
