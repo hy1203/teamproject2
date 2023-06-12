@@ -69,6 +69,63 @@ async function addTodo(e) {
   }
 }
 
+// 투두리스트 수정
+async function editTodo(e) {
+  const all = e.target.closest("li");
+  const id = Number(all.id);
+  const label = all.querySelector("label");
+  const previousValue = label.textContent;
+  const newValue = prompt("수정할 내용을 입력하세요", previousValue);
+
+  try {
+    if (newValue !== null) {
+      // 서버에서 투두 수정
+      const res = await updateTodo(id, newValue);
+      if (!res.ok) throw new Error(res.status);
+      // 화면에서 투두 수정
+      label.textContent = newValue;
+      console.log("수정이 완료되었습니다.");
+    }
+  } catch (error) {
+    console.error("수정 실패:", error);
+  }
+}
+
+// 서버에 투두리스트 업데이트
+async function updateTodo(id, newValue) {
+  try {
+    const res = await fetch(apiIndivURL(id), {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content: newValue }),
+    });
+
+    if (!res.ok) {
+      throw new Error(res.status);
+    }
+
+    return res;
+  } catch (error) {
+    console.error("서버 데이터 업데이트 실패:", error);
+  }
+}
+
+// 댓글달기
+function sendDiary() {
+  const commentTextarea = document.getElementById("diary_write");
+  const comment = commentTextarea.value;
+
+  // 댓글을 생성하여 commentList에 추가하는 부분을 구현하기
+  const commentList = document.querySelector(".commentList");
+  const newComment = document.createElement("div");
+  newComment.textContent = comment;
+  commentList.appendChild(newComment);
+
+  // 댓글 작성 후 textarea 초기화
+  commentTextarea.value = "";
+}
+
+// 투두리스트 li에 대한 속성
 function appendTodo(id, checked, value) {
   /**
    * <li id="${id}">
@@ -82,12 +139,15 @@ function appendTodo(id, checked, value) {
   li.innerHTML = `
   <input type="checkbox" id="${id}check" ${checked ? "checked" : ""}>
   <label for="${id}check">${value}</label>
+  <button class="edit">수정</button>
   <button class="delete">x</button>
   `;
   li.querySelector('input[type="checkbox"]').addEventListener(
     "change",
     toggleTodo
   );
+  li.querySelector(".edit").addEventListener("click", editTodo);
+
   li.querySelector(".delete").addEventListener("click", removeTodo);
   todoList.appendChild(li);
   document.querySelector("section").style.display = "block";
