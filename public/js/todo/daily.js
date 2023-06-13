@@ -190,7 +190,6 @@ async function appendTodo(id, checked, value) {
   //comment 이벤트
   li.querySelector(".comment-edit").addEventListener("click", editComment);
   li.querySelector(".comment-delete").addEventListener("click", removeComment);
-
   todoList.appendChild(li);
   document.querySelector("section").style.display = "block";
 }
@@ -269,6 +268,7 @@ async function deleteComment(todoId) {
   }
 }
 
+
 async function calcTextareaHeight(e) {
   e.style.height = "auto";
   e.style.height = `${e.scrollHeight}px`;
@@ -283,7 +283,7 @@ async function commentToggle(e) {
     console.log(window.getComputedStyle(cmt).display);
     cmt.style.display = "block";
   } else {
-    cmt.style.display = "none";
+    cmt.style.display = "none"
   }
 }
 
