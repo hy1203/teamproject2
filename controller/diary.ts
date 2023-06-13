@@ -76,7 +76,7 @@ async function write(req: Request, res: Response) {
     res.redirect("/diary");
     return;
   }
-  res.render("diaryWrite", { year, month, date });
+  res.render("diary/write", { year, month, date });
 }
 
 async function main(req: Request, res: Response) {
