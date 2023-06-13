@@ -12,7 +12,10 @@ initTodo();
 // 서버에서 투두리스트를 가져와서 화면에 렌더링
 async function initTodo() {
   const todos = await (await fetch(apiDateURL)).json();
-  todos.forEach(({ id, checked, content }) => appendTodo(id, checked, content));
+  const sortedTodos = todos.sort((a, b) => b.todo_id - a.todo_id); // 내림차순으로 정렬
+  sortedTodos.forEach(({ id, checked, content }) =>
+    appendTodo(id, checked, content)
+  );
 }
 // 화면에서 투두리스트 삭제
 async function removeTodo(e) {
