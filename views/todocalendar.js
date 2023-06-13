@@ -151,7 +151,6 @@ function updateClick() {
   const year = localStorage.getItem("calYear");
   const month = localStorage.getItem("calMonth");
   const day = localStorage.getItem("calDay");
-
   window.location.href = `/todo/${year}/${month}/${day}`;
 }
 function deleteClick() {
@@ -226,24 +225,6 @@ function appendTodo(id, checked, value) {
   console.log(toLi);
   todoList.appendChild(toLi);
 }
-
-// //수정
-// async function toggleTodo(e) {
-//   const todo = e.target.closest("li");
-//   const id = Number(todo.id);
-//   const checked = e.target.checked;
-//   try {
-//     const res = await fetch(apiIndivURL(id), {
-//       method: "PATCH",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({ checked }),
-//     });
-//     if (!res.ok) throw new Error(res.status);
-//     console.log("투두리스트가 성공적으로 수정되었습니다.");
-//   } catch (error) {
-//     console.error("투두리스트 수정 중 오류가 발생했습니다.", error);
-//   }
-// }
 
 // 삭제
 async function removeTodo(e) {

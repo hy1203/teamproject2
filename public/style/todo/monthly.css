@@ -4,8 +4,7 @@
 
 @font-face {
   font-family: "TTWanjudaedunsancheB";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/TTWanjudaedunsancheB.woff2")
-    format("woff2");
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/TTWanjudaedunsancheB.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
 }
@@ -23,7 +22,7 @@ main {
   max-width: 700px;
 }
 
-main > header {
+main>header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -34,8 +33,8 @@ main > header {
   margin-bottom: 0.5em;
 }
 
-main > header .logo {
-  height: 7svh;
+main>header .logo {
+  height: 5svh;
   aspect-ratio: 2 / 1;
 }
 
@@ -58,7 +57,8 @@ article.todos {
   border-radius: 1em;
   margin-bottom: 0.5em;
 }
-main > footer {
+
+main>footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -75,15 +75,18 @@ main > footer {
   max-width: 700px;
   width: 700px;
 }
+
 .write-button {
   width: 65px;
 }
+
 .bottom {
   flex: 1;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 }
+
 .todoshowbox {
   width: 700px;
   background-color: white;
@@ -94,15 +97,18 @@ main > footer {
   margin-top: 1em;
   padding: 5%;
 }
+
 .diaryimg {
   width: 80px;
   margin: 2em;
 }
+
 .show-month-day {
   font-family: "TTWanjudaedunsancheB";
   font-size: large;
   margin-left: 2em;
 }
+
 .box {
   width: 150px;
   border-radius: 1em 1em 1em 1em;
@@ -132,18 +138,18 @@ td {
   border-radius: 1em 1em 1em 1em;
 }
 
-.Calendar > thead > tr:first-child > td {
+.Calendar>thead>tr:first-child>td {
   font-family: "Questrial", sans-serif;
   font-size: 1.1em;
   font-weight: bold;
 }
 
-.Calendar > thead > tr:last-child > td {
+.Calendar>thead>tr:last-child>td {
   font-family: "Questrial", sans-serif;
   font-weight: 600;
 }
 
-.Calendar > tbody > tr > td > p {
+.Calendar>tbody>tr>td>p {
   font-family: "Montserrat", sans-serif;
   height: 60px;
   width: 60px;
@@ -170,6 +176,7 @@ td {
   background-color: #ffffff;
   cursor: pointer;
 }
+
 .futureDay:hover {
   background: #eee;
 }
@@ -181,6 +188,7 @@ td {
   font-weight: 600;
   cursor: pointer;
 }
+
 [type="radio"] {
   vertical-align: middle;
   appearance: none;
@@ -212,7 +220,7 @@ td {
   cursor: not-allowed;
 }
 
-[type="radio"]:disabled + span {
+[type="radio"]:disabled+span {
   opacity: 0.7;
   cursor: not-allowed;
 }
@@ -231,17 +239,21 @@ fieldset {
 *::after {
   box-sizing: border-box;
 }
+
 .modify-box {
   justify-content: center;
   margin-top: -8em;
   margin-left: 40%;
 }
+
 .modify1 {
   width: 35px;
 }
+
 .modify2 {
   width: 35px;
 }
+
 .box2 {
   font-family: "TTWanjudaedunsancheB";
   margin-left: -50%;
