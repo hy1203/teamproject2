@@ -12,7 +12,7 @@
 body {
   display: flex;
   justify-content: center;
-  background-color: #a8cce7;
+  background-color: rgb(160, 187, 237);
   margin: 0;
 }
 
@@ -48,7 +48,7 @@ main>header .logo {
 #diary-or-todo div.now {
   padding: 0.5em 1em;
   border-radius: 1em;
-  background-color: cornflowerblue;
+  background-color: rgb(160, 187, 237);
 }
 
 article.todos {

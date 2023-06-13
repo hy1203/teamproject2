@@ -1,39 +1,69 @@
 body {
-  background-color: rgb(208, 238, 250);
+  background-color: rgb(161, 181, 215);
   display: flex;
   justify-content: space-around;
 }
 
 main {
-  background-color: white;
+  background-color: #c9dcff;
   width: 740px;
-  border-radius: 5px;
+  height: 100%;
+  border-radius: 15px;
+}
+
+.date {
+  font-family: "Hi Melody";
+  font-size: 40px;
+  font-weight: 700;
+  text-align: center;
+  flex-grow: 1;
 }
 
 .top {
+  margin: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.centered {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.close {
+  margin-left: auto;
+  text-decoration: none;
+  color: black;
+  font-size: 45pt;
+}
+
+.close:after {
+  position: relative;
+  margin-left: auto;
+
+  text-decoration: none;
+  content: "\00d7";
+  font-size: 50pt;
+  line-height: 55px;
+}
+
+.emotion {
   align-items: center;
   display: flex;
   justify-content: space-between;
 }
 
-.close {
-  position: relative;
-  display: right;
-  width: 50px;
-  height: 50px;
-  text-decoration: none;
-  color: black;
+.root {
+  display: flex;
+  text-align: center;
 }
 
-.close:after {
-  content: "\00d7";
-  font-size: 50pt;
-  line-height: 35px;
-}
 .title {
   font-family: "ImcreSoojin";
   font-size: 27px;
 }
+
 .feelings {
   text-align: center;
   font-family: "Hi Melody";
@@ -41,19 +71,21 @@ main {
   font-weight: 700;
   text-shadow: 1px 1px gray;
 }
+
 .home {
   margin-left: 10px;
 }
+
 input[type="radio"] {
   display: none;
 }
 
-input[type="radio"] + label {
+input[type="radio"]+label {
   filter: grayscale(1);
   cursor: pointer;
 }
 
-.form_feeling input[type="radio"]:checked + label {
+.form_feeling input[type="radio"]:checked+label {
   filter: grayscale(0);
   font-weight: bold;
   filter: drop-shadow(3px 3px 3px black);
@@ -116,7 +148,8 @@ input[type="file"]::file-selector-button:hover {
 }
 
 fieldset {
-  border-radius: 7px;
+  border-radius: 15px;
+  border-color: #000;
   margin-left: 10px;
   margin-right: 10px;
 }
@@ -134,15 +167,14 @@ fieldset {
 
 .txt_diary {
   width: 685px;
-  height: 200px;
+  height: 150px;
   font-size: 24px;
   font-family: "KyoboHand";
 }
 
 @font-face {
   font-family: "KyoboHand";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff")
-    format("woff");
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -169,8 +201,7 @@ fieldset {
 
 @font-face {
   font-family: "ImcreSoojin";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.3/ImcreSoojin.woff")
-    format("woff");
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.3/ImcreSoojin.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
