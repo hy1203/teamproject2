@@ -6,7 +6,8 @@ body {
 #main {
   background-color: #c9dcff;
   width: 740px;
-  border-radius: 5px;
+  height: 100%;
+  border-radius: 15px;
 }
 .date {
   font-family: "Hi Melody";
@@ -16,7 +17,7 @@ body {
   flex-grow: 1;
 }
 .top {
-  margin: 5px;
+  margin: 10px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -146,7 +147,7 @@ fieldset {
 
 .txt_diary {
   width: 685px;
-  height: 200px;
+  height: 150px;
   font-size: 24px;
   font-family: "KyoboHand";
 }
