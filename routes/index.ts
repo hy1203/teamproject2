@@ -28,9 +28,6 @@ route.use("/diary", diary);
 route.get("/todocalendar", controller.todoCalendar);
 route.get("/todo-zh", (req, res) => res.render("todo-zh"));
 
-route.get("/todotimeline", function (req, res) {
-  res.render("todotimeline");
-});
 route.get("/startpage", function (req, res) {
   res.render("startpage");
 });

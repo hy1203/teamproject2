@@ -7,6 +7,7 @@ export default {
   daily,
   monthly,
   redirectMonthly,
+  timeline,
   post,
   get,
   gets,
@@ -44,6 +45,11 @@ async function monthly(req: Request, res: Response) {
 async function redirectMonthly(req: Request, res: Response) {
   const [year, month] = today();
   res.redirect(`/todo/${year}/${month}`);
+}
+
+// 투두 타임라인
+async function timeline(req: Request, res: Response) {
+  res.render("todotimeline");
 }
 
 // api
