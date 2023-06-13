@@ -6,6 +6,7 @@ const route = Router();
 route.get("/:year/:month/:date/write", diary.write);
 route.get("/:year/:month/:date", diary.daily);
 route.get("/:year/:month", diary.monthly);
+route.get("/main", diary.main);
 route.get("*", diary.redirectMonthly);
 
 export default route;

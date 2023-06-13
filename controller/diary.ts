@@ -19,6 +19,7 @@ export default {
   monthly,
   daily,
   write,
+  main,
 };
 
 // page
@@ -75,6 +76,10 @@ async function write(req: Request, res: Response) {
     return;
   }
   res.render("diaryWrite", { year, month, date });
+}
+
+async function main(req: Request, res: Response) {
+  res.render("diary/main");
 }
 
 // api

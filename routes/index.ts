@@ -34,9 +34,6 @@ route.get("/diarytimeline", function (req, res) {
 route.get("/todotimeline", function (req, res) {
   res.render("todotimeline");
 });
-route.get("/main-diary", function (req, res) {
-  res.render("main-diary");
-});
 route.get("/startpage", function (req, res) {
   res.render("startpage");
 });
