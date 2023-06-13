@@ -121,7 +121,7 @@ async function sendComment(todoId) {
   }
 
   try {
-    const res = await fetch(`/api/todo/comment/comment/${todoId}`, {
+    const res = await fetch(`/api/todo/comment/${todoId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
