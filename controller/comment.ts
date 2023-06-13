@@ -3,13 +3,14 @@ import db from "@/models";
 import { isLogin } from "@/utils";
 
 export default {
-  create,
-  update,
+  get,
+  post,
+  put,
   destroy,
 };
 
 // comment생성
-async function create(req: Request, res: Response) {
+async function post(req: Request, res: Response) {
   try {
     const user_id = await isLogin(req, res);
     if (!user_id) return res.redirect("/login");
@@ -31,9 +32,25 @@ async function create(req: Request, res: Response) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
+//comment 조회
+async function get(req: Request, res: Response) {
+  try {
+    const user_id = await isLogin(req, res);
+    if (!user_id) return res.redirect("/login");
+    const todo_id = Number(req.params.todo_id);
+    const todo = await db.todo.findOne({ where: { user_id, id: todo_id } });
+    if (!todo) {
+      return res.status(404).json({ message: "Todo가 존재하지 않음." });
+    }
+    const comment = await db.comment.findOne({ where: { todo_id } });
+    res.status(200).json(comment);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
 
 // comment수정
-async function update(req: Request, res: Response) {
+async function put(req: Request, res: Response) {
   try {
     const user_id = await isLogin(req, res);
     if (!user_id) return res.redirect("/login");
