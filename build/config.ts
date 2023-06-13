@@ -1,10 +1,8 @@
 import fs from "fs";
 import path from "path";
 import crpyto from "crypto";
-import dotenv from "dotenv";
 import { Dialect } from "sequelize";
 
-dotenv.config();
 const DIALECT = process.env.DB_DIALECT as Dialect;
 const dbConfigs = {
   production: {
