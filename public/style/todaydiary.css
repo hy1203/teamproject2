@@ -39,14 +39,11 @@ header {
   filter: drop-shadow(2px 2px 2px black);
 }
 .image {
-  width: 337px;
-  height: 256px;
+  width: 372px;
+  height: 218px;
   border-radius: 4px;
-  margin: 89px;
+  margin: 193px 117px 82px 115px;
   filter: drop-shadow(3px 3px 3px black);
-}
-.image:hover {
-  transform: scale(1.24);
 }
 #content_read {
   border: 2px solid black;
@@ -74,8 +71,8 @@ header {
   color: rgb(255, 35, 35);
 }
 .today_image {
-  background-image: url(/public/images/frame.png);
-  background-size: 523px 434px;
+  background-image: url(/public/images/gallery.png);
+  background-size: 603px 488px;
   background-repeat: no-repeat;
   margin-top: 20px;
 }
