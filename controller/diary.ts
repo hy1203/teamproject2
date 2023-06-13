@@ -64,7 +64,7 @@ async function daily(req: Request, res: Response) {
     : null;
   const feel = emotion ? `/feel/${emotion.feel}.png` : "";
   const image = getImageNameIfHave(year, month, date, user_id) || "";
-  res.render("diary", { year, month, date, content, image, feel });
+  res.render("diary/daily", { year, month, date, content, image, feel });
 }
 
 //다이어리 쓰기 GET
