@@ -57,7 +57,7 @@ async function redirectMonthly(req: Request, res: Response) {
 
 // 투두 타임라인
 async function timeline(req: Request, res: Response) {
-  res.render("todotimeline");
+  res.render("todo/timeline");
 }
 
 // 투두 캘린더
