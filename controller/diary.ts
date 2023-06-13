@@ -61,7 +61,7 @@ async function daily(req: Request, res: Response) {
   const { content, emotion_id } = diary.dataValues;
   const emotion = emotion_id
     ? await getFromDB(db.emotion, { where: { id: emotion_id } })
-    : null;
+    : undefined;
   const feel = emotion ? `/feel/${emotion.feel}.png` : "";
   const image = getImageNameIfHave(year, month, date, user_id) || "";
   res.render("diary/daily", { year, month, date, content, image, feel });
@@ -94,8 +94,7 @@ async function gets(req: Request, res: Response) {
   if (!user_id) return res.redirect("/login");
   const [year, month] = getDateFromUrl(req);
   if (!validateDate(year, month, 1) || isFuture(year, month, 1)) {
-    res.redirect("/diary/");
-    return;
+    return res.status(400).json({ error: "Invalid date" }).end();
   }
   const diaries = await getAllFromDB(db.diary, {
     where: { user_id, year, month },
@@ -108,8 +107,7 @@ async function get(req: Request, res: Response) {
   if (!user_id) return res.redirect("/login");
   const [year, month, date] = getDateFromUrl(req);
   if (!validateDate(year, month, date) || isFuture(year, month, date)) {
-    res.redirect("/diary/");
-    return;
+    return res.status(400).json({ error: "Invalid date" }).end();
   }
   const diary = await getFromDB(db.diary, {
     where: { user_id, year, month, date },
@@ -125,8 +123,7 @@ async function post(req: Request, res: Response) {
   const [year, month, date] = getDateFromUrl(req);
   const { emotion, content } = req.body;
   if (!validateDate(year, month, date) || isFuture(year, month, date)) {
-    res.status(400).json({ error: "Invalid date" });
-    return;
+    return res.status(400).json({ error: "Invalid date" }).end();
   }
   const emotion_id = emotion ? Number(emotion) : undefined;
 
@@ -139,8 +136,7 @@ async function post(req: Request, res: Response) {
     emotion_id,
   });
   if (!diary) {
-    res.status(500).json({ error: "DB error" });
-    return;
+    return res.status(500).json({ error: "DB error" }).end();
   }
   diary.save();
   res.status(201).json({ isCreated, diary: diary.dataValues });
