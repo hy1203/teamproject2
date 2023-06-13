@@ -18,11 +18,23 @@
     <div id="main">
       <header>
         <div class="top">
-          <div></div>
-          <div class="date">6월 5일</div>
+          <div>
+            <a href="/"
+              ><img
+                src="/public/images/home.png"
+                width="40"
+                height="40"
+                class="home"
+                alt="home"
+            /></a>
+          </div>
+          <div class="centered">
+            <div class="date"><%= month %>월 <%= date %>일</div>
+          </div>
           <a href="/" class="close"></a>
         </div>
       </header>
+
       <hr />
       <form
         name="feeling_form"
@@ -32,7 +44,7 @@
         <fieldset>
           <div class="feelings">오늘의 기분</div>
           <br />
-          <div class="top">
+          <div class="emotion">
             <input type="radio" name="feeling" id="happy" value="1" />
             <label for="happy">
               <img
