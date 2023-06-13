@@ -31,8 +31,6 @@ export default {
   signup: signup.post,
   // startpage
   StartPage: startpage.get,
-  // dairy
-  diary: diary.get,
   emotion: emotion.page,
   getEmotion: emotion.getEmotion,
   // profile
