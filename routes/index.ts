@@ -27,14 +27,20 @@ route.use("/diary", diary);
 route.get("/todocalendar", controller.todoCalendar);
 route.get("/todo-zh", (req, res) => res.render("todo-zh"));
 
-route.get("/timeline", function (req, res) {
-  res.render("timeline");
+route.get("/diarytimeline", function (req, res) {
+  res.render("diarytimeline");
 });
-route.get("/dairy", function (req, res) {
-  res.render("dairy");
+route.get("/todotimeline", function (req, res) {
+  res.render("todotimeline");
+});
+route.get("/main-diary", function (req, res) {
+  res.render("main-diary");
 });
 route.get("/startpage", function (req, res) {
   res.render("startpage");
+});
+route.get("/todocalendar", function (req, res) {
+  res.render("todocalendar");
 });
 
 // profile route

@@ -10,7 +10,6 @@
 
 body {
   background-color: rgb(242, 246, 247);
-  overflow: hidden;
 }
 
 div {
@@ -36,7 +35,7 @@ td {
   font-family: "TTWanjudaedunsancheB";
   background-color: #ffffff;
   border-radius: 20px 20px 20px 20px;
-  padding: 0%;
+  padding: 1%;
 }
 
 .Calendar > thead > tr:first-child > td {
@@ -146,15 +145,7 @@ a {
   margin: 4% auto;
   background-color: #a8cce7;
   /* background: #ffffff; */
-  height: 815px;
-  width: 742px;
-  overflow: hidden;
-}
-.main-css2 {
-  max-width: 740px;
-  margin: 4% auto;
-  background: #ffffff;
-  height: 1000px;
+  /* height: 1000px; */
   width: 742px;
 }
 
@@ -233,8 +224,17 @@ a {
   height: 290px;
   width: 550px;
   border: 2px solid;
-  margin-left: 13%;
-  margin-top: 1%;
+  margin-left: 0%;
+}
+
+.hi-margin {
+  height: 50px;
+  background-color: #a8cce7;
+}
+.hi-main {
+  background-color: #dada3b;
+  height: 320px;
+  width: 600px;
 }
 .box {
   -ms-overflow-style: none; /* IE and Edge */
@@ -339,17 +339,17 @@ fieldset {
 }
 .modify-box {
   height: 30px;
-  margin-top: -10%;
+  margin-top: -5%;
 }
 .modify1 {
   margin-left: 60%;
-  margin-top: -20%;
+  margin-top: -10%;
   width: 30px;
   height: 30px;
 }
 .modify2 {
   margin-left: 3%;
-  margin-top: -20%;
+  margin-top: -10%;
   width: 30px;
   height: 30px;
 }
@@ -399,6 +399,18 @@ fieldset {
   float: right;
   margin-right: 3%;
   margin-top: -8%;
+}
+.dropcss {
+  text-align: center;
+  height: 70px;
+}
+.dropdown-menu-css {
+  margin-left: 5%;
+}
+.timelineshow {
+  margin-left: 5%;
+  font-family: "TTWanjudaedunsancheB";
+  font-size: 25px;
 }
 
 @media (min-width: 691px) and (max-width: 900px) {
