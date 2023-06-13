@@ -26,7 +26,9 @@ async function get(req: Request, res: Response) {
 }
 
 // 로그인 POST
-async function post(req: Request, res: Response): Promise<void> {
+async function post(req: Request, res: Response) {
+  const user_id = await isLogin(req, res);
+  if (user_id) return res.redirect("/");
   try {
     const { username, password } = req.body;
     const user = await db.user.findOne({
@@ -47,10 +49,10 @@ async function post(req: Request, res: Response): Promise<void> {
     res
       .cookie("access", access, { httpOnly: true, secure: true })
       .cookie("refresh", refresh, { httpOnly: true, secure: true })
-      .send({ result: true });
+      .redirect("/");
   } catch (err) {
     console.log("로그인 오류", err);
-    res.send({ result: false });
+    res.status(401).json({ message: "로그인 실패" });
   }
 }
 
