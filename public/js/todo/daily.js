@@ -9,12 +9,12 @@ todoForm.addEventListener("submit", addTodo);
 clearBtn.addEventListener("click", clearTodoList);
 initTodo();
 
+// 서버에서 투두리스트를 가져와서 화면에 렌더링
 async function initTodo() {
-  // 서버에서 투두리스트를 가져와서 화면에 렌더링
   const todos = await (await fetch(apiDateURL)).json();
   todos.forEach(({ id, checked, content }) => appendTodo(id, checked, content));
 }
-
+// 화면에서 투두리스트 삭제
 async function removeTodo(e) {
   // 투두 ID 추출
   const todo = e.target.closest("li");
@@ -30,7 +30,7 @@ async function removeTodo(e) {
     console.error("투두리스트 삭제 중 오류가 발생했습니다.", error);
   }
 }
-
+// 서버에서 투두리스트 삭제
 async function deleteTodo(id) {
   // 서버에서 투두 삭제
   try {
@@ -41,7 +41,7 @@ async function deleteTodo(id) {
     console.error("투두리스트 삭제 중 오류가 발생했습니다.", error);
   }
 }
-
+// 투두리스트 전체삭제
 async function clearTodoList(e) {
   // 서버에서 투두리스트 전체 삭제
   try {
@@ -52,7 +52,7 @@ async function clearTodoList(e) {
     console.error("투두리스트 전체 삭제 중 오류가 발생했습니다.", error);
   }
 }
-
+// 투두리스트 추가
 async function addTodo(e) {
   e.preventDefault();
   const todo = todoForm.todo.value;
@@ -68,8 +68,7 @@ async function addTodo(e) {
     console.error("투두리스트 추가 중 오류가 발생했습니다.", error);
   }
 }
-
-// 투두리스트 수정
+// 화면에서 투두리스트 수정
 async function editTodo(e) {
   const todo = e.target.closest("li");
   const id = Number(todo.id);
@@ -90,8 +89,7 @@ async function editTodo(e) {
     console.error("수정 실패:", error);
   }
 }
-
-// 서버에 투두리스트 업데이트
+// 서버에서 투두리스트 수정
 async function updateTodo(id, newValue) {
   try {
     const res = await fetch(apiIndivURL(id), {
@@ -110,7 +108,7 @@ async function updateTodo(id, newValue) {
   }
 }
 
-// HTML 코드에서 코멘트를 추가하는 함수
+// 서버에 comment추가
 async function sendComment(todoId) {
   console.log(todoId);
   const commentInput = document.querySelector(`#toggle${todoId}`);
@@ -146,7 +144,7 @@ async function sendComment(todoId) {
     console.error("댓글 작성 실패:", error);
   }
 }
-// HTML 코드에서 코멘트를 가져오는 함수
+// HTML표시 코드
 async function appendTodo(id, checked, value) {
   const li = document.createElement("li");
   li.id = id;
@@ -205,7 +203,7 @@ async function getComment(todoId) {
   }
 }
 
-//comment를 수정하는 함수
+// 화면에서 comment 수정
 async function editComment(e) {
   const todo = e.target.closest("li");
   const id = Number(todo.id);
@@ -225,8 +223,7 @@ async function editComment(e) {
     console.error("수정 실패:", error);
   }
 }
-
-//서버에서 comment를 수정하는 함수
+// 서버에서 comment 수정
 async function updateComment(todoId, newValue) {
   try {
     const res = await fetch(`/api/todo/comment/${todoId}`, {
@@ -240,7 +237,7 @@ async function updateComment(todoId, newValue) {
   }
 }
 
-// comment를 삭제하는 함수
+// 화면에서 comment 삭제
 async function removeComment(e) {
   const todo = e.target.closest("li");
   const id = Number(todo.id);
@@ -257,7 +254,7 @@ async function removeComment(e) {
   }
 }
 
-//서버에서 comment를 삭제하는 함수
+//서버 comment를 삭제
 async function deleteComment(todoId) {
   try {
     const res = await fetch(`/api/todo/comment/${todoId}`, {
