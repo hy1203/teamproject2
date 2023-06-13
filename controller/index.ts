@@ -38,6 +38,6 @@ export default {
   timeline: timeline.get,
   //todocalendar
   todocalendar: todocalendar.get,
-  get: emotion.get,
-  emotionIndex: emotion.emotionIndex,
+  emotion: emotion.page,
+  getEmotion: emotion.getEmotion,
 };

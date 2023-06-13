@@ -5,67 +5,46 @@ import { Controller } from "@/types";
 import { Emotion } from "@/types/models";
 import route from "@/routes";
 
-const { emotion, diary } = db;
-
 export default {
-  get,
-  emotionIndex,
+  getEmotion,
+  page,
 };
 
-async function get(req: Request, res: Response) {
-  // const user_id = isLogin(req, res);
-  // if (!user_id) return;
+async function getEmotion(req: Request, res: Response) {
+  const user_id = await isLogin(req, res);
+  if (!user_id) return;
+  const { year: years, month: months } = req.params;
+  const year = Number(years);
+  const month = Number(months);
 
-  // console.log(req.params);
-
-  // const calendar = await diary.findAll({
-  //   where: {
-  //     user_id,
-  //     month: Number(req.params.month),
-  //     year: Number(req.params.year),
-  //   },
-  // }); 결과물을 보기 위해서 주석처리
-
-  const Happy = await emotion.findAll({
-    attributes: ["id", "feel"],
-    where: { feel: 1 },
+  const diaries = await db.diary.findAll({
+    where: {
+      user_id,
+      month,
+      year,
+    },
   });
-  const Good = await emotion.findAll({
-    attributes: ["id", "feel"],
-    where: { feel: 2 },
-  });
-  const Soso = await emotion.findAll({
-    attributes: ["id", "feel"],
-    where: { feel: 3 },
-  });
-  const Notbad = await emotion.findAll({
-    attributes: ["id", "feel"],
-    where: { feel: 4 },
-  });
-  const Bad = await emotion.findAll({
-    attributes: ["id", "feel"],
-    where: { feel: 5 },
-  });
-
-  console.log(
-    Happy.length,
-    Good.length,
-    Soso.length,
-    Notbad.length,
-    Bad.length
-  );
+  const emotions = diaries
+    .map((diary) => diary.dataValues)
+    .reduce((acc, diary) => {
+      const emotion_id = diary.emotion_id;
+      if (!emotion_id) return acc;
+      if (!acc[emotion_id]) acc[emotion_id] = 0;
+      acc[emotion_id] += 1;
+      return acc;
+    }, {} as { [emotion_id: number]: number });
 
   const data = {
-    Happy: Happy.length,
-    Good: Good.length,
-    Soso: Soso.length,
-    Notbad: Notbad.length,
-    Bad: Bad.length,
+    Happy: emotions[1],
+    Good: emotions[2],
+    Soso: emotions[3],
+    Notbad: emotions[4],
+    Bad: emotions[5],
   };
 
   res.send({ emotion: data });
 }
 
-async function emotionIndex(req: Request, res: Response) {
+async function page(req: Request, res: Response) {
   res.render("emotion");
 }
