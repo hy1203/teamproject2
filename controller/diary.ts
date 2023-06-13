@@ -20,6 +20,7 @@ export default {
   daily,
   write,
   main,
+  timeline,
 };
 
 // page
@@ -80,6 +81,10 @@ async function write(req: Request, res: Response) {
 
 async function main(req: Request, res: Response) {
   res.render("diary/main");
+}
+
+async function timeline(req: Request, res: Response) {
+  res.render("diary/timeline");
 }
 
 // api

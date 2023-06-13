@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import login from "./login";
 import signup from "./signup";
 import calendar from "./calendar";
-import diarytimeline from "./diarytimeline";
 import todotimeline from "./todotimeline";
 import todocalendar from "./todocalendar";
 import startpage from "./startpage";
@@ -39,8 +38,6 @@ export default {
   StartPage: startpage.get,
   // dairy
   diary: diary.get,
-  //diarytimeline
-  diarytimeline: diarytimeline.get,
   //todotimeline
   todotimeline: todotimeline.get,
   //todocalendar
