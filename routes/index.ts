@@ -2,6 +2,7 @@ import { Router } from "express";
 import controller from "@/controller";
 import diary from "./diary";
 import todo from "./todo";
+import emotion from "./emotion";
 
 const route = Router();
 
@@ -42,6 +43,9 @@ route.get("/startpage", function (req, res) {
 route.get("/todocalendar", function (req, res) {
   res.render("todocalendar");
 });
+
+//emotion route
+route.use("/emotion", emotion);
 
 // profile route
 route.get("/profile", controller.profile);

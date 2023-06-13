@@ -7,6 +7,7 @@ import todotimeline from "./todotimeline";
 import todocalendar from "./todocalendar";
 import startpage from "./startpage";
 import diary from "./diary";
+import emotion from "./emotion";
 import logout from "./logout";
 import profile from "./profile";
 
@@ -44,6 +45,8 @@ export default {
   todotimeline: todotimeline.get,
   //todocalendar
   todocalendar: todocalendar.get,
+  emotion: emotion.page,
+  getEmotion: emotion.getEmotion,
   // profile
   profile: profile.get,
 };
