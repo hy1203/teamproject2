@@ -24,15 +24,10 @@ route.use("/todo", todo);
 // diary route
 route.use("/diary", diary);
 
-// todocalendar route
-route.get("/todocalendar", controller.todoCalendar);
 route.get("/todo-zh", (req, res) => res.render("todo-zh"));
 
 route.get("/startpage", function (req, res) {
   res.render("startpage");
-});
-route.get("/todocalendar", function (req, res) {
-  res.render("todocalendar");
 });
 
 //emotion route

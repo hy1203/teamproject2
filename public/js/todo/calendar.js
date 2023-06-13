@@ -2,7 +2,7 @@ const currentPath = window.location.pathname;
 var dairyradio = document.getElementById("dairy-radio");
 var todoradio = document.getElementById("todo-radio");
 
-if (currentPath === "/todocalendar") {
+if (currentPath === "/todo/calendar") {
   const todoradio = document.getElementById("todo-radio");
   todoradio.checked = true;
 }

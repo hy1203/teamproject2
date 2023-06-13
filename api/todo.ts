@@ -8,6 +8,7 @@ const route = Router();
 route.use("/comment", comment);
 
 // todo
+route.get("/calendar", todo.calendar);
 route.post("/:year/:month/:date", todo.post);
 route.get("/:year/:month/:date", todo.get);
 route.get("/:year/:month/", todo.gets);
