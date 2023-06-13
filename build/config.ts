@@ -6,13 +6,12 @@ import { Dialect } from "sequelize";
 
 dotenv.config();
 const DIALECT = process.env.DB_DIALECT as Dialect;
-const HOST = `${process.env.DB_HOST}://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_DATABASE}?ssl={"rejectUnauthorized":true}`;
 const dbConfigs = {
   production: {
     username: process.env.DB_USERNAME!,
     password: process.env.DB_PASSWORD!,
     database: process.env.DB_DATABASE!,
-    host: HOST,
+    host: process.env.DB_HOST!,
     dialect: DIALECT,
     logging: false,
   },
