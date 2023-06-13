@@ -4,7 +4,7 @@ body {
   justify-content: space-around;
 }
 
-#main {
+main {
   background-color: white;
   width: 740px;
   border-radius: 5px;
@@ -30,26 +30,33 @@ body {
   font-size: 50pt;
   line-height: 35px;
 }
-
+.title {
+  font-family: "ImcreSoojin";
+  font-size: 27px;
+}
 .feelings {
   text-align: center;
   font-family: "Hi Melody";
   font-size: 30px;
   font-weight: 700;
+  text-shadow: 1px 1px gray;
 }
-
+.home {
+  margin-left: 10px;
+}
 input[type="radio"] {
   display: none;
 }
 
-input[type="radio"]+label {
+input[type="radio"] + label {
   filter: grayscale(1);
   cursor: pointer;
 }
 
-.form_feeling input[type="radio"]:checked+label {
+.form_feeling input[type="radio"]:checked + label {
   filter: grayscale(0);
   font-weight: bold;
+  filter: drop-shadow(3px 3px 3px black);
 }
 
 .form_feeling {
@@ -81,6 +88,7 @@ input[type="file"]::file-selector-button {
   font-size: 23px;
   font-family: "Hi Melody";
   font-weight: 500;
+  text-shadow: 1px 1px gray;
 }
 
 input[type="file"]::file-selector-button:hover {
@@ -104,6 +112,7 @@ input[type="file"]::file-selector-button:hover {
   font-size: 25px;
   font-weight: 700;
   box-shadow: 3px 3px gray;
+  text-shadow: 1px 1px gray;
 }
 
 fieldset {
@@ -115,6 +124,7 @@ fieldset {
 .btn:hover {
   background-color: skyblue;
   color: white;
+  text-shadow: 2px 2px black;
 }
 
 .txt {
@@ -131,7 +141,8 @@ fieldset {
 
 @font-face {
   font-family: "KyoboHand";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff") format("woff");
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff")
+    format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -147,9 +158,19 @@ fieldset {
   width: 90px;
   padding: 6px;
   box-shadow: 3px 3px gray;
+  text-shadow: 1px 1px gray;
 }
 
 .uploadBtn:hover {
   background-color: skyblue;
   color: white;
+  text-shadow: 2px 2px black;
+}
+
+@font-face {
+  font-family: "ImcreSoojin";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.3/ImcreSoojin.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
 }
