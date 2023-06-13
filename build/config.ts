@@ -44,8 +44,21 @@ function setDbConfig(dbConfig: string) {
 }
 
 function setTokenConfig(tokenConfig: string) {
-  const ACCESS_TOKEN = crpyto.randomBytes(64).toString("hex");
-  const REFRESH_TOKEN = crpyto.randomBytes(64).toString("hex");
+  if (!process.env.ACCESS_TOKEN || !process.env.REFRESH_TOKEN) {
+    // generate random token
+    const access = crpyto.randomBytes(64).toString("hex");
+    const refresh = crpyto.randomBytes(64).toString("hex");
+    // save in .env
+    fs.appendFileSync(
+      path.resolve(__dirname, "../.env"),
+      `\nACCESS_TOKEN=${access}\nREFRESH_TOKEN=${refresh}\n`
+    );
+    // set env
+    process.env.ACCESS_TOKEN = access;
+    process.env.REFRESH_TOKEN = refresh;
+  }
+  const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
+  const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
   fs.writeFile(
     tokenConfig,
     `export default {ACCESS_TOKEN: "${ACCESS_TOKEN}",REFRESH_TOKEN: "${REFRESH_TOKEN}"};`,
