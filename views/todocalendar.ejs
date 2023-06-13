@@ -18,31 +18,19 @@
 
 </head>
 <body>
-
+  
 <main class="main-css">
 
 <header>
-  <img class="logo" src="/image/dailylogo3.png"></img>
-  <fieldset>
-    <label>
-      <input
-        type="radio"
-        name="page"
-        value="dairy"
-        id="dairy-radio"
-      />
-      <span>Diary</span>
-    </label>
-    <label>
-      <input
-        type="radio"
-        name="page"
-        value="todocalendar"
-        id="todo-radio"
-      />
-      <span>ToDo</span>
-    </label>
-  </fieldset>
+  <img class="logo" src="/image/dailylogo3.png" />
+  <div id="diary-or-todo">
+    <div onClick="location.href='/main-diary'">
+    <a class="cursor">Diary</a>
+  </div>
+  <div class="now" onClick="location.href='/todocalendar'">
+    <a class="cursor">Todo</a>
+    </div>
+  </div>
 </header>
 
 <table class="Calendar">
