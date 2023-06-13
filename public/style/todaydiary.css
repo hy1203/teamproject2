@@ -40,13 +40,10 @@ header {
 }
 .image {
   width: 372px;
-  height: 237px;
+  height: 218px;
   border-radius: 4px;
-  margin: 184px 117px 82px 115px;
+  margin: 193px 117px 82px 115px;
   filter: drop-shadow(3px 3px 3px black);
-}
-.image:hover {
-  transform: scale(1.24);
 }
 #content_read {
   border: 2px solid black;
