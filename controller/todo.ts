@@ -103,7 +103,6 @@ async function get(req: Request, res: Response) {
     where: { year, month, date, user_id },
     order: [["id", "DESC"]],
   });
-  console.log("todos", todos);
   const todosByDate = await todos
     .map((todo) => todo.dataValues)
     .map(async ({ id, checked, content, date }) => {
