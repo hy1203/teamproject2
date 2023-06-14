@@ -33,7 +33,7 @@ main>header .logo {
 #diary-or-todo div.now {
   padding: 0.5em 1em;
   border-radius: 1em;
-  background-color: rgb(160, 187, 237);
+  background-color: var(--bg-color);
 }
 
 article.todos {
