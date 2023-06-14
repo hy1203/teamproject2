@@ -88,7 +88,9 @@ function Todo({ id, checked, content, comment, feel }) {
     if (feel) {
       const emotionImg = document.createElement("img");
       emotionImg.classList.add("emotion");
-      emotionImg.src = `/feel/${feel}`;
+      emotionImg.src = `${feel}`;
+      //스타일 적용을 어디서 해야하는지 못찾아서 여기에 해놓을게요.
+      emotionImg.style = "width: 35px; height: 35px;";
       Comment.appendChild(emotionImg);
     }
   }
