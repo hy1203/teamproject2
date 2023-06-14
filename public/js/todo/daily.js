@@ -161,7 +161,7 @@ async function appendTodo(id, checked, value, comment, feel) {
   let contentHTML = `
     <input type="checkbox" id="${id}check" ${checked ? "checked" : ""}>
     <label for="${id}check">${value}</label>
-    <button class="edit"><img src="/public/images/edit.png"></button>
+    <button class="edit"><img src="/public/images/edit.png" class="edit-btn"></button>
     <button class="delete"><img src="/public/images/close.png" width="25px" height="25px"></button>
     <button type="button" class="comment">comment<img src="/public/images/comment.png" width="25px" height="25px"/></button>
   `;
@@ -169,9 +169,17 @@ async function appendTodo(id, checked, value, comment, feel) {
   if (comment) {
     contentHTML += `
     <div class="comment-container">${comment}
-      if(feel){
-        <img src="${feel}">
-      }
+      <div btn-container>
+        <button type="button" class="comment-edit">Edit</button>
+        <button type="button" class="comment-delete">x</button>
+      </div>
+    </div>
+    `;
+    //comment가 존재하고 feel이 존재할때
+  } else if (comment && feel) {
+    contentHTML += `
+      <div class="comment-container">${comment}
+      <img src="${feel}" class="img-box">
       <div btn-container>
         <button type="button" class="comment-edit">Edit</button>
         <button type="button" class="comment-delete">x</button>
@@ -183,7 +191,7 @@ async function appendTodo(id, checked, value, comment, feel) {
     contentHTML += `
       <li class="comment-container comment_hide" >
         <textarea type="text" class="toggle" id="toggle${id}" rows="1" placeholder="댓글 작성" oninput="calcTextareaHeight(this)"></textarea>
-        <button type="button" class="comment_submit" onclick="sendComment(${id})">comment 제출</button>
+        <button type="button" class="comment_submit" onclick="sendComment(${id})">제출</button>
         <input type="hidden" class="comment-edit"></input>
         <input type="hidden" class="comment-delete"></input>
       </li>
@@ -203,7 +211,6 @@ async function appendTodo(id, checked, value, comment, feel) {
   //comment 이벤트
   li.querySelector(".comment-edit").addEventListener("click", editComment);
   li.querySelector(".comment-delete").addEventListener("click", removeComment);
-  );
   todoList.appendChild(li);
   document.querySelector("section").style.display = "block";
 }
