@@ -42,6 +42,7 @@ async function deleteTodo(id) {
   // 서버에서 투두 삭제
   try {
     const res = await fetch(apiIndivURL(id), { method: "DELETE" });
+    console.log(res);
     if (!res.ok) throw new Error(res.status);
     return res;
   } catch {

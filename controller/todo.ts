@@ -199,14 +199,12 @@ async function destroy(req: Request, res: Response) {
     const { id } = req.params;
     const user_id = await isLogin(req, res);
     if (!user_id) return res.redirect("/login");
-    const result = await db.todo.destroy({
-      where: { id, user_id },
-    });
-
-    if (result === 0) {
-      return res.status(404).json({ message: "Todo가 존재하지 않음." });
-    }
-
+    const todo = await db.todo.findOne({ where: { id, user_id } });
+    const comment = await db.comment.findOne({ where: { todo_id: id } });
+    await comment?.destroy();
+    comment?.save();
+    await todo?.destroy();
+    todo?.save();
     res.status(200).json({ message: "Todo 삭제 완료." });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
