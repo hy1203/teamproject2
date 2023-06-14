@@ -173,8 +173,8 @@ async function appendTodo(id, checked, value, comment, feel) {
           <div><img src="${feel}" class="img-box"></div>
 
       <div btn-container>
-        <button type="button" class="comment-edit">Edit</button>
-        <button type="button" class="comment-delete">x</button>
+        <button type="button" class="comment-delete">삭제</button>
+        <button type="button" class="comment-edit">수정</button>
       </div>
     </div>
     `;
@@ -184,8 +184,8 @@ async function appendTodo(id, checked, value, comment, feel) {
     contentHTML += `
       <div class="comment-container"><div class="comment-div">${comment}</div><img src="${feel}" class="feel-box">
       <div btn-container>
-        <button type="button" class="comment-edit">Edit</button>
-        <button type="button" class="comment-delete">x</button>
+        <button type="button" class="comment-delete">삭제</button>
+        <button type="button" class="comment-edit">수정</button>
       </div>
     </div>
       
@@ -307,7 +307,7 @@ async function commentToggle(e) {
   const divHide = div.querySelector(".comment-btn");
   if (window.getComputedStyle(cmt).display === "none") {
     console.log(window.getComputedStyle(cmt).display);
-    cmt.style.display = "flex";
+    cmt.style.display = "block";
   } else {
     cmt.style.display = "none";
   }
