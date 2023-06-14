@@ -266,10 +266,7 @@ async function appendTodo(id, checked, value) {
   //comment 이벤트
   li.querySelector(".comment-edit").addEventListener("click", editComment);
   li.querySelector(".comment-delete").addEventListener("click", removeComment);
-  // li.querySelector(".commentSubmitButton").addEventListener(
-  //   "click",
-  //   sendComment
-  // );
+  );
   todoList.appendChild(li);
   document.querySelector("section").style.display = "block";
 }
