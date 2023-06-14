@@ -103,9 +103,11 @@ section {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
 .comment-div {
   margin-right: 10px;
 }
+
 .feel-box {
   /* 위치를 범위에서 제일 왼쪽으로  */
   margin-right: auto;
@@ -231,6 +233,7 @@ li {
   margin: 15px 15px 15px 25px;
   font-family: "KyoboHand";
 }
+
 .submit-container {
   display: flex;
   flex-direction: column;

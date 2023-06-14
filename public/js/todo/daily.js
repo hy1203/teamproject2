@@ -1,6 +1,5 @@
 const apiDateURL = `/api${window.location.pathname}`; // get, post, deleteAll
 const apiIndivURL = (id) => `/api/todo/${id}`; // put, patch, delete
-console.log(apiDateURL);
 const todoForm = document.forms.todoForm;
 const todoList = document.querySelector("ul#todoList");
 const clearBtn = document.getElementById("clear");
@@ -15,7 +14,6 @@ async function initTodo() {
   //url에서 date값 가져오기
   const url = window.location.pathname.split("/");
   const date = url[url.length - 1];
-  console.log(todos);
   todos.forEach(({ id, content, checked, comment, feel }) => {
     appendTodo(id, content, checked, comment, feel);
   });
@@ -28,7 +26,6 @@ async function removeTodo(e) {
   try {
     // 서버에서 투두 삭제
     const res = await deleteTodo(id);
-    console.log(res);
     if (!res.ok) throw new Error(res.status);
     // 화면에서 투두 삭제
     todoList.removeChild(todo);
@@ -42,7 +39,6 @@ async function deleteTodo(id) {
   // 서버에서 투두 삭제
   try {
     const res = await fetch(apiIndivURL(id), { method: "DELETE" });
-    console.log(res);
     if (!res.ok) throw new Error(res.status);
     return res;
   } catch {
@@ -153,9 +149,7 @@ async function sendComment(todoId) {
 }
 // HTML표시 코드
 async function appendTodo(id, content, checked, comment, feel) {
-  console.log(id, checked, content, comment, feel);
   const li = document.createElement("li");
-  console.log("feel", feel);
   li.id = id;
   let contentHTML = `
     <input type="checkbox" id="${id}check" ${checked ? "checked" : ""}>
