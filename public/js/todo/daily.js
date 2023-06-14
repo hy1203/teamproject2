@@ -167,10 +167,14 @@ async function appendTodo(id, checked, value, comment, feel) {
   `;
 
   if (comment && !feel) {
-    console.log("test1");
     contentHTML += `
-    <div class="comment-container">${comment}
-          <div><img src="${feel}" class="img-box"></div>
+    <div class="comment-container">
+      <div class="comment-div">
+        <img src="/public/images/turn-right.png">${comment}
+      </div>
+      <div>
+        <img src="${feel}" class="img-box">
+      </div>
 
       <div btn-container>
         <button type="button" class="comment-delete">삭제</button>
@@ -180,25 +184,24 @@ async function appendTodo(id, checked, value, comment, feel) {
     `;
     //comment가 존재하고 feel이 존재할때
   } else if (comment && feel) {
-    console.log("test2");
     contentHTML += `
-      <div class="comment-container"><div class="comment-div">${comment}</div><img src="${feel}" class="feel-box">
-      <div btn-container>
-        <button type="button" class="comment-delete">삭제</button>
-        <button type="button" class="comment-edit">수정</button>
+      <div class="comment-container">
+        <div class="comment-div">${comment}</div><img src="${feel}" class="feel-box">
+        <div btn-container>
+          <button type="button" class="comment-delete">삭제</button>
+          <button type="button" class="comment-edit">수정</button>
+        </div>
       </div>
-    </div>
       
     `;
   } else {
     contentHTML += `
-      <li class="comment-container comment_hide" >
+      <li class="comment-container submit-container comment_hide">
         <textarea type="text" class="toggle" id="toggle${id}" rows="1" placeholder="댓글 작성" oninput="calcTextareaHeight(this)"></textarea>
-        <button type="button" class="comment_submit" onclick="sendComment(${id})">제출</button>
-        <input type="hidden" class="comment-edit"></input>
         <input type="hidden" class="comment-delete"></input>
+        <input type="hidden" class="comment-edit"></input>
+        <button type="button" class="comment_submit" onclick="sendComment(${id})">제출</button>
       </li>
-
     `;
   }
 
@@ -233,7 +236,7 @@ async function getComment(todoId) {
 async function editComment(e) {
   const todo = e.target.closest("li");
   const id = Number(todo.id);
-  const comment = todo.querySelector(".comment-container");
+  const comment = todo.querySelector(".comment-div");
   const previousValue = comment.textContent;
   const newValue = prompt("수정할 내용을 입력하세요", previousValue);
 
@@ -257,6 +260,7 @@ async function updateComment(todoId, newValue) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ content: newValue }),
     });
+    window.location.reload();
     return res;
   } catch (error) {
     console.error("댓글 수정 실패:", error);
@@ -275,9 +279,7 @@ async function removeComment(e) {
     todo.querySelector(".comment-container").remove();
     todo.querySelector(".comment-edit").remove();
     todo.querySelector(".comment-delete").remove();
-  } catch (error) {
-    console.error("댓글 삭제 실패:", error);
-  }
+  } catch (error) {}
 }
 
 //서버 comment를 삭제
@@ -286,6 +288,7 @@ async function deleteComment(todoId) {
     const res = await fetch(`/api/todo/comment/${todoId}`, {
       method: "DELETE",
     });
+    window.location.reload();
     return res;
   } catch (error) {
     console.error("댓글 삭제 실패:", error);
@@ -298,16 +301,13 @@ async function calcTextareaHeight(e) {
   e.style.height = `${e.scrollHeight}px`;
 }
 
-// 다 잘되는데 comment삭제하고나서 오류발생
 async function commentToggle(e) {
   const todo = e.target.closest("li");
   const cmt = todo.querySelector(".comment-container");
 
-  const div = e.target.closest("button");
-  const divHide = div.querySelector(".comment-btn");
   if (window.getComputedStyle(cmt).display === "none") {
     console.log(window.getComputedStyle(cmt).display);
-    cmt.style.display = "block";
+    cmt.style.display = "flex";
   } else {
     cmt.style.display = "none";
   }
