@@ -12,10 +12,13 @@ initTodo();
 // 서버에서 투두리스트를 가져와서 화면에 렌더링
 async function initTodo() {
   const todos = await (await fetch(apiDateURL)).json();
-  const sortedTodos = todos.sort((a, b) => b.todo_id - a.todo_id); // 내림차순으로 정렬
-  sortedTodos.forEach(({ id, checked, content }) =>
-    appendTodo(id, checked, content)
-  );
+  //url에서 date값 가져오기
+  const url = window.location.pathname.split("/");
+  const date = url[url.length - 1];
+  console.log(todos);
+  todos.forEach(({ id, content, checked, comment, feel }) => {
+    appendTodo(id, content, checked, comment, feel);
+  });
 }
 // 화면에서 투두리스트 삭제
 async function removeTodo(e) {
@@ -25,6 +28,7 @@ async function removeTodo(e) {
   try {
     // 서버에서 투두 삭제
     const res = await deleteTodo(id);
+    console.log(res);
     if (!res.ok) throw new Error(res.status);
     // 화면에서 투두 삭제
     todoList.removeChild(todo);
@@ -38,6 +42,7 @@ async function deleteTodo(id) {
   // 서버에서 투두 삭제
   try {
     const res = await fetch(apiIndivURL(id), { method: "DELETE" });
+    console.log(res);
     if (!res.ok) throw new Error(res.status);
     return res;
   } catch {
@@ -64,7 +69,7 @@ async function addTodo(e) {
       // 투두리스트를 서버에 저장 후 아이디 값 수신
       const { id, checked } = await postTodo(todo);
       // 화면에 투두리스트 추가
-      appendTodo(id, checked, todo);
+      appendTodo(id, todo, checked);
     }
     todoForm.reset();
   } catch (error) {
@@ -113,7 +118,6 @@ async function updateTodo(id, newValue) {
 
 // 서버에 comment추가
 async function sendComment(todoId) {
-  console.log(todoId);
   const commentInput = document.querySelector(`#toggle${todoId}`);
   const commentText = commentInput.value;
 
@@ -132,15 +136,15 @@ async function sendComment(todoId) {
         emotion_id: 1,
       }),
     });
-    console.log(res);
 
     // 댓글을 표시하는 엘리먼트 찾기
     const commentContainer = commentInput.closest(".comment-container");
     // 댓글 내용을 담는 엘리먼트 생성
     const commentTextElement = document.createElement("div");
     commentTextElement.textContent = commentText;
-    // commentContainer.appendChild(commentTextElement);
-    window.location.reload();
+    commentContainer.appendChild(commentTextElement);
+    commentInput?.classList.add("hidden");
+    commentContainer.querySelector(".comment_submit")?.classList.add("hidden");
     // 댓글 작성 후, 댓글 필드 초기화
     commentInput.value = "";
   } catch (error) {
@@ -148,31 +152,45 @@ async function sendComment(todoId) {
   }
 }
 // HTML표시 코드
-async function appendTodo(id, checked, value) {
+async function appendTodo(id, content, checked, comment, feel) {
+  console.log(id, checked, content, comment, feel);
   const li = document.createElement("li");
+
   li.id = id;
   let contentHTML = `
     <input type="checkbox" id="${id}check" ${checked ? "checked" : ""}>
-    <label for="${id}check">${value}</label>
-    <button class="edit"><img src="/public/images/edit.png" width="18px" height="18px"></button>
+    <label for="${id}check">${content}</label>
+    <button class="edit"><img src="/public/images/edit.png" class="edit-btn"></button>
     <button class="delete"><img src="/public/images/close.png" width="25px" height="25px"></button>
     <button type="button" class="comment">comment<img src="/public/images/comment.png" width="25px" height="25px"/></button>
   `;
 
-  const comment = await getComment(id);
-  if (comment && comment.content) {
+  if (comment) {
     contentHTML += `
-    <div class="comment_hide" id="comment_hide${id}">
-      <div class="comment-container comment_read "><img src="/public/images/turn-right.png" width="20px" height="20px"/>${comment.content}</div>
-      <button type="button" class="comment-delete ">삭제</button>
-      <button type="button" class="comment-edit ">수정</button>
+    <div class="comment-container"><img src="/public/images/turn-right.png" width="20px"height="20px">${comment}
+      <div btn-container>
+        <button type="button" class="comment-delete">삭제</button>
+        <button type="button" class="comment-edit">수정</button>
       </div>
+    </div>
+    `;
+    //comment가 존재하고 feel이 존재할때
+  } else if (comment && feel) {
+    contentHTML += `
+      <div class="comment-container"><img src="/public/images/turn-right.png" width="20px"height="20px">${comment}
+      <img src="${feel}" class="img-box">
+      <div btn-container>
+        <button type="button" class="comment-delete">삭제</button>
+        <button type="button" class="comment-edit">수정</button>
+      </div>
+    </div>
+      
     `;
   } else {
     contentHTML += `
       <li class="comment-container comment_hide" >
         <textarea type="text" class="toggle" id="toggle${id}" rows="1" placeholder="댓글 작성" oninput="calcTextareaHeight(this)"></textarea>
-        <button type="button" class="comment_submit" onclick="sendComment(${id})">comment 제출</button>
+        <button type="button" class="comment_submit" onclick="sendComment(${id})">제출</button>
         <input type="hidden" class="comment-edit"></input>
         <input type="hidden" class="comment-delete"></input>
       </li>
@@ -191,7 +209,6 @@ async function appendTodo(id, checked, value) {
   //comment 이벤트
   li.querySelector(".comment-edit").addEventListener("click", editComment);
   li.querySelector(".comment-delete").addEventListener("click", removeComment);
-  );
   todoList.appendChild(li);
   document.querySelector("section").style.display = "block";
 }
@@ -212,6 +229,7 @@ async function editComment(e) {
   const todo = e.target.closest("li");
   const id = Number(todo.id);
   const comment = todo.querySelector(".comment-container");
+
   const previousValue = comment.textContent;
   const newValue = prompt("수정할 내용을 입력하세요", previousValue);
 
@@ -250,9 +268,9 @@ async function removeComment(e) {
     const res = await deleteComment(id);
     if (!res.ok) throw new Error(res.status);
     // 화면에서 투두 삭제
-    todo.querySelector(".comment-container").remove();
-    todo.querySelector(".comment-edit").remove();
-    todo.querySelector(".comment-delete").remove();
+    todo.querySelector(".comment-container")?.remove();
+    todo.querySelector(".comment-edit")?.remove();
+    todo.querySelector(".comment-delete")?.remove();
   } catch (error) {
     console.error("댓글 삭제 실패:", error);
   }
@@ -275,11 +293,13 @@ async function calcTextareaHeight(e) {
   e.style.height = "auto";
   e.style.height = `${e.scrollHeight}px`;
 }
-//작성된 comment토글
+
+// 다 잘되는데 comment삭제하고나서 오류발생
 async function commentToggle(e) {
   const todo = e.target.closest("li");
-  const comment = document.querySelector(`#comment_hide${todo.id}`);
-  comment.classList.toggle("readComment_hide");
+  console.log(todo);
+  const Comment = todo.querySelector(".comment-container");
+  Comment.classList.toggle("hidden");
 }
 
 async function toggleTodo(e) {
