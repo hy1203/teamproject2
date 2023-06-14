@@ -168,21 +168,21 @@ async function appendTodo(id, checked, value, comment, feel) {
 
   if (comment) {
     contentHTML += `
-    <div class="comment-container">${comment}
+    <div class="comment-container"><img src="/public/images/turn-right.png" width="20px"height="20px">${comment}
       <div btn-container>
-        <button type="button" class="comment-edit">Edit</button>
-        <button type="button" class="comment-delete">x</button>
+        <button type="button" class="comment-delete">삭제</button>
+        <button type="button" class="comment-edit">수정</button>
       </div>
     </div>
     `;
     //comment가 존재하고 feel이 존재할때
   } else if (comment && feel) {
     contentHTML += `
-      <div class="comment-container">${comment}
+      <div class="comment-container"><img src="/public/images/turn-right.png" width="20px"height="20px">${comment}
       <img src="${feel}" class="img-box">
       <div btn-container>
-        <button type="button" class="comment-edit">Edit</button>
-        <button type="button" class="comment-delete">x</button>
+        <button type="button" class="comment-delete">삭제</button>
+        <button type="button" class="comment-edit">수정</button>
       </div>
     </div>
       
@@ -304,7 +304,7 @@ async function commentToggle(e) {
   const divHide = div.querySelector(".comment-btn");
   if (window.getComputedStyle(cmt).display === "none") {
     console.log(window.getComputedStyle(cmt).display);
-    cmt.style.display = "flex";
+    cmt.style.display = "block";
   } else {
     cmt.style.display = "none";
   }
