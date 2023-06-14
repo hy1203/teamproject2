@@ -156,7 +156,7 @@ async function sendComment(todoId) {
 // HTML표시 코드
 async function appendTodo(id, checked, value, comment, feel) {
   const li = document.createElement("li");
-
+  console.log("feel", feel);
   li.id = id;
   let contentHTML = `
     <input type="checkbox" id="${id}check" ${checked ? "checked" : ""}>
@@ -166,9 +166,12 @@ async function appendTodo(id, checked, value, comment, feel) {
     <button type="button" class="comment">comment<img src="/public/images/comment.png" width="25px" height="25px"/></button>
   `;
 
-  if (comment) {
+  if (comment && !feel) {
+    console.log("test1");
     contentHTML += `
     <div class="comment-container">${comment}
+          <div><img src="${feel}" class="img-box"></div>
+
       <div btn-container>
         <button type="button" class="comment-edit">Edit</button>
         <button type="button" class="comment-delete">x</button>
@@ -177,9 +180,9 @@ async function appendTodo(id, checked, value, comment, feel) {
     `;
     //comment가 존재하고 feel이 존재할때
   } else if (comment && feel) {
+    console.log("test2");
     contentHTML += `
-      <div class="comment-container">${comment}
-      <img src="${feel}" class="img-box">
+      <div class="comment-container"><div class="comment-div">${comment}</div><img src="${feel}" class="feel-box">
       <div btn-container>
         <button type="button" class="comment-edit">Edit</button>
         <button type="button" class="comment-delete">x</button>
