@@ -236,6 +236,50 @@ input[type="checkbox"]:checked {
   background-color: rgb(161, 181, 215);
 }
 
+comment_submit {
+  width: 100%;
+  border-radius: 20px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-family: "ImcreSoojin";
+  height: 29px;
+  font-size: 18px;
+  letter-spacing: 3px;
+  margin-left: 18px;
+  background-color: #c4ccf8;
+  text-align: center;
+  border: none;
+  box-shadow: 3px 3px 3px black;
+}
+.comment_submit:hover {
+  border: 4px solid #4146eb;
+  box-shadow: 0px 0px black;
+}
+.readComment_hide {
+  display: none;
+}
+.edit {
+  border: none;
+  cursor: pointer;
+  background-color: white;
+}
+.edit:hover {
+  border: 2px solid rgb(255, 218, 178);
+  border-radius: 10px;
+  filter: drop-shadow(2px 2px black);
+}
+.comment:hover {
+  box-shadow: 2px 2px rgb(47, 47, 47);
+  color: rgb(39, 183, 255);
+  border-radius: 10px;
+}
+.img-box {
+  width: 150px;
+}
+.edit-btn {
+  width: 25px;
+  height: 25px;
+}
 @font-face {
   font-family: "ImcreSoojin";
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.3/ImcreSoojin.woff")
