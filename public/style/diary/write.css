@@ -95,7 +95,7 @@ input[type="radio"] + label {
 .form_feeling {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 }
 
 p {
