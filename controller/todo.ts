@@ -103,26 +103,22 @@ async function get(req: Request, res: Response) {
     where: { year, month, date, user_id },
     order: [["id", "DESC"]],
   });
-  const todosByDate = await todos
-    .map((todo) => todo.dataValues)
-    .map(async ({ id, checked, content, date }) => {
-      const commentr = await db.comment.findOne({ where: { todo_id: id } });
-      const comment = commentr?.dataValues.content;
-      const emotion_id = commentr?.dataValues.emotion_id;
-      if (!emotion_id) return { date, id, content, checked, comment };
-      const emotion = await db.emotion.findOne({ where: { id: emotion_id } });
-      const feel = emotion
-        ? `/public/images/feel/${emotion.dataValues.feel}.png`
-        : "";
-      return { date, id, content, checked, comment, feel };
-    })
-    .reduce(async (pracc, todo) => {
-      const { date } = await todo;
-      const acc = await pracc;
-      if (!acc[date]) acc[date] = [];
-      acc[date].push(await todo);
-      return acc;
-    }, Promise.resolve({} as { [date: number]: TodoResponse[] }));
+  const todosByDate = await Promise.all(
+    todos
+      .map((todo) => todo.dataValues)
+      .map(async ({ id, checked, content, date }) => {
+        const commentr = await db.comment.findOne({ where: { todo_id: id } });
+        const comment = commentr?.dataValues.content;
+        const emotion_id = commentr?.dataValues.emotion_id;
+        if (!emotion_id) return { date, id, content, checked, comment };
+        const emotion = await db.emotion.findOne({ where: { id: emotion_id } });
+        const feel = emotion
+          ? `/public/images/feel/${emotion.dataValues.feel}.png`
+          : "";
+        return { id, content, checked, comment, feel };
+      })
+  );
+  console.log(todosByDate);
   res.status(200).json(todosByDate);
 }
 

@@ -15,13 +15,10 @@ async function initTodo() {
   //url에서 date값 가져오기
   const url = window.location.pathname.split("/");
   const date = url[url.length - 1];
-
-  for (const todo of todos[`${date}`]) {
-    const { id, checked, content, comment, feel } = todo;
-
-    // 화면에 투두리스트와 코멘트 추가
-    appendTodo(id, checked, content, comment, feel);
-  }
+  console.log(todos);
+  todos.forEach(({ id, content, checked, comment, feel }) => {
+    appendTodo(id, content, checked, comment, feel);
+  });
 }
 // 화면에서 투두리스트 삭제
 async function removeTodo(e) {
@@ -31,6 +28,7 @@ async function removeTodo(e) {
   try {
     // 서버에서 투두 삭제
     const res = await deleteTodo(id);
+    console.log(res);
     if (!res.ok) throw new Error(res.status);
     // 화면에서 투두 삭제
     todoList.removeChild(todo);
@@ -70,7 +68,7 @@ async function addTodo(e) {
       // 투두리스트를 서버에 저장 후 아이디 값 수신
       const { id, checked } = await postTodo(todo);
       // 화면에 투두리스트 추가
-      appendTodo(id, checked, todo);
+      appendTodo(id, todo, checked);
     }
     todoForm.reset();
   } catch (error) {
@@ -119,7 +117,6 @@ async function updateTodo(id, newValue) {
 
 // 서버에 comment추가
 async function sendComment(todoId) {
-  console.log(todoId);
   const commentInput = document.querySelector(`#toggle${todoId}`);
   const commentText = commentInput.value;
 
@@ -138,15 +135,15 @@ async function sendComment(todoId) {
         emotion_id: 1,
       }),
     });
-    console.log(res);
 
     // 댓글을 표시하는 엘리먼트 찾기
     const commentContainer = commentInput.closest(".comment-container");
     // 댓글 내용을 담는 엘리먼트 생성
     const commentTextElement = document.createElement("div");
     commentTextElement.textContent = commentText;
-    // commentContainer.appendChild(commentTextElement);
-    window.location.reload();
+    commentContainer.appendChild(commentTextElement);
+    commentInput?.classList.add("hidden");
+    commentContainer.querySelector(".comment_submit")?.classList.add("hidden");
     // 댓글 작성 후, 댓글 필드 초기화
     commentInput.value = "";
   } catch (error) {
@@ -154,13 +151,14 @@ async function sendComment(todoId) {
   }
 }
 // HTML표시 코드
-async function appendTodo(id, checked, value, comment, feel) {
+async function appendTodo(id, content, checked, comment, feel) {
+  console.log(id, checked, content, comment, feel);
   const li = document.createElement("li");
 
   li.id = id;
   let contentHTML = `
     <input type="checkbox" id="${id}check" ${checked ? "checked" : ""}>
-    <label for="${id}check">${value}</label>
+    <label for="${id}check">${content}</label>
     <button class="edit"><img src="/public/images/edit.png" class="edit-btn"></button>
     <button class="delete"><img src="/public/images/close.png" width="25px" height="25px"></button>
     <button type="button" class="comment">comment<img src="/public/images/comment.png" width="25px" height="25px"/></button>
@@ -195,7 +193,6 @@ async function appendTodo(id, checked, value, comment, feel) {
         <input type="hidden" class="comment-edit"></input>
         <input type="hidden" class="comment-delete"></input>
       </li>
-
     `;
   }
 
@@ -231,6 +228,7 @@ async function editComment(e) {
   const todo = e.target.closest("li");
   const id = Number(todo.id);
   const comment = todo.querySelector(".comment-container");
+
   const previousValue = comment.textContent;
   const newValue = prompt("수정할 내용을 입력하세요", previousValue);
 
@@ -269,9 +267,9 @@ async function removeComment(e) {
     const res = await deleteComment(id);
     if (!res.ok) throw new Error(res.status);
     // 화면에서 투두 삭제
-    todo.querySelector(".comment-container").remove();
-    todo.querySelector(".comment-edit").remove();
-    todo.querySelector(".comment-delete").remove();
+    todo.querySelector(".comment-container")?.remove();
+    todo.querySelector(".comment-edit")?.remove();
+    todo.querySelector(".comment-delete")?.remove();
   } catch (error) {
     console.error("댓글 삭제 실패:", error);
   }
@@ -298,16 +296,9 @@ async function calcTextareaHeight(e) {
 // 다 잘되는데 comment삭제하고나서 오류발생
 async function commentToggle(e) {
   const todo = e.target.closest("li");
-  const cmt = todo.querySelector(".comment-container");
-
-  const div = e.target.closest("button");
-  const divHide = div.querySelector(".comment-btn");
-  if (window.getComputedStyle(cmt).display === "none") {
-    console.log(window.getComputedStyle(cmt).display);
-    cmt.style.display = "block";
-  } else {
-    cmt.style.display = "none";
-  }
+  console.log(todo);
+  const Comment = todo.querySelector(".comment-container");
+  Comment.classList.toggle("hidden");
 }
 
 async function toggleTodo(e) {

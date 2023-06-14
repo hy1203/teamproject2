@@ -13,7 +13,6 @@ export default {
 async function post(req: Request, res: Response) {
   try {
     const user_id = await isLogin(req, res);
-    if (!user_id) return res.redirect("/login");
     const todo_id = Number(req.params.todo_id);
     // 유저ID와 투두ID로 조회: 실제 존재하는 투두인지, 해당 유저가 권한(소유)이 있는지
     const todo = await db.todo.findOne({
@@ -23,6 +22,7 @@ async function post(req: Request, res: Response) {
       return res.status(404).json({ message: "Todo가 존재하지 않음." });
     }
     const { content, emotion_id } = req.body;
+    console.log(content, emotion_id);
     const comment = await db.comment.create({ todo_id, content, emotion_id });
     if (comment.toJSON().content !== content) {
       return res.status(500).json({ message: "Comment 생성 실패." });
