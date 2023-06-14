@@ -103,7 +103,6 @@ async function get(req: Request, res: Response) {
     where: { year, month, date, user_id },
     order: [["id", "DESC"]],
   });
-  console.log("todos", todos);
   const todosByDate = await todos
     .map((todo) => todo.dataValues)
     .map(async ({ id, checked, content, date }) => {
@@ -244,24 +243,4 @@ async function destroyAll(req: Request, res: Response) {
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
-}
-
-async function calendarGets(req: Request, res: Response) {
-  const user_id = await isLogin(req, res);
-  if (!user_id) return res.redirect("/login");
-  const [year, month] = getDateFromUrl(req);
-  if (!validateDate(year, month, 1) || isFuture(year, month, 1)) {
-    res.redirect("/todo/calendar");
-    return;
-  }
-  const rawDiaries = await db.diary.findAll({
-    where: { user_id, year, month },
-    order: [["date", "ASC"]],
-  });
-  const diaries = rawDiaries.map((diary) => {
-    const { year, month, date } = diary.dataValues;
-    const image = getImageNameIfHave(year, month, date, user_id);
-    return { year, month, date, image };
-  });
-  res.json({ diaries });
 }
