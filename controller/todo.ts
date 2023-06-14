@@ -139,7 +139,9 @@ async function gets(req: Request, res: Response) {
       const emotion_id = commentr?.dataValues.emotion_id;
       if (!emotion_id) return { date, id, content, checked, comment };
       const emotion = await db.emotion.findOne({ where: { id: emotion_id } });
-      const feel = emotion?.dataValues.feel;
+      const feel = emotion
+        ? `/public/images/feel/${emotion.dataValues.feel}.png`
+        : "";
       return { date, id, content, checked, comment, feel };
     })
     .reduce(async (pracc, todo) => {
@@ -235,24 +237,4 @@ async function destroyAll(req: Request, res: Response) {
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
-}
-
-async function calendarGets(req: Request, res: Response) {
-  const user_id = await isLogin(req, res);
-  if (!user_id) return res.redirect("/login");
-  const [year, month] = getDateFromUrl(req);
-  if (!validateDate(year, month, 1) || isFuture(year, month, 1)) {
-    res.redirect("/todo/calendar");
-    return;
-  }
-  const rawDiaries = await db.diary.findAll({
-    where: { user_id, year, month },
-    order: [["date", "ASC"]],
-  });
-  const diaries = rawDiaries.map((diary) => {
-    const { year, month, date } = diary.dataValues;
-    const image = getImageNameIfHave(year, month, date, user_id);
-    return { year, month, date, image };
-  });
-  res.json({ diaries });
 }
