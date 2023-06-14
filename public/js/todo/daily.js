@@ -186,7 +186,7 @@ async function appendTodo(id, checked, value, comment, feel) {
   } else if (comment && feel) {
     contentHTML += `
       <div class="comment-container">
-        <div class="comment-div">${comment}</div><img src="${feel}" class="feel-box">
+        <div class="comment-div"><img style="width:20px; height:20px" src="/public/images/turn-right.png">${comment}</div><img src="${feel}" class="feel-box">
         <div btn-container>
           <button type="button" class="comment-delete">삭제</button>
           <button type="button" class="comment-edit">수정</button>
