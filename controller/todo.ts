@@ -144,7 +144,9 @@ async function gets(req: Request, res: Response) {
       const emotion_id = commentr?.dataValues.emotion_id;
       if (!emotion_id) return { date, id, content, checked, comment };
       const emotion = await db.emotion.findOne({ where: { id: emotion_id } });
-      const feel = emotion?.dataValues.feel;
+      const feel = emotion
+        ? `/public/images/feel/${emotion.dataValues.feel}.png`
+        : "";
       return { date, id, content, checked, comment, feel };
     })
     .reduce(async (pracc, todo) => {
