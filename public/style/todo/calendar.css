@@ -34,7 +34,7 @@ main>header {
 }
 
 main>header .logo {
-  height: 5svh;
+  height: 7svh;
   aspect-ratio: 2 / 1;
 }
 
@@ -48,7 +48,7 @@ main>header .logo {
 #diary-or-todo div.now {
   padding: 0.5em 1em;
   border-radius: 1em;
-  background-color: rgb(160, 187, 237);
+  background-color: cornflowerblue;
 }
 
 article.todos {
@@ -92,11 +92,18 @@ main>footer {
   width: 700px;
   background-color: white;
   border-radius: 1em 1em 1em 1em;
-  height: 256px;
+  height: 280px;
   display: flex;
   align-items: center;
-  margin-top: 1em;
+  margin-top: 0.5em;
   padding: 5%;
+  position: relative;
+  overflow: scroll;
+}
+
+.todoshowbox::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Opera*/
 }
 
 .diaryimg {
@@ -190,51 +197,6 @@ td {
   cursor: pointer;
 }
 
-[type="radio"] {
-  vertical-align: middle;
-  appearance: none;
-  border: max(2px, 0.1em) solid gray;
-  border-radius: 50%;
-  width: 1.25em;
-  height: 1.25em;
-  transition: border 0.5s ease-in-out;
-}
-
-[type="radio"]:checked {
-  border: 0.4em solid rgb(76, 134, 235);
-}
-
-[type="radio"]:focus-visible {
-  outline-offset: max(2px, 0.1em);
-  outline: max(2px, 0.1em) dotted rgb(102, 128, 232);
-}
-
-[type="radio"]:hover {
-  box-shadow: 0 0 0 max(4px, 0.2em) lightgray;
-  cursor: pointer;
-}
-
-[type="radio"]:disabled {
-  background-color: lightgray;
-  box-shadow: none;
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-[type="radio"]:disabled+span {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-/* Global CSS */
-fieldset {
-  display: flex;
-  justify-content: center;
-  width: 550px;
-  /* margin: 0;
-  padding: 40px 20px; */
-}
-
 *,
 *::before,
 *::after {
@@ -243,8 +205,12 @@ fieldset {
 
 .modify-box {
   justify-content: center;
-  margin-top: -8em;
-  margin-left: 40%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 4%;
+  /* margin-top: -8em;
+  margin-left: 40%; */
 }
 
 .modify1 {
@@ -257,5 +223,85 @@ fieldset {
 
 .box2 {
   font-family: "TTWanjudaedunsancheB";
-  margin-left: -50%;
+  /* margin-left: -50%; */
+}
+
+.dropcss {
+  text-align: center;
+  height: 70px;
+}
+
+.dropdown-menu-css {
+  margin-left: 5%;
+}
+
+.timelineshow {
+  margin-left: 5%;
+  font-family: "TTWanjudaedunsancheB";
+  font-size: 25px;
+}
+
+.hi {
+  float: left;
+  overflow: scroll;
+  height: 280px;
+  width: 600px;
+  border: 2px solid;
+  margin-left: 7%;
+  margin-top: 1%;
+}
+
+.hi-margin {
+  height: 50px;
+  background-color: #a8cce7;
+}
+
+.hi-main {
+  /* background-color: #dada3b; */
+  height: 180px;
+  width: 600px;
+}
+
+.box {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.box::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Opera*/
+}
+
+.footershow {
+  height: 90px;
+}
+
+.dropcss {
+  text-align: center;
+  height: 70px;
+}
+
+.dropdown-menu-css {
+  margin-left: 5%;
+}
+
+.showimg {
+  width: 150px;
+  margin: 10%;
+}
+
+.diaryList {
+  width: 350px;
+}
+
+.todoList {
+  font-family: "TTWanjudaedunsancheB";
+  font-size: large;
+}
+
+.comment-container {
+  margin-left: 2em;
+  font-family: "TTWanjudaedunsancheB";
 }
