@@ -12,10 +12,16 @@ initTodo();
 // 서버에서 투두리스트를 가져와서 화면에 렌더링
 async function initTodo() {
   const todos = await (await fetch(apiDateURL)).json();
-  const sortedTodos = todos.sort((a, b) => b.todo_id - a.todo_id); // 내림차순으로 정렬
-  sortedTodos.forEach(({ id, checked, content }) =>
-    appendTodo(id, checked, content)
-  );
+  //url에서 date값 가져오기
+  const url = window.location.pathname.split("/");
+  const date = url[url.length - 1];
+
+  for (const todo of todos[`${date}`]) {
+    const { id, checked, content, comment, feel } = todo;
+
+    // 화면에 투두리스트와 코멘트 추가
+    appendTodo(id, checked, content, comment, feel);
+  }
 }
 // 화면에서 투두리스트 삭제
 async function removeTodo(e) {
@@ -148,23 +154,31 @@ async function sendComment(todoId) {
   }
 }
 // HTML표시 코드
-async function appendTodo(id, checked, value) {
+async function appendTodo(id, checked, value, comment, feel) {
   const li = document.createElement("li");
+
   li.id = id;
   let contentHTML = `
-    <input type="checkbox" id="${id}check" ${checked ? "checked" : ""}>
-    <label for="${id}check">${value}</label>
-    <button class="edit">Edit</button>
-    <button class="delete">x</button>
-    <button type="button" class="comment">comment<img src="/public/images/comment.png" width="25px" height="25px"/></button>
+    <hr/>
+      <input type="checkbox" id="${id}check" ${checked ? "checked" : ""}>
+      <label for="${id}check">${value}</label>
+      <button class="edit">Edit</button>
+      <button class="delete">x</button>
+      <button type="button" class="comment">comment<img src="/public/images/comment.png" width="25px" height="25px"/></button>
   `;
 
-  const comment = await getComment(id);
-  if (comment && comment.content) {
+  if (comment) {
     contentHTML += `
-      <div class="comment-container">${comment.content}</div>
-      <button type="button" class="comment-edit">Edit</button>
-      <button type="button" class="comment-delete">x</button>
+    <div class="comment-container">${comment}
+      if(feel){
+        <img src="${feel}">
+      }
+      <div btn-container>
+        <button type="button" class="comment-edit">Edit</button>
+        <button type="button" class="comment-delete">x</button>
+      </div>
+    </div>
+      
     `;
   } else {
     contentHTML += `
@@ -174,6 +188,7 @@ async function appendTodo(id, checked, value) {
         <input type="hidden" class="comment-edit"></input>
         <input type="hidden" class="comment-delete"></input>
       </li>
+
     `;
   }
 
@@ -268,22 +283,23 @@ async function deleteComment(todoId) {
   }
 }
 
-
 async function calcTextareaHeight(e) {
   e.style.height = "auto";
   e.style.height = `${e.scrollHeight}px`;
 }
 
-//지금 작동이 안됌 내일 수정해야함.
+// 다 잘되는데 comment삭제하고나서 오류발생
 async function commentToggle(e) {
   const todo = e.target.closest("li");
-  const cmt = todo.querySelector(".toggle");
+  const cmt = todo.querySelector(".comment-container");
 
+  const div = e.target.closest("button");
+  const divHide = div.querySelector(".comment-btn");
   if (window.getComputedStyle(cmt).display === "none") {
     console.log(window.getComputedStyle(cmt).display);
-    cmt.style.display = "block";
+    cmt.style.display = "flex";
   } else {
-    cmt.style.display = "none"
+    cmt.style.display = "none";
   }
 }
 
