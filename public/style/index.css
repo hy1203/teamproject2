@@ -6,3 +6,10 @@
   text-decoration: none;
   color: inherit;
 }
+
+body {
+  display: flex;
+  justify-content: center;
+  background-color: var(--bg-color);
+  margin: 0;
+}
