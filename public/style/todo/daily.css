@@ -1,50 +1,77 @@
 body {
-  background-color: rgb(160, 187, 237);
+  background-color: rgb(161, 181, 215);
   display: flex;
   justify-content: space-around;
 }
-.main {
+fieldset {
+  width: 650px;
+  border-radius: 15px;
+  background-color: white;
+  border-color: white;
+  margin: 10px;
+}
+main {
   margin: auto;
   max-width: 740px;
-  background: #ffffff;
+  background-color: #c9dcff;
   width: 742px;
-  height: 900px;
-  border-radius: 5px;
+  height: 100%;
+  border-radius: 15px;
+}
+.daily-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .home {
-  margin-left: 5px;
+  width: 40px;
+  height: 40px;
 }
 .top {
-  align-items: center;
+  margin: 10px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+}
+.title {
+  margin-left: 10px;
+  font-family: "ImcreSoojin";
+  font-size: 27px;
 }
 .list {
   font-family: "ImcreSoojin";
   font-size: 23px;
 }
+.todo-img {
+  width: 30px;
+  height: 30px;
+}
+
 .close {
-  position: relative;
-  display: right;
-  width: 50px;
-  height: 50px;
+  margin-left: auto;
   text-decoration: none;
   color: black;
+  font-size: 45pt;
 }
+
 .close:after {
+  position: relative;
+  margin-left: auto;
+
+  text-decoration: none;
   content: "\00d7";
   font-size: 50pt;
-  line-height: 35px;
+  line-height: 55px;
 }
 #txt {
-  width: 430px;
-  height: 30px;
+  width: 500px;
+  height: 25px;
   outline: 0;
   border: none;
   font-size: 1.5em;
   background: white;
-  margin-right: 30px;
   padding: 5px;
+  margin: 5px;
   font-family: "ImcreSoojin";
 }
 #txt:focus {
@@ -52,16 +79,26 @@ body {
 }
 section {
   background-color: white;
-  margin-top: 10px;
-  padding: 10px 40px 10px 0px;
+  margin: 0px 10px 0px 10px;
+}
+
+#todoForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 ul {
   list-style: none;
+  margin: 5px;
+  padding-left: 20px;
 }
-#todoForm {
-  padding-left: 60px;
+li {
+  margin: 10px;
 }
+
 .td {
   padding-bottom: 10px;
   padding-top: 10px;
@@ -135,23 +172,47 @@ ul {
   font-family: "ImcreSoojin";
   border: none;
 }
+.comment-container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin: 5px;
+  justify-content: space-between;
+}
+label {
+  font-family: "ImcreSoojin";
+  font-size: 20px;
+}
 .toggle {
   border: none;
   font-family: "KyoboHand";
-  width: 100%;
+  width: 500px;
   height: 20px;
-  margin-top: 13px;
   outline: 0;
   font-size: 17px;
   font-weight: 400;
-  margin-left: 20px;
+  margin-right: 10px;
+  resize: none;
 }
-.toggle:focus {
-  border-bottom: 2px solid black;
+
+input[type="checkbox"] {
+  /* 둥글게 */
+  border-radius: 50%;
+  -moz-appearance: none;
+  appearance: none;
+  /* 기본 크기 지정 */
+  width: 20px;
+  height: 20px;
+  /* 기본 배경색 지정 */
+  background-color: #fff;
+  border: 1px solid rgb(70, 71, 72);
 }
-li {
-  margin-top: 15px;
+input[type="checkbox"]:checked {
+  border: 1px solid rgb(161, 181, 215);
+
+  background-color: rgb(161, 181, 215);
 }
+
 @font-face {
   font-family: "ImcreSoojin";
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.3/ImcreSoojin.woff")
