@@ -91,42 +91,40 @@ async function post(req: Request, res: Response) {
   }
 }
 
-// 투두 조회
+// // 투두 조회
 async function get(req: Request, res: Response) {
-  try {
-    const user_id = await isLogin(req, res);
-    if (!user_id) return res.redirect("/login");
-    const [year, month, date] = getDateFromUrl(req);
-    let result: any;
-    //todocalendar에서 3개만 보여주기 위해 limit 3
-    if (req.query.position === "todocalendar") {
-      result = await db.todo.findAll({
-        where: {
-          year,
-          month,
-          date,
-          user_id,
-        },
-        limit: 3,
-        order: [["id", "DESC"]],
-      });
-      //캘린더 페이지가 아닌 todo 페이지에서는 모두 보여줌
-    } else {
-      result = await db.todo.findAll({
-        where: {
-          year,
-          month,
-          date,
-          user_id,
-        },
-      });
-    }
-
-    const todos = result.map((todo: any) => todo.toJSON());
-    res.status(200).json(todos);
-  } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
+  const user_id = await isLogin(req, res);
+  if (!user_id) return res.redirect("/login");
+  let [year, month, date] = getDateFromUrl(req);
+  if (!validateDate(year, month, date)) {
+    return res.redirect("/todo");
   }
+  const todos = await db.todo.findAll({
+    where: { year, month, date, user_id },
+    order: [["id", "DESC"]],
+  });
+  console.log("todos", todos);
+  const todosByDate = await todos
+    .map((todo) => todo.dataValues)
+    .map(async ({ id, checked, content, date }) => {
+      const commentr = await db.comment.findOne({ where: { todo_id: id } });
+      const comment = commentr?.dataValues.content;
+      const emotion_id = commentr?.dataValues.emotion_id;
+      if (!emotion_id) return { date, id, content, checked, comment };
+      const emotion = await db.emotion.findOne({ where: { id: emotion_id } });
+      const feel = emotion
+        ? `/public/images/feel/${emotion.dataValues.feel}.png`
+        : "";
+      return { date, id, content, checked, comment, feel };
+    })
+    .reduce(async (pracc, todo) => {
+      const { date } = await todo;
+      const acc = await pracc;
+      if (!acc[date]) acc[date] = [];
+      acc[date].push(await todo);
+      return acc;
+    }, Promise.resolve({} as { [date: number]: TodoResponse[] }));
+  res.status(200).json(todosByDate);
 }
 
 // 월별 투두 조회
