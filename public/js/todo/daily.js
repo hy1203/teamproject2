@@ -155,7 +155,7 @@ async function sendComment(todoId) {
 async function appendTodo(id, content, checked, comment, feel) {
   console.log(id, checked, content, comment, feel);
   const li = document.createElement("li");
-
+  console.log("feel", feel);
   li.id = id;
   let contentHTML = `
     <input type="checkbox" id="${id}check" ${checked ? "checked" : ""}>
@@ -165,9 +165,16 @@ async function appendTodo(id, content, checked, comment, feel) {
     <button type="button" class="comment">comment<img src="/public/images/comment.png" width="25px" height="25px"/></button>
   `;
 
-  if (comment) {
+  if (comment && !feel) {
     contentHTML += `
-    <div class="comment-container"><img src="/public/images/turn-right.png" width="20px"height="20px">${comment}
+    <div class="comment-container">
+      <div class="comment-div">
+        <img src="/public/images/turn-right.png">${comment}
+      </div>
+      <div>
+        <img src="${feel}" class="img-box">
+      </div>
+
       <div btn-container>
         <button type="button" class="comment-delete">삭제</button>
         <button type="button" class="comment-edit">수정</button>
@@ -177,22 +184,22 @@ async function appendTodo(id, content, checked, comment, feel) {
     //comment가 존재하고 feel이 존재할때
   } else if (comment && feel) {
     contentHTML += `
-      <div class="comment-container"><img src="/public/images/turn-right.png" width="20px"height="20px">${comment}
-      <img src="${feel}" class="img-box">
-      <div btn-container>
-        <button type="button" class="comment-delete">삭제</button>
-        <button type="button" class="comment-edit">수정</button>
+      <div class="comment-container">
+        <div class="comment-div"><img style="width:20px; height:20px" src="/public/images/turn-right.png">${comment}</div><img src="${feel}" class="feel-box">
+        <div btn-container>
+          <button type="button" class="comment-delete">삭제</button>
+          <button type="button" class="comment-edit">수정</button>
+        </div>
       </div>
-    </div>
       
     `;
   } else {
     contentHTML += `
-      <li class="comment-container comment_hide" >
+      <li class="comment-container submit-container comment_hide">
         <textarea type="text" class="toggle" id="toggle${id}" rows="1" placeholder="댓글 작성" oninput="calcTextareaHeight(this)"></textarea>
-        <button type="button" class="comment_submit" onclick="sendComment(${id})">제출</button>
-        <input type="hidden" class="comment-edit"></input>
         <input type="hidden" class="comment-delete"></input>
+        <input type="hidden" class="comment-edit"></input>
+        <button type="button" class="comment_submit" onclick="sendComment(${id})">제출</button>
       </li>
     `;
   }
@@ -253,6 +260,7 @@ async function updateComment(todoId, newValue) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ content: newValue }),
     });
+    window.location.reload();
     return res;
   } catch (error) {
     console.error("댓글 수정 실패:", error);
@@ -282,6 +290,7 @@ async function deleteComment(todoId) {
     const res = await fetch(`/api/todo/comment/${todoId}`, {
       method: "DELETE",
     });
+    window.location.reload();
     return res;
   } catch (error) {
     console.error("댓글 삭제 실패:", error);
@@ -294,10 +303,8 @@ async function calcTextareaHeight(e) {
   e.style.height = `${e.scrollHeight}px`;
 }
 
-// 다 잘되는데 comment삭제하고나서 오류발생
 async function commentToggle(e) {
   const todo = e.target.closest("li");
-  console.log(todo);
   const Comment = todo.querySelector(".comment-container");
   Comment.classList.toggle("hidden");
 }
