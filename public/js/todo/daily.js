@@ -12,10 +12,16 @@ initTodo();
 // 서버에서 투두리스트를 가져와서 화면에 렌더링
 async function initTodo() {
   const todos = await (await fetch(apiDateURL)).json();
-  const sortedTodos = todos.sort((a, b) => b.todo_id - a.todo_id); // 내림차순으로 정렬
-  sortedTodos.forEach(({ id, checked, content }) =>
-    appendTodo(id, checked, content)
-  );
+  //url에서 date값 가져오기
+  const url = window.location.pathname.split("/");
+  const date = url[url.length - 1];
+
+  for (const todo of todos[`${date}`]) {
+    const { id, checked, content, comment, feel } = todo;
+
+    // 화면에 투두리스트와 코멘트 추가
+    appendTodo(id, checked, content, comment, feel);
+  }
 }
 // 화면에서 투두리스트 삭제
 async function removeTodo(e) {
@@ -148,34 +154,48 @@ async function sendComment(todoId) {
   }
 }
 // HTML표시 코드
-async function appendTodo(id, checked, value) {
+async function appendTodo(id, checked, value, comment, feel) {
   const li = document.createElement("li");
+
   li.id = id;
   let contentHTML = `
     <input type="checkbox" id="${id}check" ${checked ? "checked" : ""}>
     <label for="${id}check">${value}</label>
-    <button class="edit"><img src="/public/images/edit.png" width="18px" height="18px"></button>
+    <button class="edit"><img src="/public/images/edit.png" class="edit-btn"></button>
     <button class="delete"><img src="/public/images/close.png" width="25px" height="25px"></button>
     <button type="button" class="comment">comment<img src="/public/images/comment.png" width="25px" height="25px"/></button>
   `;
 
-  const comment = await getComment(id);
-  if (comment && comment.content) {
+  if (comment) {
     contentHTML += `
-    <div class="comment_hide" id="comment_hide${id}">
-      <div class="comment-container comment_read "><img src="/public/images/turn-right.png" width="20px" height="20px"/>${comment.content}</div>
-      <button type="button" class="comment-delete ">삭제</button>
-      <button type="button" class="comment-edit ">수정</button>
+    <div class="comment-container">${comment}
+      <div btn-container>
+        <button type="button" class="comment-edit">Edit</button>
+        <button type="button" class="comment-delete">x</button>
       </div>
+    </div>
+    `;
+    //comment가 존재하고 feel이 존재할때
+  } else if (comment && feel) {
+    contentHTML += `
+      <div class="comment-container">${comment}
+      <img src="${feel}" class="img-box">
+      <div btn-container>
+        <button type="button" class="comment-edit">Edit</button>
+        <button type="button" class="comment-delete">x</button>
+      </div>
+    </div>
+      
     `;
   } else {
     contentHTML += `
       <li class="comment-container comment_hide" >
         <textarea type="text" class="toggle" id="toggle${id}" rows="1" placeholder="댓글 작성" oninput="calcTextareaHeight(this)"></textarea>
-        <button type="button" class="comment_submit" onclick="sendComment(${id})">comment 제출</button>
+        <button type="button" class="comment_submit" onclick="sendComment(${id})">제출</button>
         <input type="hidden" class="comment-edit"></input>
         <input type="hidden" class="comment-delete"></input>
       </li>
+
     `;
   }
 
@@ -191,7 +211,6 @@ async function appendTodo(id, checked, value) {
   //comment 이벤트
   li.querySelector(".comment-edit").addEventListener("click", editComment);
   li.querySelector(".comment-delete").addEventListener("click", removeComment);
-  );
   todoList.appendChild(li);
   document.querySelector("section").style.display = "block";
 }
@@ -275,11 +294,20 @@ async function calcTextareaHeight(e) {
   e.style.height = "auto";
   e.style.height = `${e.scrollHeight}px`;
 }
-//작성된 comment토글
+
+// 다 잘되는데 comment삭제하고나서 오류발생
 async function commentToggle(e) {
   const todo = e.target.closest("li");
-  const comment = document.querySelector(`#comment_hide${todo.id}`);
-  comment.classList.toggle("readComment_hide");
+  const cmt = todo.querySelector(".comment-container");
+
+  const div = e.target.closest("button");
+  const divHide = div.querySelector(".comment-btn");
+  if (window.getComputedStyle(cmt).display === "none") {
+    console.log(window.getComputedStyle(cmt).display);
+    cmt.style.display = "flex";
+  } else {
+    cmt.style.display = "none";
+  }
 }
 
 async function toggleTodo(e) {
