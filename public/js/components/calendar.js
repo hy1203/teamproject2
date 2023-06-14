@@ -14,18 +14,6 @@ export default function fillCalendar(year, month, app, root) {
   root.appendChild(Weekdays());
   root.appendChild(Calendar(year, month, app));
   root.appendChild(Footer());
-
-  window.addEventListener("scroll", scrollUpHide(root));
-}
-function scrollUpHide(root) {
-  return function () {
-    console.log("hi");
-    if (document.body.scrollTop > 0 || document.documentElement.scrollTop > 0) {
-      root.classList.add("hide");
-    } else {
-      root.classList.remove("hide");
-    }
-  };
 }
 
 function Header(year, month, app, root = document.createElement("header")) {
